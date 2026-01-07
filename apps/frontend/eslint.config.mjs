@@ -1,20 +1,12 @@
 import angular from 'angular-eslint';
-import baseConfig from '../../eslint.config.mjs';
+import { defineConfig } from 'eslint/config';
+import rootConfig from '../../eslint.config.mjs';
 
-export default [
-  {
-    ignores: [
-      'dist/**',
-      '.angular/**',
-      'node_modules/**',
-      'proxy.conf.js',
-      '**/*.html',
-    ],
-  },
-  ...baseConfig,
-  ...angular.configs.tsRecommended,
+export default defineConfig([
+  ...rootConfig,
   {
     files: ['**/*.ts'],
+    extends: [...angular.configs.tsRecommended],
     rules: {
       '@angular-eslint/directive-selector': [
         'error',
@@ -36,7 +28,10 @@ export default [
   },
   {
     files: ['**/*.html'],
-    // Override or add rules here
+    extends: [
+      ...angular.configs.templateRecommended,
+      ...angular.configs.templateAccessibility,
+    ],
     rules: {},
   },
-];
+]);

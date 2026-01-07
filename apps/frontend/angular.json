@@ -73,11 +73,19 @@
             "tsConfig": "tsconfig.spec.json",
             "polyfills": []
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["./**/*.ts", "./**/*.html"],
+            "eslintConfig": "eslint.config.mjs"
+          }
         }
       }
     }
   },
   "cli": {
-    "analytics": "40e4496e-8c76-4a64-8b00-64ca6c1db9be"
+    "analytics": "40e4496e-8c76-4a64-8b00-64ca6c1db9be",
+    "schematicCollections": ["angular-eslint"]
   }
 }
