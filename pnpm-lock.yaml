@@ -48,9 +48,12 @@ importers:
         specifier: ^0.1.13
         version: 0.1.14
       rxjs:
-        specifier: ~7.8.0
+        specifier: ^7.8.2
         version: 7.8.2
     devDependencies:
+      '@angular-devkit/architect':
+        specifier: ^0.2100.4
+        version: 0.2100.4(chokidar@4.0.3)
       '@angular-devkit/core':
         specifier: ~21.0.0
         version: 21.0.4(chokidar@4.0.3)
