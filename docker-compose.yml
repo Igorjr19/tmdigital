@@ -1,0 +1,63 @@
+services:
+  # PostgreSQL com PostGIS
+  postgres:
+    image: postgis/postgis:16-3.4
+    container_name: tmdigital-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - tmdigital-network
+
+  # Backend (NestJS)
+  backend:
+    build:
+      context: .
+      dockerfile: apps/backend/Dockerfile
+    container_name: tmdigital-backend
+    environment:
+      NODE_ENV: development
+      PORT: ${BACKEND_PORT}
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+    ports:
+      - "${BACKEND_PORT:-3000}:${BACKEND_PORT:-3000}"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - tmdigital-network
+
+  # Frontend (Angular)
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/frontend/Dockerfile
+    container_name: tmdigital-frontend
+    environment:
+      NODE_ENV: development
+      API_URL: ${API_URL}
+    ports:
+      - "${FRONTEND_PORT:-4200}:${FRONTEND_PORT:-4200}"
+    depends_on:
+      - backend
+    networks:
+      - tmdigital-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  tmdigital-network:
+    driver: bridge
