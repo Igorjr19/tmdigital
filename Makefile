@@ -71,29 +71,35 @@ psql: ## Acessa PostgreSQL via psql
 ##@ Desenvolvimento Local
 
 dev-backend: ## Executa backend localmente (sem Docker)
-	@pnpm nx serve backend
+	@pnpm dev:backend
 
 dev-frontend: ## Executa frontend localmente (sem Docker)
-	@pnpm nx serve frontend
+	@pnpm dev:frontend
+
+dev: ## Executa backend e frontend simultaneamente
+	@pnpm dev
 
 ##@ Testes
 
 test: ## Executa todos os testes
-	@pnpm nx run-many --target=test --all
+	@pnpm test:all
 
 test-backend: ## Executa testes do backend
-	@pnpm nx test backend
+	@pnpm test:backend
 
 test-frontend: ## Executa testes do frontend
-	@pnpm nx test frontend
+	@pnpm test:frontend
 
 ##@ Qualidade
 
 lint: ## Executa linter
-	@pnpm nx run-many --target=lint --all
+	@pnpm lint
 
-lint-fix: ## Executa linter e corrige automaticamente
-	@pnpm nx run-many --target=lint --all --fix
+lint-backend: ## Executa linter no backend
+	@pnpm lint:backend
+
+lint-frontend: ## Executa linter no frontend
+	@pnpm lint:frontend
 
 format: ## Formata o código
 	@pnpm prettier --write .
@@ -101,7 +107,7 @@ format: ## Formata o código
 ##@ Limpeza
 
 clean: ## Remove node_modules, dist e cache
-	@rm -rf node_modules dist .nx/installation .nx/cache .nx/workspace-data
+	@rm -rf node_modules dist apps/*/node_modules apps/*/dist packages/*/node_modules packages/*/dist
 
 clean-docker: down ## Para containers e remove imagens
 	@docker rmi $$(docker images -q tmdigital-* 2>/dev/null) 2>/dev/null || true

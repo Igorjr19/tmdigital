@@ -4,18 +4,15 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Debug backend with Nx",
-      "runtimeExecutable": "pnpm exec",
-      "runtimeArgs": ["nx", "serve", "backend"],
-      "env": {
-        "NODE_OPTIONS": "--inspect=9229"
-      },
+      "name": "Debug backend",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@tmdigital/backend", "start:debug"],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "skipFiles": ["<node_internals>/**"],
       "sourceMaps": true,
       "outFiles": [
-        "${workspaceFolder}//apps/backend/dist/**/*.(m|c|)js",
+        "${workspaceFolder}/dist/apps/backend/**/*.(m|c|)js",
         "!**/node_modules/**"
       ]
     }

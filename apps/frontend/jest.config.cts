@@ -18,4 +18,7 @@ module.exports = {
     'jest-preset-angular/build/serializers/ng-snapshot',
     'jest-preset-angular/build/serializers/html-comment',
   ],
+  moduleNameMapper: {
+    '^@tmdigital/shared$': '<rootDir>/../../packages/shared/src/index.ts',
+  },
 };

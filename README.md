@@ -1,6 +1,6 @@
 # TMDigital
 
-Monorepo Nx com backend NestJS, frontend Angular e PostgreSQL + PostGIS.
+Monorepo com backend NestJS, frontend Angular e PostgreSQL + PostGIS.
 
 ## 📋 Pré-requisitos
 
@@ -23,6 +23,7 @@ make setup
 ```
 
 O comando `setup` irá:
+
 - Criar o arquivo `.env` a partir do `.env.example`
 - Instalar todas as dependências do projeto
 
@@ -34,6 +35,7 @@ make up
 ```
 
 A aplicação estará disponível em:
+
 - **Frontend**: http://localhost:4200
 - **Backend**: http://localhost:3000/api
 - **Database**: localhost:5432
@@ -109,9 +111,7 @@ make clean-all         # Limpeza completa (código + Docker + volumes)
 tmdigital/
 ├── apps/
 │   ├── backend/          # API NestJS
-│   ├── backend-e2e/      # Testes E2E do backend
 │   ├── frontend/         # Aplicação Angular
-│   └── frontend-e2e/     # Testes E2E do frontend
 ├── docker-compose.yml    # Configuração Docker
 ├── Makefile             # Comandos de desenvolvimento
 ├── .env.example         # Variáveis de ambiente de exemplo
@@ -150,9 +150,4 @@ API_URL=http://localhost:3000
 
 - [NestJS](https://nestjs.com/)
 - [Angular](https://angular.dev/)
-- [Nx](https://nx.dev/)
 - [PostGIS](https://postgis.net/)
-
-## 📝 Licença
-
-ISC

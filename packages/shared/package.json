@@ -1,0 +1,14 @@
+{
+  "name": "@tmdigital/shared",
+  "version": "0.0.1",
+  "type": "commonjs",
+  "main": "../../dist/packages/shared/index.js",
+  "types": "../../dist/packages/shared/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "peerDependencies": {
+    "typescript": "^5.9.2"
+  }
+}

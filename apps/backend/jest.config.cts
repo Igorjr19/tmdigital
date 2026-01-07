@@ -3,8 +3,11 @@ module.exports = {
   preset: '../../jest.preset.js',
   testEnvironment: 'node',
   transform: {
-    '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
+    '^.+\\.ts$': 'esbuild-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/apps/backend',
+  moduleNameMapper: {
+    '^@tmdigital/shared$': '<rootDir>/../../packages/shared/src/index.ts',
+  },
 };
