@@ -9,9 +9,7 @@ RESET  := \033[0m
 ##@ Ajuda
 
 help: ## Exibe esta mensagem de ajuda
-	@printf "$(BLUE)╔═══════════════════════════════════════════════════════╗$(RESET)\n"
-	@printf "$(BLUE)║         TMDigital - Comandos de Desenvolvimento       ║$(RESET)\n"
-	@printf "$(BLUE)╚═══════════════════════════════════════════════════════╝$(RESET)\n"
+	@printf "$(BLUE)TMDigital - Comandos de Desenvolvimento $(RESET)"
 	@awk 'BEGIN {FS = ":.*##"; printf "\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  $(GREEN)%-20s$(RESET) %s\n", $$1, $$2 } /^##@/ { printf "\n$(YELLOW)%s$(RESET)\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
 ##@ Setup
@@ -19,7 +17,6 @@ help: ## Exibe esta mensagem de ajuda
 setup: ## Configuração inicial do projeto
 	@if [ ! -f .env ]; then cp .env.example .env; fi
 	@pnpm install
-	@printf "$(GREEN)✓ Setup completo!$(RESET)\n"
 
 install: ## Instala as dependências do projeto
 	@pnpm install
@@ -28,6 +25,9 @@ install: ## Instala as dependências do projeto
 
 up: ## Inicia todos os containers
 	@docker compose up -d
+
+stop: ## Para todos os containers
+	@docker compose stop
 
 down: ## Para e remove todos os containers
 	@docker compose down
@@ -87,9 +87,6 @@ test-backend: ## Executa testes do backend
 test-frontend: ## Executa testes do frontend
 	@pnpm nx test frontend
 
-test-watch: ## Executa testes em modo watch
-	@pnpm nx test backend --watch
-
 ##@ Qualidade
 
 lint: ## Executa linter
@@ -104,13 +101,10 @@ format: ## Formata o código
 ##@ Limpeza
 
 clean: ## Remove node_modules, dist e cache
-	@rm -rf node_modules dist .nx
-	@printf "$(GREEN)✓ Limpeza completa!$(RESET)\n"
+	@rm -rf node_modules dist .nx/installation .nx/cache .nx/workspace-data
 
 clean-docker: down ## Para containers e remove imagens
 	@docker rmi $$(docker images -q tmdigital-* 2>/dev/null) 2>/dev/null || true
-	@printf "$(GREEN)✓ Imagens removidas!$(RESET)\n"
 
 clean-all: clean clean-docker ## Limpeza completa (código + Docker)
 	@docker compose down -v
-	@printf "$(GREEN)✓ Limpeza total completa!$(RESET)\n"
