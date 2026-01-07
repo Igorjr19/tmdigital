@@ -3,7 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "prefix": "app",
-  "sourceRoot": "/apps/frontend/src",
+  "sourceRoot": "apps/frontend/src",
   "tags": [],
   "targets": {
     "build": {
@@ -11,16 +11,16 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/frontend",
-        "browser": "/apps/frontend/src/main.ts",
-        "tsConfig": "/apps/frontend/tsconfig.app.json",
+        "browser": "apps/frontend/src/main.ts",
+        "tsConfig": "apps/frontend/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
           {
             "glob": "**/*",
-            "input": "/apps/frontend/public"
+            "input": "apps/frontend/public"
           }
         ],
-        "styles": ["/apps/frontend/src/styles.scss"]
+        "styles": ["apps/frontend/src/styles.scss"]
       },
       "configurations": {
         "production": {
@@ -58,7 +58,6 @@
         }
       },
       "defaultConfiguration": "development",
-      "dependsOn": ["backend:serve"],
       "options": {
         "proxyConfig": "apps/frontend/proxy.conf.json"
       }

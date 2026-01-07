@@ -41,6 +41,9 @@ importers:
       axios:
         specifier: ^1.6.0
         version: 1.13.2
+      nx:
+        specifier: ^22.3.3
+        version: 22.3.3(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.18))(@swc/types@0.1.25)(typescript@5.9.3))(@swc/core@1.5.29(@swc/helpers@0.5.18))
       reflect-metadata:
         specifier: ^0.1.13
         version: 0.1.14
