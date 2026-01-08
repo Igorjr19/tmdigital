@@ -22,6 +22,7 @@
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.0",
     "@nestjs/platform-express": "^11.0.0",
+    "@nestjs/swagger": "^11.2.4",
     "@nestjs/typeorm": "^11.0.0",
     "@tmdigital/shared": "workspace:*",
     "pg": "^8.16.3",

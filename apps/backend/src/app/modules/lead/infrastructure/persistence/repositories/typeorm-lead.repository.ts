@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { PaginationDto } from '../../../../../shared/application/dtos/pagination.dto';
 import { Lead } from '../../../domain/entities/lead.entity';
-import { LeadRepository } from '../../../domain/repositories/lead.repository';
+import { ILeadRepository } from '../../../domain/repositories/lead.repository';
 import { LeadSchema } from '../entities/lead.schema';
 import { LeadMapper } from '../mappers/lead.mapper';
 
 @Injectable()
-export class TypeOrmLeadRepository implements LeadRepository {
+export class TypeOrmLeadRepository implements ILeadRepository {
   constructor(
     @InjectRepository(LeadSchema)
     private readonly typeOrmRepository: Repository<LeadSchema>,
@@ -33,8 +34,14 @@ export class TypeOrmLeadRepository implements LeadRepository {
     return LeadMapper.toDomain(schema);
   }
 
-  async findAll(): Promise<Lead[]> {
-    const schemas = await this.typeOrmRepository.find();
+  async findAll(params?: PaginationDto): Promise<Lead[]> {
+    const skip = ((params?.page || 1) - 1) * (params?.limit || 10);
+    const take = params?.limit || 10;
+
+    const schemas = await this.typeOrmRepository.find({
+      skip,
+      take,
+    });
     return schemas.map(LeadMapper.toDomain);
   }
 
