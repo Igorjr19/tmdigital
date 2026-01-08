@@ -8,9 +8,11 @@ export class DeleteLeadUseCase implements UseCase<string, void> {
 
   async execute(id: string): Promise<void> {
     const lead = await this.leadRepository.findById(id);
+
     if (!lead) {
       throw new NotFoundException(`Lead with ID ${id} not found`);
     }
+
     await this.leadRepository.delete(id);
   }
 }

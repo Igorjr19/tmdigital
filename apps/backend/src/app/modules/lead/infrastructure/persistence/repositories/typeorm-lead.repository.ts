@@ -3,12 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PaginationDto } from '../../../../../shared/application/dtos/pagination.dto';
 import { Lead } from '../../../domain/entities/lead.entity';
-import { ILeadRepository } from '../../../domain/repositories/lead.repository';
+import { LeadRepository } from '../../../domain/repositories/lead.repository';
 import { LeadSchema } from '../entities/lead.schema';
 import { LeadMapper } from '../mappers/lead.mapper';
 
 @Injectable()
-export class TypeOrmLeadRepository implements ILeadRepository {
+export class TypeOrmLeadRepository implements LeadRepository {
   constructor(
     @InjectRepository(LeadSchema)
     private readonly typeOrmRepository: Repository<LeadSchema>,

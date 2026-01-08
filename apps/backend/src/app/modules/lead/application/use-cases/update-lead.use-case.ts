@@ -19,7 +19,6 @@ export class UpdateLeadUseCase implements UseCase<UpdateLeadInput, Lead> {
       throw new NotFoundException(`Lead with ID ${input.id} not found`);
     }
 
-    // Domain update logic
     lead.updateInformation(input.data);
 
     if (input.data.status) {
