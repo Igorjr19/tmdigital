@@ -33,6 +33,9 @@ export class RuralPropertyMapper {
     schema.state = domain.state;
     schema.createdAt = domain.createdAt;
     schema.updatedAt = domain.updatedAt;
+    schema.cropProductions = domain.cropProductions
+      ? domain.cropProductions.map(CropProductionMapper.toPersistence)
+      : [];
     return schema;
   }
 }

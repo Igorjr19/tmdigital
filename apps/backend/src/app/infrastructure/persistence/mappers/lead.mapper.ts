@@ -31,6 +31,9 @@ export class LeadMapper {
     schema.notes = domain.notes;
     schema.createdAt = domain.createdAt;
     schema.updatedAt = domain.updatedAt;
+    schema.properties = domain.properties
+      ? domain.properties.map(RuralPropertyMapper.toPersistence)
+      : [];
     return schema;
   }
 }
