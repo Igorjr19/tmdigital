@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { CropProduction } from '../../../domain/entities/crop-production.entity';
 import { Culture } from '../../../domain/entities/culture.entity';
 import { Lead } from '../../../domain/entities/lead.entity';
@@ -13,12 +14,15 @@ export class SeedService implements OnApplicationBootstrap {
   private readonly logger = new Logger(SeedService.name);
 
   constructor(
+    private readonly configService: ConfigService,
     private readonly cultureRepository: CultureRepository,
     private readonly leadRepository: LeadRepository,
   ) {}
 
   async onApplicationBootstrap() {
-    await this.seed();
+    if (this.configService.get('SEED_ENABLED', 'false') === 'true') {
+      await this.seed();
+    }
   }
 
   async seed() {
