@@ -88,6 +88,40 @@ export class RuralProperty extends BaseEntity {
     this._cropProductions.push(cropProduction);
   }
 
+  updateInformation(
+    props: Partial<
+      Omit<
+        RuralPropertyProps,
+        'id' | 'createdAt' | 'updatedAt' | 'leadId' | 'cropProductions'
+      >
+    >,
+  ): void {
+    if (props.name) this._name = props.name;
+    if (props.totalAreaHectares !== undefined) {
+      if (props.totalAreaHectares < 0)
+        throw new Error('Total area cannot be negative');
+      this._totalAreaHectares = props.totalAreaHectares;
+    }
+    if (props.productiveAreaHectares !== undefined) {
+      if (props.productiveAreaHectares < 0)
+        throw new Error('Productive area cannot be negative');
+      this._productiveAreaHectares = props.productiveAreaHectares;
+    }
+    if (
+      this._productiveAreaHectares !== undefined &&
+      this._totalAreaHectares !== undefined &&
+      this._productiveAreaHectares > this._totalAreaHectares
+    ) {
+      throw new Error('Productive area cannot be larger than total area');
+    }
+
+    if (props.location) this._location = props.location;
+    if (props.city) this._city = props.city;
+    if (props.state) this._state = props.state;
+
+    this.updatedAt = new Date();
+  }
+
   calculateTotalRevenue(): number {
     return this._cropProductions.reduce(
       (total, production) => total + production.calculateRevenue(),

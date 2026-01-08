@@ -208,6 +208,9 @@ importers:
         specifier: ^0.3.28
         version: 0.3.28(pg@8.16.3)(ts-node@10.9.1(@swc/core@1.7.42(@swc/helpers@0.5.18))(@types/node@22.19.3)(typescript@5.9.3))
     devDependencies:
+      '@faker-js/faker':
+        specifier: ^10.2.0
+        version: 10.2.0
       '@nestjs/cli':
         specifier: ^11.0.0
         version: 11.0.14(@swc/cli@0.4.0(@swc/core@1.7.42(@swc/helpers@0.5.18))(chokidar@4.0.3))(@swc/core@1.7.42(@swc/helpers@0.5.18))(@types/node@22.19.3)(esbuild@0.24.2)
@@ -2063,6 +2066,10 @@ packages:
   '@eslint/plugin-kit@0.4.1':
     resolution: {integrity: sha512-43/qtrDUokr7LJqoF2c3+RInu/t4zfrpYdoSDfYyhg52rwLV6TnOvdG4fXm7IkSB3wErkcmJS9iEhjVtOSEjjA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@faker-js/faker@10.2.0':
+    resolution: {integrity: sha512-rTXwAsIxpCqzUnZvrxVh3L0QA0NzToqWBLAhV+zDV3MIIwiQhAZHMdPCIaj5n/yADu/tyk12wIPgL6YHGXJP+g==}
+    engines: {node: ^20.19.0 || ^22.13.0 || ^23.5.0 || >=24.0.0, npm: '>=10'}
 
   '@hono/node-server@1.19.7':
     resolution: {integrity: sha512-vUcD0uauS7EU2caukW8z5lJKtoGMokxNbJtBiwHgpqxEXokaHCBkQUmCHhjFB1VUTWdqj25QoMkMKzgjq+uhrw==}
@@ -10454,6 +10461,8 @@ snapshots:
     dependencies:
       '@eslint/core': 0.17.0
       levn: 0.4.1
+
+  '@faker-js/faker@10.2.0': {}
 
   '@hono/node-server@1.19.7(hono@4.11.3)':
     dependencies:

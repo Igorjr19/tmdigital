@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { GetLeadsDto } from '../../../application/dtos/get-leads.dto';
 import { PaginationDto } from '../../../application/dtos/pagination.dto';
 import { Lead } from '../../../domain/entities/lead.entity';
 import { LeadRepository } from '../../../domain/repositories/lead.repository';
@@ -78,15 +79,26 @@ export class TypeOrmLeadRepository implements LeadRepository {
   }
 
   async findAll(
-    params?: PaginationDto,
+    params?: GetLeadsDto,
   ): Promise<{ items: Lead[]; total: number }> {
     const skip = ((params?.page || 1) - 1) * (params?.limit || 10);
     const take = params?.limit || 10;
 
-    const [schemas, total] = await this.typeOrmRepository.findAndCount({
-      skip,
-      take,
-    });
+    const query = this.typeOrmRepository.createQueryBuilder('lead');
+
+    if (params?.name) {
+      query.andWhere('lead.name ILIKE :name', { name: `%${params.name}%` });
+    }
+
+    if (params?.status) {
+      query.andWhere('lead.status = :status', { status: params.status });
+    }
+
+    const [schemas, total] = await query
+      .skip(skip)
+      .take(take)
+      .getManyAndCount();
+
     return {
       items: schemas.map(LeadMapper.toDomain),
       total,
@@ -98,6 +110,13 @@ export class TypeOrmLeadRepository implements LeadRepository {
   }
 
   async delete(id: string): Promise<void> {
-    await this.typeOrmRepository.delete(id);
+    const schema = await this.typeOrmRepository.findOne({
+      where: { id },
+      relations: ['properties'], // Load relations to cascade soft-remove
+    });
+
+    if (schema) {
+      await this.typeOrmRepository.softRemove(schema);
+    }
   }
 }
