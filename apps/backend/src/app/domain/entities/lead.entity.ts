@@ -112,4 +112,12 @@ export class Lead extends BaseEntity {
 
     this.updatedAt = new Date();
   }
+
+  calculatePotential(): void {
+    const totalPotential = this._properties.reduce(
+      (total, property) => total + property.calculateTotalRevenue(),
+      0,
+    );
+    this.updateInformation({ estimatedPotential: totalPotential });
+  }
 }

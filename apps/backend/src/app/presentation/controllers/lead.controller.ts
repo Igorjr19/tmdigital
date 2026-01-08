@@ -63,9 +63,9 @@ export class LeadController {
     return {
       data: items.map(LeadDto.fromDomain),
       metadata: {
-        total,
         page,
         limit,
+        total,
         totalPages: Math.ceil(total / limit),
       },
     };
@@ -83,9 +83,9 @@ export class LeadController {
     return {
       data: items.map(LeadDto.fromDomain),
       metadata: {
-        total,
         page,
         limit,
+        total,
         totalPages: Math.ceil(total / limit),
       },
     };

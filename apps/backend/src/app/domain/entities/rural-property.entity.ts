@@ -87,4 +87,11 @@ export class RuralProperty extends BaseEntity {
   addCropProduction(cropProduction: CropProduction): void {
     this._cropProductions.push(cropProduction);
   }
+
+  calculateTotalRevenue(): number {
+    return this._cropProductions.reduce(
+      (total, production) => total + production.calculateRevenue(),
+      0,
+    );
+  }
 }

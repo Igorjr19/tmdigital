@@ -57,4 +57,11 @@ export class CropProduction extends BaseEntity {
   get ruralProperty(): RuralProperty | undefined {
     return this._ruralProperty;
   }
+
+  calculateRevenue(): number {
+    if (!this._culture || this._culture.currentPrice === undefined) {
+      return 0;
+    }
+    return this._plantedAreaHectares * this._culture.currentPrice;
+  }
 }

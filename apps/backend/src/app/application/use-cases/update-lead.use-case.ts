@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Lead } from '../../domain/entities/lead.entity';
 import { LeadRepository } from '../../domain/repositories/lead.repository';
-import { UpdateLeadInput } from '../dtos/update-lead-input.dto';
+import { UpdateLeadInput } from '../interfaces/update-lead-input';
 import { UseCase } from '../interfaces/use-case.interface';
 
 @Injectable()
