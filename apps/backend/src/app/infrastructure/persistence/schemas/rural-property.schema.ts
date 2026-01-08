@@ -1,7 +1,7 @@
 import { Point } from 'geojson';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { BaseSchema } from './base.schema';
-import type { CropProductionSchema } from './crop-production.schema';
+import { CropProductionSchema } from './crop-production.schema';
 import { LeadSchema } from './lead.schema';
 
 @Entity('rural_properties')
@@ -35,6 +35,12 @@ export class RuralPropertySchema extends BaseSchema {
   @Column({ type: 'varchar', length: 2 })
   state: string;
 
-  @OneToMany('CropProductionSchema', 'ruralProperty')
+  @OneToMany(
+    () => CropProductionSchema,
+    (cropProduction) => cropProduction.ruralProperty,
+    {
+      cascade: ['insert', 'update', 'soft-remove'],
+    },
+  )
   cropProductions: CropProductionSchema[];
 }

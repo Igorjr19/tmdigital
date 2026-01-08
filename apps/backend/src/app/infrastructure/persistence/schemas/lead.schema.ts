@@ -49,6 +49,8 @@ export class LeadSchema extends BaseSchema {
   })
   notes?: string;
 
-  @OneToMany('RuralPropertySchema', 'lead')
+  @OneToMany('RuralPropertySchema', 'lead', {
+    cascade: ['insert', 'update', 'soft-remove'],
+  })
   properties: RuralPropertySchema[];
 }

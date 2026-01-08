@@ -12,11 +12,14 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateLeadDto } from '../../application/dtos/create-lead.dto';
+import { CreateRuralPropertyDto } from '../../application/dtos/create-rural-property.dto';
 import { GetNearbyLeadsDto } from '../../application/dtos/get-nearby-leads.dto';
 import { LeadDto } from '../../application/dtos/lead.dto';
 import { PaginatedResponseDto } from '../../application/dtos/paginated-response.dto';
 import { PaginationDto } from '../../application/dtos/pagination.dto';
+import { RuralPropertyDto } from '../../application/dtos/rural-property.dto';
 import { UpdateLeadDto } from '../../application/dtos/update-lead.dto';
+import { AddRuralPropertyUseCase } from '../../application/use-cases/add-rural-property.use-case';
 import { CalculateLeadScoreUseCase } from '../../application/use-cases/calculate-lead-score.use-case';
 import { CreateLeadUseCase } from '../../application/use-cases/create-lead.use-case';
 import { DeleteLeadUseCase } from '../../application/use-cases/delete-lead.use-case';
@@ -41,6 +44,7 @@ export class LeadController {
     private readonly deleteLeadUseCase: DeleteLeadUseCase,
     private readonly calculateLeadScoreUseCase: CalculateLeadScoreUseCase,
     private readonly getNearbyLeadsUseCase: GetNearbyLeadsUseCase,
+    private readonly addRuralPropertyUseCase: AddRuralPropertyUseCase,
   ) {}
 
   @Post()
@@ -91,7 +95,7 @@ export class LeadController {
     };
   }
 
-  @Post(':id/calculate-score')
+  @Post(':id/score')
   @HttpCode(HttpStatus.OK)
   async calculateScore(@Param('id') id: string): Promise<{ score: number }> {
     const score = await this.calculateLeadScoreUseCase.execute(id);
@@ -123,5 +127,18 @@ export class LeadController {
   @ApiDocDeleteLead()
   async remove(@Param('id') id: string): Promise<void> {
     return this.deleteLeadUseCase.execute(id);
+  }
+
+  @Post(':id/properties')
+  @HttpCode(HttpStatus.CREATED)
+  async addProperty(
+    @Param('id') id: string,
+    @Body() createRuralPropertyDto: CreateRuralPropertyDto,
+  ): Promise<RuralPropertyDto> {
+    createRuralPropertyDto.leadId = id;
+    const property = await this.addRuralPropertyUseCase.execute(
+      createRuralPropertyDto,
+    );
+    return RuralPropertyDto.fromDomain(property);
   }
 }
