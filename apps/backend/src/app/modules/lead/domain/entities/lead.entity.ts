@@ -1,23 +1,18 @@
 import { BaseEntity } from '../../../../shared/domain/base.entity';
-
-export enum LeadStatus {
-  NEW = 'NEW',
-  CONTACTED = 'CONTACTED',
-  QUALIFIED = 'QUALIFIED',
-  CONVERTED = 'CONVERTED',
-  LOST = 'LOST',
-}
+import { RuralProperty } from '../../../rural-property/domain/entities/rural-property.entity';
+import { LeadStatus } from '../enums/lead-status.enum';
 
 export interface LeadProps {
   name: string;
-  document: string; // CPF or CNPJ
+  document: string;
   currentSupplier?: string;
   status: LeadStatus;
-  estimatedPotentialRevenue: number;
+  estimatedPotential: number;
   notes?: string;
   id?: string;
   createdAt?: Date;
   updatedAt?: Date;
+  properties?: RuralProperty[];
 }
 
 export class Lead extends BaseEntity {
@@ -25,8 +20,9 @@ export class Lead extends BaseEntity {
   private _document: string;
   private _currentSupplier?: string;
   private _status: LeadStatus;
-  private _estimatedPotentialRevenue: number;
+  private _estimatedPotential: number;
   private _notes?: string;
+  private _properties: RuralProperty[];
 
   private constructor(props: LeadProps) {
     super(props.id, props.createdAt, props.updatedAt);
@@ -34,8 +30,9 @@ export class Lead extends BaseEntity {
     this._document = props.document;
     this._currentSupplier = props.currentSupplier;
     this._status = props.status;
-    this._estimatedPotentialRevenue = props.estimatedPotentialRevenue;
+    this._estimatedPotential = props.estimatedPotential;
     this._notes = props.notes;
+    this._properties = props.properties || [];
 
     this.validate();
   }
@@ -51,12 +48,11 @@ export class Lead extends BaseEntity {
     if (!this._document) {
       throw new Error('Document is required');
     }
-    if (this._estimatedPotentialRevenue < 0) {
-      throw new Error('Estimated potential revenue cannot be negative');
+    if (this._estimatedPotential < 0) {
+      throw new Error('Estimated potential cannot be negative');
     }
   }
 
-  // Getters
   get name(): string {
     return this._name;
   }
@@ -69,16 +65,21 @@ export class Lead extends BaseEntity {
   get status(): LeadStatus {
     return this._status;
   }
-  get estimatedPotentialRevenue(): number {
-    return this._estimatedPotentialRevenue;
+  get estimatedPotential(): number {
+    return this._estimatedPotential;
   }
   get notes(): string | undefined {
     return this._notes;
   }
+  get properties(): RuralProperty[] {
+    return this._properties;
+  }
 
-  // Setters (Domain behaviors)
+  addProperty(property: RuralProperty): void {
+    this._properties.push(property);
+  }
+
   updateStatus(newStatus: LeadStatus): void {
-    // Add domain logic here if needed (e.g. state transition validation)
     this._status = newStatus;
     this.updatedAt = new Date();
   }
@@ -86,15 +87,28 @@ export class Lead extends BaseEntity {
   updateInformation(
     props: Partial<Omit<LeadProps, 'id' | 'createdAt' | 'updatedAt'>>,
   ): void {
-    if (props.name) this._name = props.name;
-    if (props.currentSupplier !== undefined)
-      this._currentSupplier = props.currentSupplier;
-    if (props.estimatedPotentialRevenue !== undefined) {
-      if (props.estimatedPotentialRevenue < 0)
-        throw new Error('Estimated potential revenue cannot be negative');
-      this._estimatedPotentialRevenue = props.estimatedPotentialRevenue;
+    if (props.name) {
+      this._name = props.name;
     }
-    if (props.notes !== undefined) this._notes = props.notes;
+
+    if (props.document) {
+      this._document = props.document;
+    }
+
+    if (props.currentSupplier !== undefined) {
+      this._currentSupplier = props.currentSupplier;
+    }
+
+    if (props.estimatedPotential !== undefined) {
+      if (props.estimatedPotential < 0) {
+        throw new Error('Estimated potential cannot be negative');
+      }
+      this._estimatedPotential = props.estimatedPotential;
+    }
+
+    if (props.notes !== undefined) {
+      this._notes = props.notes;
+    }
 
     this.updatedAt = new Date();
   }

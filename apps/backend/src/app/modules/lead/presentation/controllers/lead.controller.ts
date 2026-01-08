@@ -11,14 +11,18 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { PaginatedResponseDto } from '../../../../shared/application/dtos/paginated-response.dto';
 import { PaginationDto } from '../../../../shared/application/dtos/pagination.dto';
 import { CreateLeadDto } from '../../application/dtos/create-lead.dto';
+import { GetNearbyLeadsDto } from '../../application/dtos/get-nearby-leads.dto';
 import { LeadDto } from '../../application/dtos/lead.dto';
 import { UpdateLeadDto } from '../../application/dtos/update-lead.dto';
+import { CalculateLeadScoreUseCase } from '../../application/use-cases/calculate-lead-score.use-case';
 import { CreateLeadUseCase } from '../../application/use-cases/create-lead.use-case';
 import { DeleteLeadUseCase } from '../../application/use-cases/delete-lead.use-case';
 import { FindAllLeadsUseCase } from '../../application/use-cases/find-all-leads.use-case';
 import { FindOneLeadUseCase } from '../../application/use-cases/find-one-lead.use-case';
+import { GetNearbyLeadsUseCase } from '../../application/use-cases/get-nearby-leads.use-case';
 import { UpdateLeadUseCase } from '../../application/use-cases/update-lead.use-case';
 import { ApiDocCreateLead } from '../decorators/api-doc-create-lead.decorator';
 import { ApiDocDeleteLead } from '../decorators/api-doc-delete-lead.decorator';
@@ -35,6 +39,8 @@ export class LeadController {
     private readonly findOneLeadUseCase: FindOneLeadUseCase,
     private readonly updateLeadUseCase: UpdateLeadUseCase,
     private readonly deleteLeadUseCase: DeleteLeadUseCase,
+    private readonly calculateLeadScoreUseCase: CalculateLeadScoreUseCase,
+    private readonly getNearbyLeadsUseCase: GetNearbyLeadsUseCase,
   ) {}
 
   @Post()
@@ -47,9 +53,49 @@ export class LeadController {
 
   @Get()
   @ApiDocFindAllLeads()
-  async findAll(@Query() query: PaginationDto): Promise<LeadDto[]> {
-    const leads = await this.findAllLeadsUseCase.execute(query);
-    return leads.map(LeadDto.fromDomain);
+  async findAll(
+    @Query() query: PaginationDto,
+  ): Promise<PaginatedResponseDto<LeadDto>> {
+    const { items, total } = await this.findAllLeadsUseCase.execute(query);
+    const page = query.page ?? 1;
+    const limit = query.limit ?? 10;
+
+    return {
+      data: items.map(LeadDto.fromDomain),
+      metadata: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
+  }
+
+  @Get('nearby')
+  @ApiDocFindAllLeads()
+  async findNearby(
+    @Query() query: GetNearbyLeadsDto,
+  ): Promise<PaginatedResponseDto<LeadDto>> {
+    const { items, total } = await this.getNearbyLeadsUseCase.execute(query);
+    const page = query.page ?? 1;
+    const limit = query.limit ?? 10;
+
+    return {
+      data: items.map(LeadDto.fromDomain),
+      metadata: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
+  }
+
+  @Post(':id/calculate-score')
+  @HttpCode(HttpStatus.OK)
+  async calculateScore(@Param('id') id: string): Promise<{ score: number }> {
+    const score = await this.calculateLeadScoreUseCase.execute(id);
+    return { score };
   }
 
   @Get(':id')

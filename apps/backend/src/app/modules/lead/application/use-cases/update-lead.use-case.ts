@@ -2,12 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { UseCase } from '../../../../shared/application/use-case.interface';
 import { Lead } from '../../domain/entities/lead.entity';
 import { LeadRepository } from '../../domain/repositories/lead.repository';
-import { UpdateLeadDto } from '../dtos/update-lead.dto';
-
-interface UpdateLeadInput {
-  id: string;
-  data: UpdateLeadDto;
-}
+import { UpdateLeadInput } from '../dtos/update-lead-input.dto';
 
 @Injectable()
 export class UpdateLeadUseCase implements UseCase<UpdateLeadInput, Lead> {

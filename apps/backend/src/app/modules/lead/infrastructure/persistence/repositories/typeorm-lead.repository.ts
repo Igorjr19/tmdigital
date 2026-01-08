@@ -26,6 +26,19 @@ export class TypeOrmLeadRepository implements LeadRepository {
     return LeadMapper.toDomain(schema);
   }
 
+  async findByIdWithRelations(id: string): Promise<Lead | null> {
+    const schema = await this.typeOrmRepository.findOne({
+      where: { id },
+      relations: [
+        'properties',
+        'properties.cropProductions',
+        'properties.cropProductions.culture',
+      ],
+    });
+    if (!schema) return null;
+    return LeadMapper.toDomain(schema);
+  }
+
   async findByDocument(document: string): Promise<Lead | null> {
     const schema = await this.typeOrmRepository.findOne({
       where: { document },
@@ -34,20 +47,53 @@ export class TypeOrmLeadRepository implements LeadRepository {
     return LeadMapper.toDomain(schema);
   }
 
-  async findAll(params?: PaginationDto): Promise<Lead[]> {
+  async findNearby(
+    lat: number,
+    long: number,
+    rangeKm: number,
+    params?: PaginationDto,
+  ): Promise<{ items: Lead[]; total: number }> {
     const skip = ((params?.page || 1) - 1) * (params?.limit || 10);
     const take = params?.limit || 10;
 
-    const schemas = await this.typeOrmRepository.find({
+    const [schemas, total] = await this.typeOrmRepository
+      .createQueryBuilder('lead')
+      .leftJoinAndSelect('lead.properties', 'property')
+      .where(
+        `ST_DWithin(property.location, ST_SetSRID(ST_MakePoint(:long, :lat), 4326), :range)`,
+      )
+      .setParameters({
+        lat,
+        long,
+        range: rangeKm * 1000,
+      })
+      .skip(skip)
+      .take(take)
+      .getManyAndCount();
+
+    return {
+      items: schemas.map(LeadMapper.toDomain),
+      total,
+    };
+  }
+
+  async findAll(
+    params?: PaginationDto,
+  ): Promise<{ items: Lead[]; total: number }> {
+    const skip = ((params?.page || 1) - 1) * (params?.limit || 10);
+    const take = params?.limit || 10;
+
+    const [schemas, total] = await this.typeOrmRepository.findAndCount({
       skip,
       take,
     });
-    return schemas.map(LeadMapper.toDomain);
+    return {
+      items: schemas.map(LeadMapper.toDomain),
+      total,
+    };
   }
 
   async update(lead: Lead): Promise<Lead> {
-    // In TypeORM save() handles insert/update based on ID presence, but semantically 'update' implies existence check logic if strict.
-    // For now, save() is sufficient for full entity update.
     return this.save(lead);
   }
 

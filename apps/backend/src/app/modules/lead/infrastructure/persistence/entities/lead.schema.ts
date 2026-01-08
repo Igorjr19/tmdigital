@@ -1,6 +1,7 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { BaseSchema } from '../../../../../shared/infrastructure/persistence/base.schema';
-import { LeadStatus } from '../../../domain/entities/lead.entity';
+import type { RuralPropertySchema } from '../../../../rural-property/infrastructure/persistence/entities/rural-property.schema';
+import { LeadStatus } from '../../../domain/enums/lead-status.enum';
 
 @Entity('leads')
 export class LeadSchema extends BaseSchema {
@@ -34,17 +35,20 @@ export class LeadSchema extends BaseSchema {
   status: LeadStatus;
 
   @Column({
-    name: 'estimated_potential_revenue',
+    name: 'estimated_potential',
     type: 'decimal',
     precision: 18,
     scale: 2,
     default: 0,
   })
-  estimatedPotentialRevenue: number;
+  estimatedPotential: number;
 
   @Column({
     type: 'text',
     nullable: true,
   })
   notes?: string;
+
+  @OneToMany('RuralPropertySchema', 'lead')
+  properties: RuralPropertySchema[];
 }

@@ -1,6 +1,7 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { UseCase } from '../../../../shared/application/use-case.interface';
-import { Lead, LeadStatus } from '../../domain/entities/lead.entity';
+import { Lead } from '../../domain/entities/lead.entity';
+import { LeadStatus } from '../../domain/enums/lead-status.enum';
 import { LeadRepository } from '../../domain/repositories/lead.repository';
 import { CreateLeadDto } from '../dtos/create-lead.dto';
 
@@ -18,7 +19,7 @@ export class CreateLeadUseCase implements UseCase<CreateLeadDto, Lead> {
 
     const lead = Lead.create({
       ...input,
-      status: input.status || LeadStatus.NEW,
+      status: input.status ?? LeadStatus.NEW,
     });
 
     return this.leadRepository.save(lead);

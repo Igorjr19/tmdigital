@@ -11,7 +11,7 @@ erDiagram
         varchar document UK
         varchar current_supplier
         enum status
-        decimal estimated_potential_revenue
+        decimal estimated_potential
         text notes
         timestamp created_at
         timestamp updated_at
