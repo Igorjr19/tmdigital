@@ -3,15 +3,30 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { Logger } from 'nestjs-pino';
 import { AppModule } from './app/app.module';
+import { LoggingInterceptor } from './app/presentation/interceptors/logging.interceptor';
+import { TimeoutInterceptor } from './app/presentation/interceptors/timeout.interceptor';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { bufferLogs: true });
+  app.useLogger(app.get(Logger));
+
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    }),
+  );
+
+  app.useGlobalInterceptors(new LoggingInterceptor(), new TimeoutInterceptor());
 
   const config = new DocumentBuilder()
     .setTitle('TM Digital API')
@@ -25,10 +40,12 @@ async function bootstrap() {
   const port = process.env.PORT || 3000;
   await app.listen(port);
 
-  Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
+  const logger = app.get(Logger);
+
+  logger.log(
+    ` Application is running on: http://localhost:${port}/${globalPrefix}`,
   );
-  Logger.log(`📚 Swagger is running on: http://localhost:${port}/api/docs`);
+  logger.log(`󰈙 Swagger is running on: http://localhost:${port}/api/docs`);
 }
 
 bootstrap();

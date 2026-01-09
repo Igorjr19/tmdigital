@@ -10,6 +10,7 @@ import { FindOneLeadUseCase } from './application/use-cases/find-one-lead.use-ca
 import { GetNearbyLeadsUseCase } from './application/use-cases/get-nearby-leads.use-case';
 import { UpdateLeadUseCase } from './application/use-cases/update-lead.use-case';
 import { UpdateRuralPropertyUseCase } from './application/use-cases/update-rural-property.use-case';
+import { LoggerModule } from './infrastructure/logger/logger.module';
 import { PersistenceModule } from './infrastructure/persistence/persistence.module';
 import { SeedModule } from './infrastructure/persistence/seed/seed.module';
 import { LeadController } from './presentation/controllers/lead.controller';
@@ -22,6 +23,7 @@ import { RuralPropertyController } from './presentation/controllers/rural-proper
     }),
     PersistenceModule,
     SeedModule,
+    LoggerModule,
   ],
   controllers: [LeadController, RuralPropertyController],
   providers: [
