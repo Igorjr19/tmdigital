@@ -14,10 +14,11 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { CreateLeadDto } from '../../application/dtos/create-lead.dto';
 import { CreateRuralPropertyDto } from '../../application/dtos/create-rural-property.dto';
+import { GetLeadsResponseDto } from '../../application/dtos/get-leads-response.dto';
+import { GetLeadsDto } from '../../application/dtos/get-leads.dto';
 import { GetNearbyLeadsDto } from '../../application/dtos/get-nearby-leads.dto';
+import { LeadScoreDto } from '../../application/dtos/lead-score.dto';
 import { LeadDto } from '../../application/dtos/lead.dto';
-import { PaginatedResponseDto } from '../../application/dtos/paginated-response.dto';
-import { PaginationDto } from '../../application/dtos/pagination.dto';
 import { RuralPropertyDto } from '../../application/dtos/rural-property.dto';
 import { UpdateLeadDto } from '../../application/dtos/update-lead.dto';
 import { AddRuralPropertyUseCase } from '../../application/use-cases/add-rural-property.use-case';
@@ -28,6 +29,7 @@ import { FindAllLeadsUseCase } from '../../application/use-cases/find-all-leads.
 import { FindOneLeadUseCase } from '../../application/use-cases/find-one-lead.use-case';
 import { GetNearbyLeadsUseCase } from '../../application/use-cases/get-nearby-leads.use-case';
 import { UpdateLeadUseCase } from '../../application/use-cases/update-lead.use-case';
+import { ApiDocCalculateLeadScore } from '../decorators/api-doc-calculate-lead-score.decorator';
 import { ApiDocCreateLead } from '../decorators/api-doc-create-lead.decorator';
 import { ApiDocDeleteLead } from '../decorators/api-doc-delete-lead.decorator';
 import { ApiDocFindAllLeads } from '../decorators/api-doc-find-all-leads.decorator';
@@ -58,9 +60,7 @@ export class LeadController {
 
   @Get()
   @ApiDocFindAllLeads()
-  async findAll(
-    @Query() query: PaginationDto,
-  ): Promise<PaginatedResponseDto<LeadDto>> {
+  async findAll(@Query() query: GetLeadsDto): Promise<GetLeadsResponseDto> {
     const { items, total } = await this.findAllLeadsUseCase.execute(query);
     const page = query.page ?? 1;
     const limit = query.limit ?? 10;
@@ -80,7 +80,7 @@ export class LeadController {
   @ApiDocFindAllLeads()
   async findNearby(
     @Query() query: GetNearbyLeadsDto,
-  ): Promise<PaginatedResponseDto<LeadDto>> {
+  ): Promise<GetLeadsResponseDto> {
     const { items, total } = await this.getNearbyLeadsUseCase.execute(query);
     const page = query.page ?? 1;
     const limit = query.limit ?? 10;
@@ -97,12 +97,12 @@ export class LeadController {
   }
 
   @Post(':id/score')
-  @HttpCode(HttpStatus.OK)
+  @ApiDocCalculateLeadScore()
   async calculateScore(
     @Param('id', ParseUUIDPipe) id: string,
-  ): Promise<{ score: number }> {
-    const score = await this.calculateLeadScoreUseCase.execute(id);
-    return { score };
+  ): Promise<LeadScoreDto> {
+    const leadScoreDto = await this.calculateLeadScoreUseCase.execute(id);
+    return leadScoreDto;
   }
 
   @Get(':id')

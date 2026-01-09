@@ -1,6 +1,6 @@
 import { HttpStatus, applyDecorators } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { LeadDto } from '../../application/dtos/lead.dto';
+import { GetLeadsResponseDto } from '../../application/dtos/get-leads-response.dto';
 
 export function ApiDocFindAllLeads() {
   return applyDecorators(
@@ -8,7 +8,7 @@ export function ApiDocFindAllLeads() {
     ApiResponse({
       status: HttpStatus.OK,
       description: 'Lista de leads retornada com sucesso',
-      type: [LeadDto],
+      type: GetLeadsResponseDto,
     }),
   );
 }

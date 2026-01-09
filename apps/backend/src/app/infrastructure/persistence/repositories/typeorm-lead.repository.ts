@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetLeadsDto } from '../../../application/dtos/get-leads.dto';
 import { PaginationDto } from '../../../application/dtos/pagination.dto';
+import { ItemCount } from '../../../application/interfaces/item-count.interface';
 import { Lead } from '../../../domain/entities/lead.entity';
 import { LeadRepository } from '../../../domain/repositories/lead.repository';
 import { HandleDbErrors } from '../decorators/handle-db-errors.decorator';
@@ -55,7 +56,7 @@ export class TypeOrmLeadRepository implements LeadRepository {
     long: number,
     rangeKm: number,
     params?: PaginationDto,
-  ): Promise<{ items: Lead[]; total: number }> {
+  ): Promise<ItemCount<Lead>> {
     const skip = ((params?.page || 1) - 1) * (params?.limit || 10);
     const take = params?.limit || 10;
 
@@ -80,9 +81,7 @@ export class TypeOrmLeadRepository implements LeadRepository {
     };
   }
 
-  async findAll(
-    params?: GetLeadsDto,
-  ): Promise<{ items: Lead[]; total: number }> {
+  async findAll(params?: GetLeadsDto): Promise<ItemCount<Lead>> {
     const skip = ((params?.page || 1) - 1) * (params?.limit || 10);
     const take = params?.limit || 10;
 
