@@ -27,6 +27,8 @@ async function bootstrap() {
     }),
   );
 
+  app.enableCors();
+
   app.useGlobalFilters(new DomainExceptionFilter());
   app.useGlobalInterceptors(new LoggingInterceptor(), new TimeoutInterceptor());
 
