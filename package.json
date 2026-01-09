@@ -15,7 +15,6 @@
     "build": "pnpm -r --filter './apps/*' --filter './packages/*' build",
     "build:backend": "pnpm --filter @tmdigital/backend build",
     "build:frontend": "pnpm --filter @tmdigital/frontend build:prod",
-    "build:shared": "pnpm --filter @tmdigital/shared build",
     "test": "jest",
     "test:backend": "pnpm --filter @tmdigital/backend test",
     "test:frontend": "pnpm --filter @tmdigital/frontend test",

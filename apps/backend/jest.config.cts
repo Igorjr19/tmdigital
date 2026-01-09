@@ -7,7 +7,4 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/apps/backend',
-  moduleNameMapper: {
-    '^@tmdigital/shared$': '<rootDir>/../../packages/shared/src/index.ts',
-  },
 };

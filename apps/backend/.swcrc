@@ -11,10 +11,7 @@
     },
     "target": "es2021",
     "keepClassNames": true,
-    "baseUrl": ".",
-    "paths": {
-      "@tmdigital/shared": ["../../packages/shared/src/index.ts"]
-    }
+    "baseUrl": "."
   },
   "module": {
     "type": "commonjs"

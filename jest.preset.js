@@ -12,7 +12,4 @@ module.exports = {
     '!src/**/*.spec.{ts,tsx}',
     '!src/**/*.test.{ts,tsx}',
   ],
-  moduleNameMapper: {
-    '^@tmdigital/shared$': '<rootDir>/../../packages/shared/src/index.ts',
-  },
 };
