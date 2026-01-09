@@ -8,6 +8,7 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Logger } from 'nestjs-pino';
 import { AppModule } from './app/app.module';
+import { DomainExceptionFilter } from './app/presentation/filters/domain-exception.filter';
 import { LoggingInterceptor } from './app/presentation/interceptors/logging.interceptor';
 import { TimeoutInterceptor } from './app/presentation/interceptors/timeout.interceptor';
 
@@ -26,6 +27,7 @@ async function bootstrap() {
     }),
   );
 
+  app.useGlobalFilters(new DomainExceptionFilter());
   app.useGlobalInterceptors(new LoggingInterceptor(), new TimeoutInterceptor());
 
   const config = new DocumentBuilder()
