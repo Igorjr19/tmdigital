@@ -4,59 +4,62 @@ import { LeadStatus } from '../../domain/enums/lead-status.enum';
 
 export class LeadDto {
   @ApiProperty({
-    description: 'ID único do lead',
+    description: 'Identificador único do lead (UUID)',
     example: '550e8400-e29b-41d4-a716-446655440000',
+    format: 'uuid',
   })
   id: string;
 
   @ApiProperty({
-    description: 'Nome do lead',
+    description: 'Nome completo do lead',
     example: 'João Silva',
   })
   name: string;
 
   @ApiProperty({
     description: 'CPF ou CNPJ do lead',
-    example: '12345678901234',
+    example: '123.456.789-00',
   })
   document: string;
 
   @ApiPropertyOptional({
-    description: 'Fornecedor atual',
-    example: 'Fornecedor A',
+    description: 'Fornecedor atual (opcional)',
+    example: 'Cooperativa Regional',
+    nullable: true,
   })
   currentSupplier?: string;
 
   @ApiProperty({
-    description: 'Status do lead',
+    description: 'Status atual no funil de vendas',
     enum: LeadStatus,
     example: LeadStatus.NEW,
   })
   status: LeadStatus;
 
   @ApiProperty({
-    description: 'Receita potencial estimada',
-    example: 50000,
+    description: 'Potencial de receita estimado (R$)',
+    example: 50000.0,
     type: Number,
   })
   estimatedPotential: number;
 
   @ApiPropertyOptional({
-    description: 'Notas adicionais',
-    example: 'Interessado em produtos de qualidade',
+    description: 'Notas e observações',
+    example: 'Cliente possui restrição no Serasa',
+    nullable: true,
   })
   notes?: string;
 
   @ApiProperty({
-    description: 'Data de criação',
+    description: 'Data de criação do registro',
     example: '2026-01-08T13:34:57.000Z',
     type: Date,
   })
   createdAt: Date;
 
   @ApiProperty({
-    description: 'Data de atualização',
-    example: '2026-01-08T13:34:57.000Z',
+    description: 'Data da última atualização',
+    example: '2026-01-08T15:00:00.000Z',
     type: Date,
   })
   updatedAt: Date;

@@ -12,42 +12,46 @@ import { LeadStatus } from '../../domain/enums/lead-status.enum';
 
 export class CreateLeadDto {
   @ApiProperty({
-    description: 'Nome do lead',
-    example: 'João Silva',
+    description: 'Nome completo do lead',
+    example: 'João da Silva',
+    minLength: 1,
   })
   @IsString()
   @IsNotEmpty()
   name: string;
 
   @ApiProperty({
-    description: 'CPF ou CNPJ do lead',
-    example: '12345678901234',
+    description: 'CPF ou CNPJ do lead (apenas números ou formatado)',
+    example: '12345678901',
+    minLength: 11,
   })
   @IsString()
   @IsNotEmpty()
   document: string;
 
   @ApiPropertyOptional({
-    description: 'Fornecedor atual',
-    example: 'Fornecedor A',
+    description: 'Nome do fornecedor atual (se houver)',
+    example: 'AgroSul Fornecedora',
   })
   @IsString()
   @IsOptional()
   currentSupplier?: string;
 
   @ApiPropertyOptional({
-    description: 'Status do lead',
+    description: 'Status inicial do lead no funil de vendas',
     enum: LeadStatus,
     example: LeadStatus.NEW,
+    default: LeadStatus.NEW,
   })
   @IsEnum(LeadStatus)
   @IsOptional()
   status?: LeadStatus;
 
   @ApiProperty({
-    description: 'Receita potencial estimada',
-    example: 50000,
+    description: 'Receita potencial estimada em reais (R$)',
+    example: 50000.0,
     type: Number,
+    minimum: 0,
   })
   @IsNumber()
   @Min(0)
@@ -55,8 +59,8 @@ export class CreateLeadDto {
   estimatedPotential: number;
 
   @ApiPropertyOptional({
-    description: 'Notas adicionais',
-    example: 'Interessado em produtos de qualidade',
+    description: 'Observações ou notas adicionais sobre o lead',
+    example: 'Interessado na linha premium de fertilizantes para soja',
   })
   @IsString()
   @IsOptional()

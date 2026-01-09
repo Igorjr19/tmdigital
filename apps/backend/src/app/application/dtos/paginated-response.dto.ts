@@ -1,16 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class PaginationMetadata {
-  @ApiProperty()
+  @ApiProperty({ description: 'Total de itens encontrados', example: 100 })
   total: number;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'Página atual', example: 1 })
   page: number;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'Itens por página', example: 10 })
   limit: number;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'Total de páginas', example: 10 })
   totalPages: number;
 }
 
