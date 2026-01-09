@@ -1,9 +1,12 @@
+import { provideHttpClient } from '@angular/common/http';
 import {
   ApplicationConfig,
+  importProvidersFrom,
   provideBrowserGlobalErrorListeners,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
+import { environment } from '../environments/environment';
+import { ApiModule, Configuration } from './api';
 import { appRoutes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
@@ -11,5 +14,12 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(appRoutes),
     provideHttpClient(),
+    importProvidersFrom(
+      ApiModule.forRoot(() => {
+        return new Configuration({
+          basePath: environment.apiUrl,
+        });
+      }),
+    ),
   ],
 };

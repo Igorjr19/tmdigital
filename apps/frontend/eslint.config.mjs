@@ -34,4 +34,7 @@ export default defineConfig([
     ],
     rules: {},
   },
+  {
+    ignores: ['src/app/api/**/*'],
+  },
 ]);
