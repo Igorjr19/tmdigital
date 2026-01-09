@@ -1,0 +1,12 @@
+.openapi-generator-ignore
+README.md
+git_push.sh
+.gitignore
+
+.git/
+.github/
+.idea/
+.vscode/
+test/
+
+.openapi-generator/
