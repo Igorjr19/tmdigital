@@ -1,4 +1,6 @@
 import { Point } from 'geojson';
+import { DomainErrorCodes } from '../enums/domain-error-codes.enum';
+import { BusinessRuleException } from '../exceptions/business-rule.exception';
 import { BaseEntity } from './base.entity';
 import { CropProduction } from './crop-production.entity';
 
@@ -45,18 +47,47 @@ export class RuralProperty extends BaseEntity {
   }
 
   private validate(): void {
-    if (!this._leadId) throw new Error('Lead ID is required');
-    if (!this._name) throw new Error('Name is required');
+    if (!this._leadId)
+      throw new BusinessRuleException(
+        'Lead ID is required',
+        DomainErrorCodes.RURAL_PROPERTY_LEAD_ID_REQUIRED,
+      );
+    if (!this._name)
+      throw new BusinessRuleException(
+        'Name is required',
+        DomainErrorCodes.RURAL_PROPERTY_NAME_REQUIRED,
+      );
     if (this._totalAreaHectares < 0)
-      throw new Error('Total area cannot be negative');
+      throw new BusinessRuleException(
+        'Total area cannot be negative',
+        DomainErrorCodes.RURAL_PROPERTY_TOTAL_AREA_NEGATIVE,
+      );
     if (this._productiveAreaHectares < 0)
-      throw new Error('Productive area cannot be negative');
+      throw new BusinessRuleException(
+        'Productive area cannot be negative',
+        DomainErrorCodes.RURAL_PROPERTY_PRODUCTIVE_AREA_NEGATIVE,
+      );
     if (this._productiveAreaHectares > this._totalAreaHectares) {
-      throw new Error('Productive area cannot be larger than total area');
+      throw new BusinessRuleException(
+        'Productive area cannot be larger than total area',
+        DomainErrorCodes.RURAL_PROPERTY_PRODUCTIVE_AREA_EXCEEDS_TOTAL,
+      );
     }
-    if (!this._location) throw new Error('Location is required');
-    if (!this._city) throw new Error('City is required');
-    if (!this._state) throw new Error('State is required');
+    if (!this._location)
+      throw new BusinessRuleException(
+        'Location is required',
+        DomainErrorCodes.RURAL_PROPERTY_LOCATION_REQUIRED,
+      );
+    if (!this._city)
+      throw new BusinessRuleException(
+        'City is required',
+        DomainErrorCodes.RURAL_PROPERTY_CITY_REQUIRED,
+      );
+    if (!this._state)
+      throw new BusinessRuleException(
+        'State is required',
+        DomainErrorCodes.RURAL_PROPERTY_STATE_REQUIRED,
+      );
   }
 
   get leadId(): string {
@@ -99,12 +130,18 @@ export class RuralProperty extends BaseEntity {
     if (props.name) this._name = props.name;
     if (props.totalAreaHectares !== undefined) {
       if (props.totalAreaHectares < 0)
-        throw new Error('Total area cannot be negative');
+        throw new BusinessRuleException(
+          'Total area cannot be negative',
+          DomainErrorCodes.RURAL_PROPERTY_TOTAL_AREA_NEGATIVE,
+        );
       this._totalAreaHectares = props.totalAreaHectares;
     }
     if (props.productiveAreaHectares !== undefined) {
       if (props.productiveAreaHectares < 0)
-        throw new Error('Productive area cannot be negative');
+        throw new BusinessRuleException(
+          'Productive area cannot be negative',
+          DomainErrorCodes.RURAL_PROPERTY_PRODUCTIVE_AREA_NEGATIVE,
+        );
       this._productiveAreaHectares = props.productiveAreaHectares;
     }
     if (
@@ -112,7 +149,10 @@ export class RuralProperty extends BaseEntity {
       this._totalAreaHectares !== undefined &&
       this._productiveAreaHectares > this._totalAreaHectares
     ) {
-      throw new Error('Productive area cannot be larger than total area');
+      throw new BusinessRuleException(
+        'Productive area cannot be larger than total area',
+        DomainErrorCodes.RURAL_PROPERTY_PRODUCTIVE_AREA_EXCEEDS_TOTAL,
+      );
     }
 
     if (props.location) this._location = props.location;

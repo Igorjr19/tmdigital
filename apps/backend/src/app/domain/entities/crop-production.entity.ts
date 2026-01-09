@@ -1,3 +1,5 @@
+import { DomainErrorCodes } from '../enums/domain-error-codes.enum';
+import { BusinessRuleException } from '../exceptions/business-rule.exception';
 import { BaseEntity } from './base.entity';
 import { Culture } from './culture.entity';
 import { RuralProperty } from './rural-property.entity';
@@ -36,10 +38,20 @@ export class CropProduction extends BaseEntity {
 
   private validate(): void {
     if (!this._ruralPropertyId)
-      throw new Error('Rural Property ID is required');
-    if (!this._cultureId) throw new Error('Culture ID is required');
+      throw new BusinessRuleException(
+        'Rural Property ID is required',
+        DomainErrorCodes.CROP_PRODUCTION_RURAL_PROPERTY_ID_REQUIRED,
+      );
+    if (!this._cultureId)
+      throw new BusinessRuleException(
+        'Culture ID is required',
+        DomainErrorCodes.CROP_PRODUCTION_CULTURE_ID_REQUIRED,
+      );
     if (this._plantedAreaHectares < 0)
-      throw new Error('Planted area cannot be negative');
+      throw new BusinessRuleException(
+        'Planted area cannot be negative',
+        DomainErrorCodes.CROP_PRODUCTION_PLANTED_AREA_NEGATIVE,
+      );
   }
 
   get ruralPropertyId(): string {

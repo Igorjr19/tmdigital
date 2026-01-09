@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  ParseUUIDPipe,
   Patch,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -23,7 +24,7 @@ export class RuralPropertyController {
 
   @Patch(':id')
   async update(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateRuralPropertyDto: UpdateRuralPropertyDto,
   ): Promise<RuralPropertyDto> {
     const property = await this.updateRuralPropertyUseCase.execute({
@@ -35,7 +36,7 @@ export class RuralPropertyController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async remove(@Param('id') id: string): Promise<void> {
+  async remove(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
     return this.deleteRuralPropertyUseCase.execute(id);
   }
 }

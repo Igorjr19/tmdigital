@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Culture } from '../../../domain/entities/culture.entity';
 import { CultureRepository } from '../../../domain/repositories/culture.repository';
+import { HandleDbErrors } from '../decorators/handle-db-errors.decorator';
 import { CultureMapper } from '../mappers/culture.mapper';
 import { CultureSchema } from '../schemas/culture.schema';
 
@@ -13,6 +14,7 @@ export class TypeOrmCultureRepository implements CultureRepository {
     private readonly typeOrmRepository: Repository<CultureSchema>,
   ) {}
 
+  @HandleDbErrors()
   async save(culture: Culture): Promise<Culture> {
     const schema = CultureMapper.toPersistence(culture);
     const savedSchema = await this.typeOrmRepository.save(schema);

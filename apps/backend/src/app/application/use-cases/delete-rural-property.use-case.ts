@@ -1,4 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { DomainErrorCodes } from '../../domain/enums/domain-error-codes.enum';
+import { ResourceNotFoundException } from '../../domain/exceptions/resource-not-found.exception';
 import { RuralPropertyRepository } from '../../domain/repositories/rural-property.repository';
 import { UseCase } from '../interfaces/use-case.interface';
 
@@ -12,7 +14,10 @@ export class DeleteRuralPropertyUseCase implements UseCase<string, void> {
     const property = await this.ruralPropertyRepository.findById(id);
 
     if (!property) {
-      throw new NotFoundException(`Rural Property with ID ${id} not found`);
+      throw new ResourceNotFoundException(
+        `Rural Property with ID ${id} not found`,
+        DomainErrorCodes.RURAL_PROPERTY_NOT_FOUND,
+      );
     }
 
     await this.ruralPropertyRepository.delete(id);

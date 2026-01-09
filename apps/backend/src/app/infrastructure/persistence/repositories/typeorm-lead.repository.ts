@@ -5,6 +5,7 @@ import { GetLeadsDto } from '../../../application/dtos/get-leads.dto';
 import { PaginationDto } from '../../../application/dtos/pagination.dto';
 import { Lead } from '../../../domain/entities/lead.entity';
 import { LeadRepository } from '../../../domain/repositories/lead.repository';
+import { HandleDbErrors } from '../decorators/handle-db-errors.decorator';
 import { LeadMapper } from '../mappers/lead.mapper';
 import { LeadSchema } from '../schemas/lead.schema';
 
@@ -15,6 +16,7 @@ export class TypeOrmLeadRepository implements LeadRepository {
     private readonly typeOrmRepository: Repository<LeadSchema>,
   ) {}
 
+  @HandleDbErrors()
   async save(lead: Lead): Promise<Lead> {
     const schema = LeadMapper.toPersistence(lead);
     const savedSchema = await this.typeOrmRepository.save(schema);
@@ -112,7 +114,7 @@ export class TypeOrmLeadRepository implements LeadRepository {
   async delete(id: string): Promise<void> {
     const schema = await this.typeOrmRepository.findOne({
       where: { id },
-      relations: ['properties'], // Load relations to cascade soft-remove
+      relations: ['properties'],
     });
 
     if (schema) {

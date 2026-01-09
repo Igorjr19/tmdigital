@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RuralProperty } from '../../../domain/entities/rural-property.entity';
 import { RuralPropertyRepository } from '../../../domain/repositories/rural-property.repository';
+import { HandleDbErrors } from '../decorators/handle-db-errors.decorator';
 import { RuralPropertyMapper } from '../mappers/rural-property.mapper';
 import { RuralPropertySchema } from '../schemas/rural-property.schema';
 
@@ -13,6 +14,7 @@ export class TypeOrmRuralPropertyRepository implements RuralPropertyRepository {
     private readonly typeOrmRepository: Repository<RuralPropertySchema>,
   ) {}
 
+  @HandleDbErrors()
   async save(ruralProperty: RuralProperty): Promise<RuralProperty> {
     const schema = RuralPropertyMapper.toPersistence(ruralProperty);
     const savedSchema = await this.typeOrmRepository.save(schema);

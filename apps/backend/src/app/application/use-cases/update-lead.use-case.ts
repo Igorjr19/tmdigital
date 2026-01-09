@@ -1,5 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Lead } from '../../domain/entities/lead.entity';
+import { DomainErrorCodes } from '../../domain/enums/domain-error-codes.enum';
+import { ResourceNotFoundException } from '../../domain/exceptions/resource-not-found.exception';
 import { LeadRepository } from '../../domain/repositories/lead.repository';
 import { UpdateLeadInput } from '../interfaces/update-lead-input';
 import { UseCase } from '../interfaces/use-case.interface';
@@ -11,7 +13,10 @@ export class UpdateLeadUseCase implements UseCase<UpdateLeadInput, Lead> {
   async execute(input: UpdateLeadInput): Promise<Lead> {
     const lead = await this.leadRepository.findById(input.id);
     if (!lead) {
-      throw new NotFoundException(`Lead with ID ${input.id} not found`);
+      throw new ResourceNotFoundException(
+        `Lead with ID ${input.id} not found`,
+        DomainErrorCodes.LEAD_NOT_FOUND,
+      );
     }
 
     lead.updateInformation(input.data);

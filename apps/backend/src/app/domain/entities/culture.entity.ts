@@ -1,3 +1,5 @@
+import { DomainErrorCodes } from '../enums/domain-error-codes.enum';
+import { BusinessRuleException } from '../exceptions/business-rule.exception';
 import { BaseEntity } from './base.entity';
 
 export interface CultureProps {
@@ -24,8 +26,16 @@ export class Culture extends BaseEntity {
   }
 
   private validate(): void {
-    if (!this._name) throw new Error('Name is required');
-    if (this._currentPrice < 0) throw new Error('Price cannot be negative');
+    if (!this._name)
+      throw new BusinessRuleException(
+        'Name is required',
+        DomainErrorCodes.CULTURE_NAME_REQUIRED,
+      );
+    if (this._currentPrice < 0)
+      throw new BusinessRuleException(
+        'Price cannot be negative',
+        DomainErrorCodes.CULTURE_PRICE_NEGATIVE,
+      );
   }
 
   get name(): string {
@@ -36,7 +46,11 @@ export class Culture extends BaseEntity {
   }
 
   updatePrice(newPrice: number): void {
-    if (newPrice < 0) throw new Error('Price cannot be negative');
+    if (newPrice < 0)
+      throw new BusinessRuleException(
+        'Price cannot be negative',
+        DomainErrorCodes.CULTURE_PRICE_NEGATIVE,
+      );
     this._currentPrice = newPrice;
     this.updatedAt = new Date();
   }

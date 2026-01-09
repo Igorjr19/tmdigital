@@ -1,4 +1,6 @@
+import { DomainErrorCodes } from '../enums/domain-error-codes.enum';
 import { LeadStatus } from '../enums/lead-status.enum';
+import { BusinessRuleException } from '../exceptions/business-rule.exception';
 import { BaseEntity } from './base.entity';
 import { RuralProperty } from './rural-property.entity';
 
@@ -43,13 +45,22 @@ export class Lead extends BaseEntity {
 
   private validate(): void {
     if (!this._name) {
-      throw new Error('Name is required');
+      throw new BusinessRuleException(
+        'Name is required',
+        DomainErrorCodes.LEAD_NAME_REQUIRED,
+      );
     }
     if (!this._document) {
-      throw new Error('Document is required');
+      throw new BusinessRuleException(
+        'Document is required',
+        DomainErrorCodes.LEAD_DOCUMENT_REQUIRED,
+      );
     }
     if (this._estimatedPotential < 0) {
-      throw new Error('Estimated potential cannot be negative');
+      throw new BusinessRuleException(
+        'Estimated potential cannot be negative',
+        DomainErrorCodes.LEAD_ESTIMATED_POTENTIAL_NEGATIVE,
+      );
     }
   }
 
@@ -101,7 +112,10 @@ export class Lead extends BaseEntity {
 
     if (props.estimatedPotential !== undefined) {
       if (props.estimatedPotential < 0) {
-        throw new Error('Estimated potential cannot be negative');
+        throw new BusinessRuleException(
+          'Estimated potential cannot be negative',
+          DomainErrorCodes.LEAD_ESTIMATED_POTENTIAL_NEGATIVE,
+        );
       }
       this._estimatedPotential = props.estimatedPotential;
     }

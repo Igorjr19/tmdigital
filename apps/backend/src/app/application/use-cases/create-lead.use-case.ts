@@ -1,6 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Lead } from '../../domain/entities/lead.entity';
+import { DomainErrorCodes } from '../../domain/enums/domain-error-codes.enum';
 import { LeadStatus } from '../../domain/enums/lead-status.enum';
+import { ResourceAlreadyExistsException } from '../../domain/exceptions/resource-already-exists.exception';
 import { LeadRepository } from '../../domain/repositories/lead.repository';
 import { CreateLeadDto } from '../dtos/create-lead.dto';
 import { UseCase } from '../interfaces/use-case.interface';
@@ -10,10 +12,13 @@ export class CreateLeadUseCase implements UseCase<CreateLeadDto, Lead> {
   constructor(private readonly leadRepository: LeadRepository) {}
 
   async execute(input: CreateLeadDto): Promise<Lead> {
-    const existing = await this.leadRepository.findByDocument(input.document);
-    if (existing) {
-      throw new ConflictException(
+    const existingLead = await this.leadRepository.findByDocument(
+      input.document,
+    );
+    if (existingLead) {
+      throw new ResourceAlreadyExistsException(
         `Lead with document ${input.document} already exists`,
+        DomainErrorCodes.LEAD_ALREADY_EXISTS,
       );
     }
 

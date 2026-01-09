@@ -1,5 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { RuralProperty } from '../../domain/entities/rural-property.entity';
+import { DomainErrorCodes } from '../../domain/enums/domain-error-codes.enum';
+import { ResourceNotFoundException } from '../../domain/exceptions/resource-not-found.exception';
 import { LeadRepository } from '../../domain/repositories/lead.repository';
 import { RuralPropertyRepository } from '../../domain/repositories/rural-property.repository';
 import { CreateRuralPropertyDto } from '../dtos/create-rural-property.dto';
@@ -18,10 +20,25 @@ export class AddRuralPropertyUseCase implements UseCase<
   async execute(input: CreateRuralPropertyDto): Promise<RuralProperty> {
     const lead = await this.leadRepository.findById(input.leadId);
     if (!lead) {
-      throw new NotFoundException(`Lead with ID ${input.leadId} not found`);
+      throw new ResourceNotFoundException(
+        `Lead with ID ${input.leadId} not found`,
+        DomainErrorCodes.LEAD_NOT_FOUND,
+      );
     }
 
     const ruralProperty = RuralProperty.create(input);
-    return this.ruralPropertyRepository.save(ruralProperty);
+    const savedProperty =
+      await this.ruralPropertyRepository.save(ruralProperty);
+
+    const leadWithRelations = await this.leadRepository.findByIdWithRelations(
+      input.leadId,
+    );
+
+    if (leadWithRelations) {
+      leadWithRelations.calculatePotential();
+      await this.leadRepository.save(leadWithRelations);
+    }
+
+    return savedProperty;
   }
 }

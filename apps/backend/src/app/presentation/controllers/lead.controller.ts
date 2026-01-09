@@ -6,6 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -97,14 +98,16 @@ export class LeadController {
 
   @Post(':id/score')
   @HttpCode(HttpStatus.OK)
-  async calculateScore(@Param('id') id: string): Promise<{ score: number }> {
+  async calculateScore(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<{ score: number }> {
     const score = await this.calculateLeadScoreUseCase.execute(id);
     return { score };
   }
 
   @Get(':id')
   @ApiDocFindOneLead()
-  async findOne(@Param('id') id: string): Promise<LeadDto> {
+  async findOne(@Param('id', ParseUUIDPipe) id: string): Promise<LeadDto> {
     const lead = await this.findOneLeadUseCase.execute(id);
     return LeadDto.fromDomain(lead);
   }
@@ -112,7 +115,7 @@ export class LeadController {
   @Patch(':id')
   @ApiDocUpdateLead()
   async update(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateLeadDto: UpdateLeadDto,
   ): Promise<LeadDto> {
     const lead = await this.updateLeadUseCase.execute({
@@ -125,7 +128,7 @@ export class LeadController {
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiDocDeleteLead()
-  async remove(@Param('id') id: string): Promise<void> {
+  async remove(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
     return this.deleteLeadUseCase.execute(id);
   }
 
