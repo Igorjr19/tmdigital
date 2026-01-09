@@ -1,0 +1,97 @@
+<div class="card p-3 surface-card border-round shadow-1">
+  <p-toast></p-toast>
+  <p-confirmDialog [style]="{ width: '50vw' }"></p-confirmDialog>
+
+  <div class="flex justify-content-between align-items-center mb-3">
+    <h2 class="m-0 text-900">Leads</h2>
+    <p-button
+      icon="pi pi-plus"
+      label="Novo Lead"
+      severity="primary"
+      (onClick)="createLead()"
+    ></p-button>
+  </div>
+
+  <p-table
+    #dt
+    [value]="leadsFacade.leads()"
+    [lazy]="true"
+    (onLazyLoad)="loadLeads($event)"
+    [loading]="leadsFacade.loading()"
+    [totalRecords]="leadsFacade.totalRecords()"
+    [paginator]="true"
+    [rows]="10"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    styleClass="p-datatable-sm"
+    [tableStyle]="{ 'min-width': '60rem' }"
+  >
+    <ng-template pTemplate="caption">
+      <div class="flex align-items-center justify-content-between">
+        <span class="p-input-icon-left w-full sm:w-auto">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            type="text"
+            (input)="onSearch($event)"
+            placeholder="Buscar por nome..."
+            class="w-full"
+          />
+        </span>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Nome</th>
+        <th>Documento</th>
+        <th>Status</th>
+        <th>Área</th>
+        <th>Potencial</th>
+        <th class="text-center">Ações</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-lead>
+      <tr>
+        <td>{{ lead.name }}</td>
+        <td>{{ lead.document }}</td>
+        <td>
+          <p-tag
+            [value]="lead.status"
+            [severity]="getSeverity(lead.status)"
+          ></p-tag>
+        </td>
+        <td>{{ lead.area || '-' }}</td>
+        <td>{{ lead.estimatedPotential | currency: 'BRL' }}</td>
+        <td class="text-center">
+          <div class="flex gap-2 justify-content-center">
+            <p-button
+              icon="pi pi-pencil"
+              [rounded]="true"
+              [text]="true"
+              severity="info"
+              pTooltip="Editar"
+              tooltipPosition="top"
+              (onClick)="editLead(lead)"
+            ></p-button>
+            <p-button
+              icon="pi pi-trash"
+              [rounded]="true"
+              [text]="true"
+              severity="danger"
+              pTooltip="Excluir"
+              tooltipPosition="top"
+              (onClick)="deleteLead(lead)"
+            ></p-button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="6" class="text-center p-3">Nenhum lead encontrado.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

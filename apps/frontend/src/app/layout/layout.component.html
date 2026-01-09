@@ -1,0 +1,15 @@
+<div class="layout-wrapper flex flex-column min-h-screen">
+  <div class="layout-topbar">
+    <p-menubar [model]="items">
+      <ng-template pTemplate="start">
+        <span class="font-bold text-xl ml-2">CRM Agro</span>
+      </ng-template>
+    </p-menubar>
+  </div>
+
+  <div class="layout-content flex-grow-1 p-3">
+    <router-outlet></router-outlet>
+  </div>
+
+  <div class="layout-footer p-3 text-center text-500">CRM Agro &copy; 2024</div>
+</div>
