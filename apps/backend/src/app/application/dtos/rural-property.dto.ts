@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { RuralProperty } from '../../domain/entities/rural-property.entity';
+import { CropProductionDto } from './crop-production.dto';
 import { PointDto } from './point.dto';
 
 export class RuralPropertyDto {
@@ -70,6 +71,13 @@ export class RuralPropertyDto {
   })
   updatedAt: Date;
 
+  @ApiProperty({
+    description: 'Plantações da propriedade',
+    type: [CropProductionDto],
+    minItems: 1,
+  })
+  cropProductions: CropProductionDto[];
+
   static fromDomain(entity: RuralProperty): RuralPropertyDto {
     const dto = new RuralPropertyDto();
     dto.id = entity.id;
@@ -82,6 +90,9 @@ export class RuralPropertyDto {
     dto.state = entity.state;
     dto.createdAt = entity.createdAt;
     dto.updatedAt = entity.updatedAt;
+    dto.cropProductions = entity.cropProductions
+      ? entity.cropProductions.map(CropProductionDto.fromDomain)
+      : [];
     return dto;
   }
 }

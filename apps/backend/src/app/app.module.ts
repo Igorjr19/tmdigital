@@ -7,12 +7,14 @@ import { DeleteLeadUseCase } from './application/use-cases/delete-lead.use-case'
 import { DeleteRuralPropertyUseCase } from './application/use-cases/delete-rural-property.use-case';
 import { FindAllLeadsUseCase } from './application/use-cases/find-all-leads.use-case';
 import { FindOneLeadUseCase } from './application/use-cases/find-one-lead.use-case';
+import { GetCulturesUseCase } from './application/use-cases/get-cultures.use-case';
 import { GetNearbyLeadsUseCase } from './application/use-cases/get-nearby-leads.use-case';
 import { UpdateLeadUseCase } from './application/use-cases/update-lead.use-case';
 import { UpdateRuralPropertyUseCase } from './application/use-cases/update-rural-property.use-case';
 import { LoggerModule } from './infrastructure/logger/logger.module';
 import { PersistenceModule } from './infrastructure/persistence/persistence.module';
 import { SeedModule } from './infrastructure/persistence/seed/seed.module';
+import { CultureController } from './presentation/controllers/culture.controller';
 import { LeadController } from './presentation/controllers/lead.controller';
 import { RuralPropertyController } from './presentation/controllers/rural-property.controller';
 
@@ -25,7 +27,7 @@ import { RuralPropertyController } from './presentation/controllers/rural-proper
     SeedModule,
     LoggerModule,
   ],
-  controllers: [LeadController, RuralPropertyController],
+  controllers: [LeadController, RuralPropertyController, CultureController],
   providers: [
     CreateLeadUseCase,
     FindAllLeadsUseCase,
@@ -37,6 +39,7 @@ import { RuralPropertyController } from './presentation/controllers/rural-proper
     AddRuralPropertyUseCase,
     UpdateRuralPropertyUseCase,
     DeleteRuralPropertyUseCase,
+    GetCulturesUseCase,
   ],
 })
 export class AppModule {}

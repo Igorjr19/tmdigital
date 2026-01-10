@@ -35,6 +35,10 @@ import { RuralPropertySchema } from './schemas/rural-property.schema';
       provide: CultureRepository,
       useClass: TypeOrmCultureRepository,
     },
+    {
+      provide: CultureRepository,
+      useClass: TypeOrmCultureRepository,
+    },
   ],
   exports: [
     LeadRepository,

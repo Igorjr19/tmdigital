@@ -41,17 +41,8 @@ export class Culture extends BaseEntity {
   get name(): string {
     return this._name;
   }
+
   get currentPrice(): number {
     return this._currentPrice;
-  }
-
-  updatePrice(newPrice: number): void {
-    if (newPrice < 0)
-      throw new BusinessRuleException(
-        'Price cannot be negative',
-        DomainErrorCodes.CULTURE_PRICE_NEGATIVE,
-      );
-    this._currentPrice = newPrice;
-    this.updatedAt = new Date();
   }
 }

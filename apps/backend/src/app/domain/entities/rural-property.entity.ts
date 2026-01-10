@@ -15,7 +15,12 @@ export interface RuralPropertyProps {
   id?: string;
   createdAt?: Date;
   updatedAt?: Date;
-  cropProductions?: CropProduction[];
+  cropProductions?: CropProductionInput[];
+}
+
+export interface CropProductionInput {
+  cultureId: string;
+  plantedAreaHectares: number;
 }
 
 export class RuralProperty extends BaseEntity {
@@ -37,7 +42,9 @@ export class RuralProperty extends BaseEntity {
     this._location = props.location;
     this._city = props.city;
     this._state = props.state;
-    this._cropProductions = props.cropProductions || [];
+
+    // Initial crops logic can be added here if needed, keeping empty for now or mapping if provided
+    this._cropProductions = [];
 
     this.validate();
   }
@@ -119,13 +126,38 @@ export class RuralProperty extends BaseEntity {
     this._cropProductions.push(cropProduction);
   }
 
+  setCropProductions(inputs: CropProductionInput[]): void {
+    const totalNewArea = inputs.reduce(
+      (acc, curr) => acc + curr.plantedAreaHectares,
+      0,
+    );
+
+    if (totalNewArea > this._productiveAreaHectares) {
+      throw new BusinessRuleException(
+        `Total planted area (${totalNewArea}ha) exceeds productive area (${this._productiveAreaHectares}ha)`,
+        DomainErrorCodes.CROP_PRODUCTION_AREA_EXCEEDS_PRODUCTIVE_AREA,
+      );
+    }
+
+    // Replace current list logic - in real clean arch we might want to reconcile,
+    // but for simplicity we replace as entities.
+    // NOTE: This requires the UseCase to construct the Entities or we construct them here.
+    // Constructing here is better for domain encapsulation, but we need Culture prices if we want to calculate revenue immediately.
+    // However, revenue is calculated on demand.
+
+    this._cropProductions = inputs.map((input) =>
+      CropProduction.create({
+        ruralPropertyId: this.id, // Using current ID
+        cultureId: input.cultureId,
+        plantedAreaHectares: input.plantedAreaHectares,
+      }),
+    );
+  }
+
   updateInformation(
     props: Partial<
-      Omit<
-        RuralPropertyProps,
-        'id' | 'createdAt' | 'updatedAt' | 'leadId' | 'cropProductions'
-      >
-    >,
+      Omit<RuralPropertyProps, 'id' | 'createdAt' | 'updatedAt' | 'leadId'>
+    > & { cropProductions?: CropProductionInput[] },
   ): void {
     if (props.name) this._name = props.name;
     if (props.totalAreaHectares !== undefined) {
@@ -158,6 +190,10 @@ export class RuralProperty extends BaseEntity {
     if (props.location) this._location = props.location;
     if (props.city) this._city = props.city;
     if (props.state) this._state = props.state;
+
+    if (props.cropProductions) {
+      this.setCropProductions(props.cropProductions);
+    }
 
     this.updatedAt = new Date();
   }

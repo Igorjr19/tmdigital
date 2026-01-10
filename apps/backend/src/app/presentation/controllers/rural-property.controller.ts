@@ -15,7 +15,7 @@ import { DeleteRuralPropertyUseCase } from '../../application/use-cases/delete-r
 import { UpdateRuralPropertyUseCase } from '../../application/use-cases/update-rural-property.use-case';
 
 @ApiTags('Rural Properties')
-@Controller('properties')
+@Controller('leads/:leadId/properties')
 export class RuralPropertyController {
   constructor(
     private readonly updateRuralPropertyUseCase: UpdateRuralPropertyUseCase,
@@ -24,11 +24,13 @@ export class RuralPropertyController {
 
   @Patch(':id')
   async update(
+    @Param('leadId') leadId: string,
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateRuralPropertyDto: UpdateRuralPropertyDto,
   ): Promise<RuralPropertyDto> {
     const property = await this.updateRuralPropertyUseCase.execute({
       id,
+      leadId,
       data: updateRuralPropertyDto,
     });
     return RuralPropertyDto.fromDomain(property);
@@ -36,7 +38,10 @@ export class RuralPropertyController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async remove(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
-    return this.deleteRuralPropertyUseCase.execute(id);
+  async remove(
+    @Param('leadId') leadId: string,
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<void> {
+    return this.deleteRuralPropertyUseCase.execute({ id, leadId });
   }
 }

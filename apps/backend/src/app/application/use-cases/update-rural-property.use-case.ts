@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { RuralProperty } from '../../domain/entities/rural-property.entity';
 import { DomainErrorCodes } from '../../domain/enums/domain-error-codes.enum';
+import { BusinessRuleException } from '../../domain/exceptions/business-rule.exception';
 import { ResourceNotFoundException } from '../../domain/exceptions/resource-not-found.exception';
 import { LeadRepository } from '../../domain/repositories/lead.repository';
 import { RuralPropertyRepository } from '../../domain/repositories/rural-property.repository';
@@ -22,6 +23,13 @@ export class UpdateRuralPropertyUseCase implements UseCase<
     if (!property) {
       throw new ResourceNotFoundException(
         `Rural Property with ID ${input.id} not found`,
+        DomainErrorCodes.RURAL_PROPERTY_NOT_FOUND,
+      );
+    }
+
+    if (property.leadId !== input.leadId) {
+      throw new BusinessRuleException(
+        `Property ${input.id} does not belong to Lead ${input.leadId}`,
         DomainErrorCodes.RURAL_PROPERTY_NOT_FOUND,
       );
     }
