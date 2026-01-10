@@ -1,21 +1,31 @@
-import { provideHttpClient } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptors,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import {
   ApplicationConfig,
   importProvidersFrom,
   provideBrowserGlobalErrorListeners,
 } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 import Aura from '@primeng/themes/aura';
+import { MessageService } from 'primeng/api';
 import { providePrimeNG } from 'primeng/config';
 import { environment } from '../environments/environment';
 import { ApiModule, Configuration } from './api';
 import { appRoutes } from './app.routes';
+import { errorInterceptor } from './core/interceptors/error.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(appRoutes),
-    provideHttpClient(),
+    MessageService,
+    provideRouter(appRoutes, withComponentInputBinding()),
+    provideHttpClient(
+      withInterceptorsFromDi(),
+      withInterceptors([errorInterceptor]),
+    ),
     importProvidersFrom(
       ApiModule.forRoot(() => {
         return new Configuration({

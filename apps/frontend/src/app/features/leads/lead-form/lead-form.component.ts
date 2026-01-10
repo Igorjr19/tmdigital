@@ -15,6 +15,7 @@ import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { LeadDto } from '../../../api/model/models';
+import { LeadPropertiesComponent } from '../components/lead-properties/lead-properties.component';
 import { LeadsFacadeService } from '../services/leads.facade';
 
 @Component({
@@ -29,6 +30,7 @@ import { LeadsFacadeService } from '../services/leads.facade';
     TextareaModule,
     ButtonModule,
     ToastModule,
+    LeadPropertiesComponent,
   ],
   providers: [MessageService],
   templateUrl: './lead-form.component.html',
@@ -43,8 +45,8 @@ export class LeadFormComponent implements OnInit {
   form!: FormGroup;
   isEditMode = false;
   leadId: string | null = null;
+  lead: LeadDto | null = null;
 
-  // Enum values for status
   statusOptions = [
     { label: 'Novo', value: LeadDto.StatusEnum.New },
     { label: 'Contatado', value: LeadDto.StatusEnum.Contacted },
@@ -70,7 +72,6 @@ export class LeadFormComponent implements OnInit {
   }
 
   checkEditMode() {
-    // We check route param
     const id = this.route.snapshot.paramMap.get('id');
     if (id && id !== 'new') {
       this.isEditMode = true;
@@ -81,7 +82,10 @@ export class LeadFormComponent implements OnInit {
 
   loadLeadData(id: string) {
     this.leadsFacade.getLeadById(id).subscribe({
-      next: (lead: LeadDto) => this.patchForm(lead),
+      next: (lead: LeadDto) => {
+        this.lead = lead;
+        this.patchForm(lead);
+      },
       error: () => {
         this.messageService.add({
           severity: 'error',
@@ -108,7 +112,6 @@ export class LeadFormComponent implements OnInit {
     if (this.form.invalid) return;
 
     const formValue = this.form.value;
-    // Map form to Dto
     const dto = {
       name: formValue.name,
       document: formValue.document,
@@ -119,6 +122,12 @@ export class LeadFormComponent implements OnInit {
     };
 
     if (this.isEditMode && this.leadId) {
+      Object.keys(this.form.controls).forEach((key) => {
+        if (!this.form.get(key)?.dirty) {
+          delete dto[key as keyof typeof dto];
+        }
+      });
+
       this.leadsFacade.updateLead(this.leadId, dto).subscribe({
         next: () => {
           this.messageService.add({

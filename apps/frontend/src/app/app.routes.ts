@@ -1,23 +1,29 @@
 import { Route } from '@angular/router';
-import { LeadFormComponent } from './features/leads/lead-form/lead-form.component';
-import { LeadListComponent } from './features/leads/lead-list/lead-list.component';
+import { leadRoutes } from './features/leads/leads.routes';
 
 export const appRoutes: Route[] = [
   {
     path: '',
-    redirectTo: 'leads',
     pathMatch: 'full',
+    redirectTo: 'leads',
   },
+
   {
     path: 'leads',
-    component: LeadListComponent,
+    loadChildren: () => leadRoutes,
   },
   {
-    path: 'leads/new',
-    component: LeadFormComponent,
+    path: 'dashboard',
+    loadComponent: () =>
+      import('./features/leads/dashboard/dashboard.component').then(
+        (m) => m.DashboardComponent,
+      ),
   },
   {
-    path: 'leads/:id',
-    component: LeadFormComponent,
+    path: 'map',
+    loadComponent: () =>
+      import('./features/leads/components/map-view/map-view.component').then(
+        (m) => m.MapViewComponent,
+      ),
   },
 ];

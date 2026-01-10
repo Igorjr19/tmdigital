@@ -1,0 +1,176 @@
+<div class="card">
+  <div class="flex justify-content-between align-items-center mb-3">
+    <h3 class="m-0">Propriedades Rurais</h3>
+    <p-button
+      label="Adicionar Fazenda"
+      icon="pi pi-plus"
+      (onClick)="showDialog()"
+      size="small"
+    ></p-button>
+  </div>
+
+  <p-table [value]="properties" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Nome</th>
+        <th>Cidade/UF</th>
+        <th>Área Total (ha)</th>
+        <th>Área Produtiva (ha)</th>
+        <th style="width: 5rem"></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-property>
+      <tr>
+        <td>{{ property.name }}</td>
+        <td>{{ property.city }} / {{ property.state }}</td>
+        <td>{{ property.totalAreaHectares | number }}</td>
+        <td>{{ property.productiveAreaHectares | number }}</td>
+        <td>
+          <p-button
+            icon="pi pi-trash"
+            severity="danger"
+            [text]="true"
+            [rounded]="true"
+            (onClick)="confirmDelete(property)"
+          ></p-button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="5" class="text-center">Nenhuma propriedade cadastrada.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-dialog
+    header="Nova Propriedade"
+    [(visible)]="visible"
+    [modal]="true"
+    [style]="{ width: '50vw' }"
+    [draggable]="false"
+    [resizable]="false"
+  >
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <div class="flex flex-column gap-2 mb-3">
+        <label for="name">Nome da Propriedade</label>
+        <input pInputText id="name" formControlName="name" />
+        @if (form.get('name')?.invalid && form.get('name')?.touched) {
+          <small class="p-error"> Nome é obrigatório. </small>
+        }
+      </div>
+
+      <div class="formgrid grid">
+        <div class="field col">
+          <label for="city">Cidade</label>
+          <input
+            pInputText
+            id="city"
+            type="text"
+            formControlName="city"
+            class="w-full"
+          />
+          @if (form.get('city')?.invalid && form.get('city')?.touched) {
+            <small class="p-error"> Cidade é obrigatória. </small>
+          }
+        </div>
+        <div class="field col">
+          <label for="state">Estado (UF)</label>
+          <input
+            pInputText
+            id="state"
+            type="text"
+            formControlName="state"
+            class="w-full"
+            maxlength="2"
+          />
+          @if (form.get('state')?.invalid && form.get('state')?.touched) {
+            <small class="p-error"> UF obrigatório. </small>
+          }
+        </div>
+      </div>
+
+      <div class="formgrid grid">
+        <div class="field col">
+          <label for="totalAreaHectares">Área Total (ha)</label>
+          <p-inputNumber
+            id="totalAreaHectares"
+            formControlName="totalAreaHectares"
+            mode="decimal"
+            [minFractionDigits]="2"
+            class="w-full"
+            styleClass="w-full"
+          ></p-inputNumber>
+          @if (
+            form.get('totalAreaHectares')?.invalid &&
+            form.get('totalAreaHectares')?.touched
+          ) {
+            <small class="p-error"> Obrigatório. </small>
+          }
+        </div>
+        <div class="field col">
+          <label for="productiveAreaHectares">Área Utilizável (ha)</label>
+          <p-inputNumber
+            id="productiveAreaHectares"
+            formControlName="productiveAreaHectares"
+            mode="decimal"
+            [minFractionDigits]="2"
+            class="w-full"
+            styleClass="w-full"
+          ></p-inputNumber>
+          @if (
+            form.get('productiveAreaHectares')?.invalid &&
+            form.get('productiveAreaHectares')?.touched
+          ) {
+            <small class="p-error"> Obrigatório. </small>
+          }
+        </div>
+      </div>
+
+      <div class="formgrid grid">
+        <div class="field col">
+          <label for="latitude">Latitude</label>
+          <p-inputNumber
+            id="latitude"
+            formControlName="latitude"
+            mode="decimal"
+            [minFractionDigits]="6"
+            class="w-full"
+            styleClass="w-full"
+          ></p-inputNumber>
+        </div>
+        <div class="field col">
+          <label for="longitude">Longitude</label>
+          <p-inputNumber
+            id="longitude"
+            formControlName="longitude"
+            mode="decimal"
+            [minFractionDigits]="6"
+            class="w-full"
+            styleClass="w-full"
+          ></p-inputNumber>
+        </div>
+      </div>
+
+      <div class="flex justify-content-end gap-2 mt-4">
+        <p-button
+          label="Cancelar"
+          severity="secondary"
+          (onClick)="visible = false"
+        ></p-button>
+        <p-button
+          label="Salvar"
+          type="submit"
+          [loading]="loading()"
+          [disabled]="form.invalid"
+        ></p-button>
+      </div>
+    </form>
+  </p-dialog>
+
+  <!-- Confirm Dialog for Delete -->
+  <p-confirmDialog
+    header="Confirmação"
+    icon="pi pi-exclamation-triangle"
+  ></p-confirmDialog>
+</div>

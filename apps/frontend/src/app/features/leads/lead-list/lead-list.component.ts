@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -42,6 +42,7 @@ import { LeadsFacadeService } from '../services/leads.facade';
 export class LeadListComponent {
   leadsFacade = inject(LeadsFacadeService);
   router = inject(Router);
+  route = inject(ActivatedRoute);
   confirmationService = inject(ConfirmationService);
   messageService = inject(MessageService);
 
@@ -67,11 +68,9 @@ export class LeadListComponent {
   loadLeads(event: TableLazyLoadEvent) {
     this.lastLazyLoadEvent = event;
     const page = (event.first ?? 0) / (event.rows ?? 10) + 1;
-    const size = event.rows ?? 10;
-    // Filter logic can be added here if backend supports it
-    // const filter = event.globalFilter;
+    const limit = event.rows ?? 10;
 
-    this.leadsFacade.loadLeads(page, size);
+    this.leadsFacade.loadLeads({ page, limit });
   }
 
   onSearch(event: Event) {
@@ -80,7 +79,7 @@ export class LeadListComponent {
   }
 
   createLead() {
-    this.router.navigate(['/leads/new']);
+    this.router.navigate(['new'], { relativeTo: this.route });
   }
 
   editLead(lead: LeadDto) {
@@ -120,9 +119,6 @@ export class LeadListComponent {
   getSeverity(
     status: string,
   ): 'success' | 'info' | 'warn' | 'danger' | undefined {
-    // Adapt strings to match API enum values if needed
-    // Assuming API returns string like 'NEW', 'QUALIFIED', etc.
-    // Or 'Approved', 'Pending' as seen before.
     const s = status ? status.toLowerCase() : '';
     if (s.includes('approv') || s.includes('new') || s.includes('conv'))
       return 'success';

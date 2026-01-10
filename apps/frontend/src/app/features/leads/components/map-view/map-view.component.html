@@ -1,0 +1,17 @@
+<div class="card h-full flex flex-column">
+  <div class="flex justify-content-between align-items-center mb-3">
+    <h2 class="m-0 text-900 font-bold">Mapa de Propriedades</h2>
+    <p-button
+      label="Voltar"
+      icon="pi pi-arrow-left"
+      styleClass="p-button-outlined"
+      (onClick)="goBack()"
+    ></p-button>
+  </div>
+  <div
+    class="flex-grow-1 border-round overflow-hidden"
+    style="min-height: 600px"
+  >
+    <div #mapContainer class="h-full w-full" style="min-height: 85vh"></div>
+  </div>
+</div>

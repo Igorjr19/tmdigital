@@ -16,12 +16,17 @@ export class App implements OnInit {
   ngOnInit() {
     this.items = [
       {
-        label: 'Home',
-        icon: 'pi pi-home',
-        routerLink: '/',
+        label: 'Dashboard',
+        icon: 'pi pi-chart-bar',
+        routerLink: '/dashboard',
       },
       {
-        label: 'Leads',
+        label: 'Mapa',
+        icon: 'pi pi-map',
+        routerLink: '/map',
+      },
+      {
+        label: 'Gestão de Leads',
         icon: 'pi pi-users',
         routerLink: '/leads',
       },

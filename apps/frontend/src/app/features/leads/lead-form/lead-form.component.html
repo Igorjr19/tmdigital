@@ -150,4 +150,13 @@
       ></p-button>
     </div>
   </form>
+
+  @if (isEditMode && leadId && lead) {
+    <div class="mt-4 pt-3 border-top-1 surface-border">
+      <app-lead-properties
+        [leadId]="leadId"
+        [properties]="$any(lead).properties || []"
+      ></app-lead-properties>
+    </div>
+  }
 </div>

@@ -86,6 +86,7 @@ export class TypeOrmLeadRepository implements LeadRepository {
     const take = params?.limit || 10;
 
     const query = this.typeOrmRepository.createQueryBuilder('lead');
+    query.leftJoinAndSelect('lead.properties', 'property');
 
     if (params?.name) {
       query.andWhere('lead.name ILIKE :name', { name: `%${params.name}%` });
@@ -98,6 +99,7 @@ export class TypeOrmLeadRepository implements LeadRepository {
     const [schemas, total] = await query
       .skip(skip)
       .take(take)
+      .orderBy('lead.createdAt', 'DESC')
       .getManyAndCount();
 
     return {

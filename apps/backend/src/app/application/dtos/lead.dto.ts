@@ -1,6 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Lead } from '../../domain/entities/lead.entity';
 import { LeadStatus } from '../../domain/enums/lead-status.enum';
+import { RuralPropertyDto } from './rural-property.dto';
 
 export class LeadDto {
   @ApiProperty({
@@ -64,6 +65,12 @@ export class LeadDto {
   })
   updatedAt: Date;
 
+  @ApiPropertyOptional({
+    description: 'Lista de propriedades rurais',
+    type: () => [RuralPropertyDto],
+  })
+  properties?: RuralPropertyDto[];
+
   static fromDomain(lead: Lead): LeadDto {
     const dto = new LeadDto();
     dto.id = lead.id;
@@ -75,6 +82,9 @@ export class LeadDto {
     dto.notes = lead.notes;
     dto.createdAt = lead.createdAt;
     dto.updatedAt = lead.updatedAt;
+    if (lead.properties) {
+      dto.properties = lead.properties.map(RuralPropertyDto.fromDomain);
+    }
     return dto;
   }
 }

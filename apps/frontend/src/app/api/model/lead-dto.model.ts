@@ -7,6 +7,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { RuralPropertyDto } from './rural-property-dto.model';
 
 export interface LeadDto {
   /**
@@ -45,6 +46,10 @@ export interface LeadDto {
    * Data da última atualização
    */
   updatedAt: string;
+  /**
+   * Lista de propriedades rurais
+   */
+  properties?: Array<RuralPropertyDto>;
 }
 export namespace LeadDto {
   export const StatusEnum = {
