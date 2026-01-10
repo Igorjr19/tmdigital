@@ -115,9 +115,17 @@ export class SeedService implements OnApplicationBootstrap {
       for (let j = 0; j < numProperties; j++) {
         const selectedCity = faker.helpers.arrayElement(cityCoordinates);
 
-        const coordinateVariation = faker.number.float({ min: -0.2, max: 0.2 });
-        const lat = selectedCity.lat + coordinateVariation;
-        const long = selectedCity.long + coordinateVariation;
+        const variation = 0.5;
+        const longVariation = faker.number.float({
+          min: -variation,
+          max: variation,
+        });
+        const latVariation = faker.number.float({
+          min: 4 * -variation,
+          max: 4 * variation,
+        });
+        const lat = selectedCity.lat + latVariation;
+        const long = selectedCity.long + longVariation;
 
         const totalArea = faker.number.float({
           min: 50,
