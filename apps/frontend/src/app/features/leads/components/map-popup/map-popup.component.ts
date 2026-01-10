@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 
 @Component({
   selector: 'app-map-popup',
@@ -13,4 +19,6 @@ export class MapPopupComponent {
   @Input() propertyName: string = '';
   @Input() culture: string = '';
   @Input() leadStatus: string = '';
+  @Input() leadId: string = '';
+  @Output() openDetails = new EventEmitter<void>();
 }

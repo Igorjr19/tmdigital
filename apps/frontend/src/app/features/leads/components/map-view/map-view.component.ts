@@ -14,14 +14,17 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import * as leaflet from 'leaflet';
 import { ButtonModule } from 'primeng/button';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { LeadDto, RuralPropertyDto } from '../../../../api/model/models';
 import { LeadsFacadeService } from '../../services/leads.facade';
+import { LeadDialogComponent } from '../lead-dialog/lead-dialog.component';
 import { MapPopupComponent } from '../map-popup/map-popup.component';
 
 @Component({
   selector: 'app-map-view',
   standalone: true,
   imports: [CommonModule, ButtonModule],
+  providers: [DialogService],
   templateUrl: './map-view.component.html',
   styleUrl: './map-view.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,6 +36,8 @@ export class MapViewComponent implements OnInit, AfterViewInit {
   private injector = inject(EnvironmentInjector);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private dialogService = inject(DialogService);
+  private ref: DynamicDialogRef | null = null;
   private map: leaflet.Map | undefined;
   private markers: leaflet.LayerGroup | undefined;
 
@@ -116,6 +121,11 @@ export class MapViewComponent implements OnInit, AfterViewInit {
           ? 'Soja/Milho (Est.)'
           : 'N/A';
         componentRef.instance.leadStatus = status;
+        componentRef.instance.leadId = prop.leadId;
+
+        componentRef.instance.openDetails.subscribe(() => {
+          this.openDetails(prop.leadId);
+        });
 
         componentRef.changeDetectorRef.detectChanges();
 
@@ -130,5 +140,22 @@ export class MapViewComponent implements OnInit, AfterViewInit {
       );
       this.map.fitBounds(group.getBounds().pad(0.1));
     }
+  }
+
+  private openDetails(leadId: string) {
+    this.ref = this.dialogService.open(LeadDialogComponent, {
+      header: 'Detalhes do Lead',
+      width: '70%',
+      contentStyle: { overflow: 'auto' },
+      baseZIndex: 10000,
+      maximizable: true,
+      data: {
+        leadId: leadId,
+      },
+    });
+
+    this.ref!.onClose.subscribe(() => {
+      this.leadsFacade.loadAllLeadsForDashboard();
+    });
   }
 }

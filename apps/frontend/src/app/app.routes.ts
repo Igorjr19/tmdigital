@@ -1,4 +1,6 @@
 import { Route } from '@angular/router';
+import { MapViewComponent } from './features/leads/components/map-view/map-view.component';
+import { DashboardComponent } from './features/leads/dashboard/dashboard.component';
 import { leadRoutes } from './features/leads/leads.routes';
 
 export const appRoutes: Route[] = [
@@ -14,16 +16,10 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'dashboard',
-    loadComponent: () =>
-      import('./features/leads/dashboard/dashboard.component').then(
-        (m) => m.DashboardComponent,
-      ),
+    loadComponent: () => DashboardComponent,
   },
   {
     path: 'map',
-    loadComponent: () =>
-      import('./features/leads/components/map-view/map-view.component').then(
-        (m) => m.MapViewComponent,
-      ),
+    loadComponent: () => MapViewComponent,
   },
 ];

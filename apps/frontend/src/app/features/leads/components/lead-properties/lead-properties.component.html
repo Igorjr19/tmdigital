@@ -1,12 +1,14 @@
 <div class="card">
   <div class="flex justify-content-between align-items-center mb-3">
     <h3 class="m-0">Propriedades Rurais</h3>
-    <p-button
-      label="Adicionar Fazenda"
-      icon="pi pi-plus"
-      (onClick)="showDialog()"
-      size="small"
-    ></p-button>
+    @if (!readOnly) {
+      <p-button
+        label="Adicionar Fazenda"
+        icon="pi pi-plus"
+        (onClick)="showDialog()"
+        size="small"
+      ></p-button>
+    }
   </div>
 
   <p-table [value]="properties" [tableStyle]="{ 'min-width': '50rem' }">
@@ -26,13 +28,15 @@
         <td>{{ property.totalAreaHectares | number }}</td>
         <td>{{ property.productiveAreaHectares | number }}</td>
         <td>
-          <p-button
-            icon="pi pi-trash"
-            severity="danger"
-            [text]="true"
-            [rounded]="true"
-            (onClick)="confirmDelete(property)"
-          ></p-button>
+          @if (!readOnly) {
+            <p-button
+              icon="pi pi-trash"
+              severity="danger"
+              [text]="true"
+              [rounded]="true"
+              (onClick)="confirmDelete(property)"
+            ></p-button>
+          }
         </td>
       </tr>
     </ng-template>

@@ -2,8 +2,11 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  OnInit,
+  EventEmitter,
   inject,
+  Input,
+  OnInit,
+  Output,
   signal,
 } from '@angular/core';
 import {
@@ -51,6 +54,11 @@ export class LeadFormComponent implements OnInit {
   route = inject(ActivatedRoute);
   messageService = inject(MessageService);
 
+  @Input() leadIdInput?: string;
+  @Input() insideModal = false;
+  @Output() closed = new EventEmitter<void>();
+  @Output() saved = new EventEmitter<void>();
+
   form!: FormGroup;
   isEditMode = signal(false);
   leadId: string | null = null;
@@ -81,6 +89,13 @@ export class LeadFormComponent implements OnInit {
   }
 
   checkEditMode() {
+    if (this.leadIdInput) {
+      this.isEditMode.set(true);
+      this.leadId = this.leadIdInput;
+      this.loadLeadData(this.leadIdInput);
+      return;
+    }
+
     const id = this.route.snapshot.paramMap.get('id');
     if (id && id !== 'new') {
       this.isEditMode.set(true);
@@ -146,7 +161,7 @@ export class LeadFormComponent implements OnInit {
           summary: 'Sucesso',
           detail: 'Lead atualizado!',
         });
-        this.goBack();
+        this.emitSavedOrGoBack();
       } catch {
         this.messageService.add({
           severity: 'error',
@@ -162,7 +177,7 @@ export class LeadFormComponent implements OnInit {
           summary: 'Sucesso',
           detail: 'Lead criado!',
         });
-        this.goBack();
+        this.emitSavedOrGoBack();
       } catch {
         this.messageService.add({
           severity: 'error',
@@ -174,6 +189,18 @@ export class LeadFormComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/leads']);
+    if (this.leadIdInput) {
+      this.closed.emit();
+    } else {
+      this.router.navigate(['/leads']);
+    }
+  }
+
+  private emitSavedOrGoBack() {
+    if (this.leadIdInput) {
+      this.saved.emit();
+    } else {
+      this.goBack();
+    }
   }
 }

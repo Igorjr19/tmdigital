@@ -45,6 +45,7 @@ import { LeadsFacadeService } from '../../services/leads.facade';
 export class LeadPropertiesComponent {
   @Input({ required: true }) leadId!: string;
   @Input() properties: RuralPropertyDto[] = [];
+  @Input() readOnly = false;
 
   private fb = inject(FormBuilder);
   private leadsFacade = inject(LeadsFacadeService);

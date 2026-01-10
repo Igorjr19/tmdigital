@@ -13,4 +13,12 @@
     <span class="text-600 text-sm">Status</span>
     <span class="text-900 font-medium ml-3">{{ leadStatus }}</span>
   </div>
+  <div class="flex justify-content-end mt-2 pt-2 border-top-1 surface-border">
+    <button
+      class="p-button p-component p-button-text p-button-sm p-0"
+      (click)="openDetails.emit()"
+    >
+      <span class="p-button-label text-sm">Ver Detalhes</span>
+    </button>
+  </div>
 </div>

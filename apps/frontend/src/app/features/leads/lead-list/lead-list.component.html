@@ -56,7 +56,11 @@
     </ng-template>
 
     <ng-template pTemplate="body" let-lead>
-      <tr>
+      <tr
+        (click)="viewDetails(lead)"
+        style="cursor: pointer"
+        class="hover:surface-100 transition-colors transition-duration-200"
+      >
         <td>{{ lead.name }}</td>
         <td>{{ lead.document }}</td>
         <td>
@@ -76,7 +80,7 @@
               severity="info"
               pTooltip="Editar"
               tooltipPosition="top"
-              (onClick)="editLead(lead)"
+              (onClick)="editLead(lead, $event)"
             ></p-button>
             <p-button
               icon="pi pi-trash"
@@ -85,7 +89,7 @@
               severity="danger"
               pTooltip="Excluir"
               tooltipPosition="top"
-              (onClick)="deleteLead(lead)"
+              (onClick)="deleteLead(lead, $event)"
             ></p-button>
           </div>
         </td>

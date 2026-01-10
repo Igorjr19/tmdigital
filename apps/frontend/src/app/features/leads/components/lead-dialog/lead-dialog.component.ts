@@ -1,0 +1,108 @@
+import { CommonModule } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  inject,
+  signal,
+} from '@angular/core';
+import { ButtonModule } from 'primeng/button';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { firstValueFrom } from 'rxjs';
+import { LeadDto } from '../../../../api/model/models';
+import { LeadFormComponent } from '../../lead-form/lead-form.component';
+import { LeadsFacadeService } from '../../services/leads.facade';
+import { LeadDetailComponent } from '../lead-detail/lead-detail.component';
+
+type DialogMode = 'VIEW' | 'EDIT';
+
+@Component({
+  selector: 'app-lead-dialog',
+  standalone: true,
+  imports: [CommonModule, ButtonModule, LeadDetailComponent, LeadFormComponent],
+  template: `
+    <div class="flex flex-column h-full">
+      @if (mode() === 'VIEW') {
+        <div class="flex justify-content-end gap-2 mb-2 px-3 pt-3">
+          <p-button
+            label="Editar"
+            icon="pi pi-pencil"
+            (onClick)="enableEdit()"
+          ></p-button>
+          <p-button
+            label="Fechar"
+            icon="pi pi-times"
+            severity="secondary"
+            (onClick)="close()"
+          ></p-button>
+        </div>
+
+        @if (loading()) {
+          <div class="flex justify-content-center p-5">
+            <i class="pi pi-spin pi-spinner text-4xl text-primary"></i>
+          </div>
+        } @else {
+          <app-lead-detail [leadData]="lead()"></app-lead-detail>
+        }
+      } @else {
+        <app-lead-form
+          [leadIdInput]="leadId"
+          [insideModal]="true"
+          (closed)="disableEdit()"
+          (saved)="onSaved()"
+        ></app-lead-form>
+      }
+    </div>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class LeadDialogComponent implements OnInit {
+  ref = inject(DynamicDialogRef);
+  config = inject(DynamicDialogConfig);
+  leadsFacade = inject(LeadsFacadeService);
+
+  mode = signal<DialogMode>('VIEW');
+  loading = signal(false);
+  lead = signal<LeadDto | null>(null);
+
+  leadId: string = '';
+
+  ngOnInit() {
+    this.leadId = this.config.data?.leadId;
+    if (this.config.data?.initialMode) {
+      this.mode.set(this.config.data.initialMode);
+    }
+    if (this.leadId) {
+      this.loadLead();
+    }
+  }
+
+  async loadLead() {
+    this.loading.set(true);
+    try {
+      const data = await firstValueFrom(
+        this.leadsFacade.getLeadById(this.leadId),
+      );
+      this.lead.set(data);
+    } finally {
+      this.loading.set(false);
+    }
+  }
+
+  enableEdit() {
+    this.mode.set('EDIT');
+  }
+
+  disableEdit() {
+    this.mode.set('VIEW');
+  }
+
+  onSaved() {
+    this.loadLead(); // Reload data to refresh VIEW
+    this.mode.set('VIEW');
+  }
+
+  close() {
+    this.ref.close();
+  }
+}

@@ -11,6 +11,7 @@ import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import {
   catchError,
   debounceTime,
@@ -21,6 +22,7 @@ import {
   switchMap,
 } from 'rxjs';
 import { LeadDto } from '../../../api/model/models';
+import { LeadDialogComponent } from '../components/lead-dialog/lead-dialog.component';
 import { LeadsFacadeService } from '../services/leads.facade';
 
 @Component({
@@ -36,7 +38,7 @@ import { LeadsFacadeService } from '../services/leads.facade';
     ToastModule,
     FormsModule,
   ],
-  providers: [ConfirmationService, MessageService],
+  providers: [ConfirmationService, MessageService, DialogService],
   templateUrl: './lead-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -46,6 +48,8 @@ export class LeadListComponent {
   route = inject(ActivatedRoute);
   confirmationService = inject(ConfirmationService);
   messageService = inject(MessageService);
+  dialogService = inject(DialogService);
+  ref: DynamicDialogRef | null = null;
 
   private searchSubject = new Subject<string>();
   private lastLazyLoadEvent?: TableLazyLoadEvent;
@@ -83,11 +87,39 @@ export class LeadListComponent {
     this.router.navigate(['new'], { relativeTo: this.route });
   }
 
-  editLead(lead: LeadDto) {
-    this.router.navigate(['/leads', lead.id]);
+  viewDetails(lead: LeadDto) {
+    this.openDialog(lead, 'VIEW');
   }
 
-  deleteLead(lead: LeadDto) {
+  editLead(lead: LeadDto, event?: Event) {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.openDialog(lead, 'EDIT');
+  }
+
+  private openDialog(lead: LeadDto, mode: 'VIEW' | 'EDIT') {
+    this.ref = this.dialogService.open(LeadDialogComponent, {
+      header: mode === 'EDIT' ? 'Editar Lead' : 'Detalhes do Lead',
+      width: '70%',
+      contentStyle: { overflow: 'auto' },
+      baseZIndex: 10000,
+      maximizable: true,
+      data: {
+        leadId: lead.id,
+        initialMode: mode,
+      },
+    });
+
+    if (this.ref) {
+      this.ref.onClose.subscribe(() => {
+        this.loadLeads(this.lastLazyLoadEvent || {});
+      });
+    }
+  }
+
+  deleteLead(lead: LeadDto, event: Event) {
+    event.stopPropagation();
     this.confirmationService.confirm({
       message: `Tem certeza que deseja excluir o lead ${lead.name}?`,
       header: 'Confirmar Exclusão',
