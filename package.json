@@ -42,6 +42,7 @@
     "@hey-api/openapi-ts": "0.90.2",
     "@nestjs/schematics": "^11.0.9",
     "@nestjs/testing": "^11.1.11",
+    "@openapitools/openapi-generator-cli": "^2.27.0",
     "@playwright/test": "^1.57.0",
     "@schematics/angular": "^21.0.5",
     "@swc-node/register": "^1.11.1",
