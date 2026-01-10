@@ -10,6 +10,8 @@ import { LeadDto } from '../../../../api/model/models';
 import { LeadWithProperties } from '../../models/lead.extension';
 import { LeadPropertiesComponent } from '../lead-properties/lead-properties.component';
 
+import { I18N } from '../../../../core/i18n/i18n';
+
 @Component({
   selector: 'app-lead-detail',
   standalone: true,
@@ -18,29 +20,41 @@ import { LeadPropertiesComponent } from '../lead-properties/lead-properties.comp
     <div class="flex flex-column gap-3 p-3">
       <div class="grid">
         <div class="col-12 md:col-6">
-          <span class="text-500 block mb-1">Nome</span>
+          <span class="text-500 block mb-1">{{
+            I18N.LEAD.FORM.LABELS.NAME
+          }}</span>
           <span class="text-900 font-medium text-xl">{{ lead()?.name }}</span>
         </div>
         <div class="col-12 md:col-6">
-          <span class="text-500 block mb-1">Documento</span>
+          <span class="text-500 block mb-1">{{
+            I18N.LEAD.FORM.LABELS.DOCUMENT
+          }}</span>
           <span class="text-900 font-medium text-xl">{{
             lead()?.document
           }}</span>
         </div>
         <div class="col-12 md:col-6">
-          <span class="text-500 block mb-1">Status</span>
-          <span class="text-900 font-medium text-xl">{{ lead()?.status }}</span>
+          <span class="text-500 block mb-1">{{
+            I18N.LEAD.FORM.LABELS.STATUS
+          }}</span>
+          <span class="text-900 font-medium text-xl">{{
+            lead()?.status ? $any(I18N.LEAD.STATUS)[lead()!.status] : '-'
+          }}</span>
         </div>
         <div class="col-12 md:col-6">
-          <span class="text-500 block mb-1">Potencial</span>
+          <span class="text-500 block mb-1">{{
+            I18N.LEAD.FORM.LABELS.POTENTIAL
+          }}</span>
           <span class="text-900 font-medium text-xl">{{
             lead()?.estimatedPotential | currency: 'BRL'
           }}</span>
         </div>
         <div class="col-12">
-          <span class="text-500 block mb-1">Observações</span>
+          <span class="text-500 block mb-1">{{
+            I18N.LEAD.FORM.LABELS.NOTES
+          }}</span>
           <p class="text-900 m-0 line-height-3">
-            {{ lead()?.notes || 'Nenhuma observação.' }}
+            {{ lead()?.notes || I18N.LEAD.DETAIL.NO_NOTES }}
           </p>
         </div>
       </div>
@@ -57,6 +71,7 @@ import { LeadPropertiesComponent } from '../lead-properties/lead-properties.comp
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LeadDetailComponent {
+  protected readonly I18N = I18N;
   lead = signal<LeadDto | null>(null);
 
   @Input({ required: true })

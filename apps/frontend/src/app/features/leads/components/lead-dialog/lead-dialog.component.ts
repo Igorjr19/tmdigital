@@ -14,6 +14,8 @@ import { LeadFormComponent } from '../../lead-form/lead-form.component';
 import { LeadsFacadeService } from '../../services/leads.facade';
 import { LeadDetailComponent } from '../lead-detail/lead-detail.component';
 
+import { I18N } from '../../../../core/i18n/i18n';
+
 type DialogMode = 'VIEW' | 'EDIT';
 
 @Component({
@@ -25,12 +27,12 @@ type DialogMode = 'VIEW' | 'EDIT';
       @if (mode() === 'VIEW') {
         <div class="flex justify-content-end gap-2 mb-2 px-3 pt-3">
           <p-button
-            label="Editar"
+            [label]="I18N.COMMON.EDIT"
             icon="pi pi-pencil"
             (onClick)="enableEdit()"
           ></p-button>
           <p-button
-            label="Fechar"
+            [label]="I18N.COMMON.CLOSE"
             icon="pi pi-times"
             severity="secondary"
             (onClick)="close()"
@@ -57,6 +59,7 @@ type DialogMode = 'VIEW' | 'EDIT';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LeadDialogComponent implements OnInit {
+  protected readonly I18N = I18N;
   ref = inject(DynamicDialogRef);
   config = inject(DynamicDialogConfig);
   leadsFacade = inject(LeadsFacadeService);

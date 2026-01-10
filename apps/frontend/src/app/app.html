@@ -2,7 +2,7 @@
   <div class="layout-topbar">
     <p-menubar [model]="items">
       <ng-template pTemplate="start">
-        <span class="font-bold text-xl ml-2">CRM Agro</span>
+        <span class="font-bold text-xl ml-2">{{ I18N.COMMON.APP_NAME }}</span>
       </ng-template>
     </p-menubar>
   </div>
@@ -11,5 +11,7 @@
     <router-outlet></router-outlet>
   </div>
 
-  <div class="layout-footer p-3 text-center text-500">CRM Agro &copy; 2024</div>
+  <div class="layout-footer p-3 text-center text-500">
+    {{ I18N.COMMON.COPYRIGHT }}
+  </div>
 </div>

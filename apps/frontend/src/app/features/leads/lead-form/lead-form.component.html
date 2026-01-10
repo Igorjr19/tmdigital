@@ -11,11 +11,11 @@
     class="flex justify-content-between align-items-center mb-4 border-bottom-1 surface-border pb-3"
   >
     <h2 class="m-0 text-900 font-bold">
-      {{ isEditMode() ? 'Editar Lead' : 'Novo Lead' }}
+      {{ isEditMode() ? I18N.LEAD.FORM.TITLE_EDIT : I18N.LEAD.FORM.TITLE_NEW }}
     </h2>
     <p-button
       icon="pi pi-arrow-left"
-      label="Voltar"
+      [label]="I18N.COMMON.BACK"
       [text]="true"
       severity="secondary"
       (onClick)="goBack()"
@@ -30,14 +30,15 @@
     <!-- Nome -->
     <div class="field col-12 md:col-6">
       <label for="name" class="font-medium text-900"
-        >Nome <span class="text-red-500">*</span></label
+        >{{ I18N.LEAD.FORM.LABELS.NAME }}
+        <span class="text-red-500">*</span></label
       >
       <input
         id="name"
         type="text"
         pInputText
         formControlName="name"
-        placeholder="Nome do Lead"
+        [placeholder]="I18N.LEAD.FORM.PLACEHOLDERS.NAME"
         class="w-full"
         [ngClass]="{
           'ng-invalid ng-dirty':
@@ -45,21 +46,25 @@
         }"
       />
       @if (form.get('name')?.invalid && form.get('name')?.dirty) {
-        <small class="p-error block"> Nome é obrigatório. </small>
+        <small class="p-error block">
+          {{ I18N.LEAD.FORM.LABELS.NAME }}
+          {{ I18N.LEAD.FORM.VALIDATION.REQUIRED }}
+        </small>
       }
     </div>
 
     <!-- Documento -->
     <div class="field col-12 md:col-6">
       <label for="document" class="font-medium text-900"
-        >Documento <span class="text-red-500">*</span></label
+        >{{ I18N.LEAD.FORM.LABELS.DOCUMENT }}
+        <span class="text-red-500">*</span></label
       >
       <input
         id="document"
         type="text"
         pInputText
         formControlName="document"
-        placeholder="CPF/CNPJ"
+        [placeholder]="I18N.LEAD.FORM.PLACEHOLDERS.DOCUMENT"
         class="w-full"
         [ngClass]="{
           'ng-invalid ng-dirty':
@@ -67,20 +72,24 @@
         }"
       />
       @if (form.get('document')?.invalid && form.get('document')?.dirty) {
-        <small class="p-error block"> Documento é obrigatório. </small>
+        <small class="p-error block">
+          {{ I18N.LEAD.FORM.LABELS.DOCUMENT }}
+          {{ I18N.LEAD.FORM.VALIDATION.REQUIRED }}
+        </small>
       }
     </div>
 
     <!-- Status -->
     <div class="field col-12 md:col-6">
       <label for="status" class="font-medium text-900"
-        >Status <span class="text-red-500">*</span></label
+        >{{ I18N.LEAD.FORM.LABELS.STATUS }}
+        <span class="text-red-500">*</span></label
       >
       <p-select
         id="status"
         [options]="statusOptions"
         formControlName="status"
-        placeholder="Selecione..."
+        [placeholder]="I18N.LEAD.FORM.PLACEHOLDERS.SELECT"
         optionLabel="label"
         optionValue="value"
         styleClass="w-full"
@@ -90,16 +99,16 @@
 
     <!-- Potencial -->
     <div class="field col-12 md:col-6">
-      <label for="estimatedPotential" class="font-medium text-900"
-        >Potencial (R$)</label
-      >
+      <label for="estimatedPotential" class="font-medium text-900">{{
+        I18N.LEAD.FORM.LABELS.POTENTIAL
+      }}</label>
       <p-inputNumber
         id="estimatedPotential"
         formControlName="estimatedPotential"
         mode="currency"
         currency="BRL"
         locale="pt-BR"
-        placeholder="R$ 0,00"
+        [placeholder]="I18N.LEAD.FORM.PLACEHOLDERS.POTENTIAL"
         styleClass="w-full"
         class="w-full"
       ></p-inputNumber>
@@ -107,9 +116,9 @@
 
     <!-- Fornecedor Atual -->
     <div class="field col-12">
-      <label for="currentSupplier" class="font-medium text-900"
-        >Fornecedor Atual</label
-      >
+      <label for="currentSupplier" class="font-medium text-900">{{
+        I18N.LEAD.FORM.LABELS.CURRENT_SUPPLIER
+      }}</label>
       <span class="p-input-icon-left w-full">
         <i class="pi pi-briefcase"></i>
         <input
@@ -117,7 +126,7 @@
           type="text"
           pInputText
           formControlName="currentSupplier"
-          placeholder="Ex: Concorrente X"
+          [placeholder]="I18N.LEAD.FORM.PLACEHOLDERS.CURRENT_SUPPLIER"
           class="w-full"
         />
       </span>
@@ -125,13 +134,15 @@
 
     <!-- Notas -->
     <div class="field col-12">
-      <label for="notes" class="font-medium text-900">Observações</label>
+      <label for="notes" class="font-medium text-900">{{
+        I18N.LEAD.FORM.LABELS.NOTES
+      }}</label>
       <textarea
         id="notes"
         pTextarea
         formControlName="notes"
         rows="4"
-        placeholder="Observações adicionais..."
+        [placeholder]="I18N.LEAD.FORM.PLACEHOLDERS.NOTES"
         class="w-full resize-none"
       ></textarea>
     </div>
@@ -141,13 +152,13 @@
       class="col-12 flex justify-content-end gap-3 mt-4 pt-3 border-top-1 surface-border"
     >
       <p-button
-        label="Cancelar"
+        [label]="I18N.COMMON.CANCEL"
         icon="pi pi-times"
         styleClass="p-button-outlined p-button-secondary"
         (onClick)="goBack()"
       ></p-button>
       <p-button
-        label="Salvar"
+        [label]="I18N.COMMON.SAVE"
         icon="pi pi-save"
         type="submit"
         [loading]="leadsFacade.loading()"

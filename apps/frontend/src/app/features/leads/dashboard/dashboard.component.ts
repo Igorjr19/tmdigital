@@ -7,6 +7,7 @@ import {
   inject,
 } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
+import { I18N } from '../../../core/i18n/i18n';
 import { LeadsFacadeService } from '../services/leads.facade';
 
 @Component({
@@ -17,6 +18,7 @@ import { LeadsFacadeService } from '../services/leads.facade';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent implements OnInit {
+  protected readonly I18N = I18N;
   private leadsFacade = inject(LeadsFacadeService);
 
   metrics = this.leadsFacade.metrics;
@@ -53,7 +55,7 @@ export class DashboardComponent implements OnInit {
       labels: data.labels,
       datasets: [
         {
-          label: 'Área (ha)',
+          label: I18N.LEAD.PROPERTIES.AREA_LABEL,
           backgroundColor: '#42A5F5',
           data: data.data,
         },

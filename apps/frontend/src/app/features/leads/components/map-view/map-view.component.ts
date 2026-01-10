@@ -20,6 +20,8 @@ import { LeadsFacadeService } from '../../services/leads.facade';
 import { LeadDialogComponent } from '../lead-dialog/lead-dialog.component';
 import { MapPopupComponent } from '../map-popup/map-popup.component';
 
+import { I18N } from '../../../../core/i18n/i18n';
+
 @Component({
   selector: 'app-map-view',
   standalone: true,
@@ -118,8 +120,8 @@ export class MapViewComponent implements OnInit, AfterViewInit {
 
         componentRef.instance.propertyName = prop.name;
         componentRef.instance.culture = prop.productiveAreaHectares
-          ? 'Soja/Milho (Est.)'
-          : 'N/A';
+          ? I18N.LEAD.MAP.POPUP.ESTIMATED
+          : I18N.LEAD.MAP.POPUP.NA;
         componentRef.instance.leadStatus = status;
         componentRef.instance.leadId = prop.leadId;
 
@@ -144,7 +146,7 @@ export class MapViewComponent implements OnInit, AfterViewInit {
 
   private openDetails(leadId: string) {
     this.ref = this.dialogService.open(LeadDialogComponent, {
-      header: 'Detalhes do Lead',
+      header: I18N.LEAD.DETAIL.TITLE,
       width: '70%',
       contentStyle: { overflow: 'auto' },
       baseZIndex: 10000,

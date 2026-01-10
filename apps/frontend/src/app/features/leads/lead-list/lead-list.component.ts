@@ -9,6 +9,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -25,6 +26,8 @@ import { LeadDto } from '../../../api/model/models';
 import { LeadDialogComponent } from '../components/lead-dialog/lead-dialog.component';
 import { LeadsFacadeService } from '../services/leads.facade';
 
+import { I18N } from '../../../core/i18n/i18n';
+
 @Component({
   selector: 'app-lead-list',
   standalone: true,
@@ -36,6 +39,7 @@ import { LeadsFacadeService } from '../services/leads.facade';
     TagModule,
     ConfirmDialogModule,
     ToastModule,
+    TooltipModule,
     FormsModule,
   ],
   providers: [ConfirmationService, MessageService, DialogService],
@@ -43,6 +47,7 @@ import { LeadsFacadeService } from '../services/leads.facade';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LeadListComponent {
+  protected readonly I18N = I18N;
   leadsFacade = inject(LeadsFacadeService);
   router = inject(Router);
   route = inject(ActivatedRoute);
@@ -100,7 +105,8 @@ export class LeadListComponent {
 
   private openDialog(lead: LeadDto, mode: 'VIEW' | 'EDIT') {
     this.ref = this.dialogService.open(LeadDialogComponent, {
-      header: mode === 'EDIT' ? 'Editar Lead' : 'Detalhes do Lead',
+      header:
+        mode === 'EDIT' ? I18N.LEAD.FORM.TITLE_EDIT : I18N.LEAD.DETAIL.TITLE,
       width: '70%',
       contentStyle: { overflow: 'auto' },
       baseZIndex: 10000,
@@ -121,26 +127,26 @@ export class LeadListComponent {
   deleteLead(lead: LeadDto, event: Event) {
     event.stopPropagation();
     this.confirmationService.confirm({
-      message: `Tem certeza que deseja excluir o lead ${lead.name}?`,
-      header: 'Confirmar Exclusão',
+      message: I18N.COMMON.CONFIRM_DELETE_MSG(lead.name),
+      header: I18N.COMMON.CONFIRM_DELETE_TITLE,
       icon: 'pi pi-exclamation-triangle',
-      acceptLabel: 'Sim',
-      rejectLabel: 'Não',
+      acceptLabel: I18N.COMMON.YES,
+      rejectLabel: I18N.COMMON.NO,
       accept: () => {
         if (lead.id) {
           this.leadsFacade.deleteLead(lead.id).subscribe({
             next: () => {
               this.messageService.add({
                 severity: 'success',
-                summary: 'Sucesso',
-                detail: 'Lead excluído com sucesso',
+                summary: I18N.COMMON.SUCCESS,
+                detail: I18N.LEAD.LIST.DELETE_SUCCESS,
               });
             },
             error: () => {
               this.messageService.add({
                 severity: 'error',
-                summary: 'Erro',
-                detail: 'Erro ao excluir lead',
+                summary: I18N.COMMON.ERROR,
+                detail: I18N.LEAD.LIST.DELETE_ERROR,
               });
             },
           });

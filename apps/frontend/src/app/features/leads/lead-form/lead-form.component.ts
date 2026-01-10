@@ -25,6 +25,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { firstValueFrom } from 'rxjs';
 import { LeadDto } from '../../../api/model/models';
+import { I18N } from '../../../core/i18n/i18n';
 import { LeadPropertiesComponent } from '../components/lead-properties/lead-properties.component';
 import { LeadWithProperties } from '../models/lead.extension';
 import { LeadsFacadeService } from '../services/leads.facade';
@@ -48,6 +49,7 @@ import { LeadsFacadeService } from '../services/leads.facade';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LeadFormComponent implements OnInit {
+  protected readonly I18N = I18N;
   formBuilder = inject(FormBuilder);
   leadsFacade = inject(LeadsFacadeService);
   router = inject(Router);
@@ -65,11 +67,26 @@ export class LeadFormComponent implements OnInit {
   lead = signal<LeadDto | null>(null);
 
   statusOptions = [
-    { label: 'Novo', value: LeadDto.StatusEnum.New },
-    { label: 'Contatado', value: LeadDto.StatusEnum.Contacted },
-    { label: 'Qualificado', value: LeadDto.StatusEnum.Qualified },
-    { label: 'Convertido', value: LeadDto.StatusEnum.Converted },
-    { label: 'Perdido', value: LeadDto.StatusEnum.Lost },
+    {
+      label: I18N.LEAD.STATUS[LeadDto.StatusEnum.New],
+      value: LeadDto.StatusEnum.New,
+    },
+    {
+      label: I18N.LEAD.STATUS[LeadDto.StatusEnum.Contacted],
+      value: LeadDto.StatusEnum.Contacted,
+    },
+    {
+      label: I18N.LEAD.STATUS[LeadDto.StatusEnum.Qualified],
+      value: LeadDto.StatusEnum.Qualified,
+    },
+    {
+      label: I18N.LEAD.STATUS[LeadDto.StatusEnum.Converted],
+      value: LeadDto.StatusEnum.Converted,
+    },
+    {
+      label: I18N.LEAD.STATUS[LeadDto.StatusEnum.Lost],
+      value: LeadDto.StatusEnum.Lost,
+    },
   ];
 
   ngOnInit() {
@@ -112,8 +129,8 @@ export class LeadFormComponent implements OnInit {
     } catch {
       this.messageService.add({
         severity: 'error',
-        summary: 'Erro',
-        detail: 'Lead não encontrado.',
+        summary: I18N.COMMON.ERROR,
+        detail: I18N.LEAD.FORM.NOT_FOUND,
       });
       this.goBack();
     }
@@ -158,15 +175,15 @@ export class LeadFormComponent implements OnInit {
         await firstValueFrom(this.leadsFacade.updateLead(this.leadId, dto));
         this.messageService.add({
           severity: 'success',
-          summary: 'Sucesso',
-          detail: 'Lead atualizado!',
+          summary: I18N.COMMON.SUCCESS,
+          detail: I18N.LEAD.FORM.SUCCESS_UPDATE,
         });
         this.emitSavedOrGoBack();
       } catch {
         this.messageService.add({
           severity: 'error',
-          summary: 'Erro',
-          detail: 'Erro ao atualizar lead.',
+          summary: I18N.COMMON.ERROR,
+          detail: I18N.LEAD.FORM.ERROR_UPDATE,
         });
       }
     } else {
@@ -174,15 +191,15 @@ export class LeadFormComponent implements OnInit {
         await firstValueFrom(this.leadsFacade.createLead(dto));
         this.messageService.add({
           severity: 'success',
-          summary: 'Sucesso',
-          detail: 'Lead criado!',
+          summary: I18N.COMMON.SUCCESS,
+          detail: I18N.LEAD.FORM.SUCCESS_CREATE,
         });
         this.emitSavedOrGoBack();
       } catch {
         this.messageService.add({
           severity: 'error',
-          summary: 'Erro',
-          detail: 'Erro ao criar lead.',
+          summary: I18N.COMMON.ERROR,
+          detail: I18N.LEAD.FORM.ERROR_CREATE,
         });
       }
     }
