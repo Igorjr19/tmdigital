@@ -4,6 +4,7 @@ export * from './get-leads-response-dto.model';
 export * from './lead-dto.model';
 export * from './lead-score-dto.model';
 export * from './pagination-metadata.model';
+export * from './point-dto.model';
 export * from './rural-property-dto.model';
 export * from './update-lead-dto.model';
 export * from './update-rural-property-dto.model';

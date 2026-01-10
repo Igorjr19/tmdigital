@@ -7,6 +7,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PointDto } from './point-dto.model';
 
 export interface RuralPropertyDto {
   /**
@@ -32,7 +33,7 @@ export interface RuralPropertyDto {
   /**
    * Localização geográfica (GeoJSON Point)
    */
-  location: object;
+  location: PointDto;
   /**
    * Cidade da propriedade
    */
