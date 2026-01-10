@@ -14,8 +14,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import * as leaflet from 'leaflet';
 import { ButtonModule } from 'primeng/button';
-import { LeadDto } from '../../../../api/model/models';
-import { RuralPropertyWithLocation } from '../../models/lead.extension';
+import { LeadDto, RuralPropertyDto } from '../../../../api/model/models';
 import { LeadsFacadeService } from '../../services/leads.facade';
 import { MapPopupComponent } from '../map-popup/map-popup.component';
 
@@ -89,7 +88,7 @@ export class MapViewComponent implements OnInit, AfterViewInit {
   }
 
   private updateMarkers(
-    properties: (RuralPropertyWithLocation & {
+    properties: (RuralPropertyDto & {
       leadStatus?: LeadDto.StatusEnum;
       leadName?: string;
     })[],
