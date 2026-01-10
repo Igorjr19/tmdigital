@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   EnvironmentInjector,
@@ -12,6 +14,8 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import * as leaflet from 'leaflet';
 import { ButtonModule } from 'primeng/button';
+import { LeadDto } from '../../../../api/model/models';
+import { RuralPropertyWithLocation } from '../../models/lead.extension';
 import { LeadsFacadeService } from '../../services/leads.facade';
 import { MapPopupComponent } from '../map-popup/map-popup.component';
 
@@ -20,16 +24,10 @@ import { MapPopupComponent } from '../map-popup/map-popup.component';
   standalone: true,
   imports: [CommonModule, ButtonModule],
   templateUrl: './map-view.component.html',
-  styles: [
-    `
-      :host {
-        display: block;
-        height: 100%;
-      }
-    `,
-  ],
+  styleUrl: './map-view.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MapViewComponent implements OnInit {
+export class MapViewComponent implements OnInit, AfterViewInit {
   @ViewChild('mapContainer', { static: true }) mapContainer!: ElementRef;
 
   private leadsFacade = inject(LeadsFacadeService);
@@ -48,10 +46,10 @@ export class MapViewComponent implements OnInit {
 
   ngOnInit() {
     this.leadsFacade.loadAllLeadsForDashboard();
-    // Ensure the DOM element has size before initializing map
-    setTimeout(() => {
-      this.initMap();
-    }, 100);
+  }
+
+  ngAfterViewInit() {
+    this.initMap();
   }
 
   goBack() {
@@ -72,9 +70,9 @@ export class MapViewComponent implements OnInit {
 
     this.markers = leaflet.layerGroup().addTo(this.map);
 
-    const iconRetinaUrl = '/assets/marker-icon-2x.png';
-    const iconUrl = '/assets/marker-icon.png';
-    const shadowUrl = '/assets/marker-shadow.png';
+    const iconRetinaUrl = 'assets/marker-icon-2x.png';
+    const iconUrl = 'assets/marker-icon.png';
+    const shadowUrl = 'assets/marker-shadow.png';
     const iconDefault = leaflet.icon({
       iconRetinaUrl,
       iconUrl,
@@ -90,8 +88,12 @@ export class MapViewComponent implements OnInit {
     this.updateMarkers(this.leadsFacade.allProperties());
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private updateMarkers(properties: any[]) {
+  private updateMarkers(
+    properties: (RuralPropertyWithLocation & {
+      leadStatus?: LeadDto.StatusEnum;
+      leadName?: string;
+    })[],
+  ) {
     if (!this.map || !this.markers) {
       return;
     }
@@ -99,9 +101,10 @@ export class MapViewComponent implements OnInit {
     this.markers.clearLayers();
 
     properties.forEach((prop) => {
-      if (prop.location && prop.location.coordinates) {
-        const [lng, lat] = prop.location.coordinates;
-        const status = prop.leadStatus;
+      const loc = prop.location;
+      if (loc && loc.coordinates) {
+        const [lng, lat] = loc.coordinates;
+        const status = prop.leadStatus || '';
 
         const marker = leaflet.marker([lat, lng]);
 
@@ -110,7 +113,7 @@ export class MapViewComponent implements OnInit {
         });
 
         componentRef.instance.propertyName = prop.name;
-        componentRef.instance.culture = prop.cultivatableArea
+        componentRef.instance.culture = prop.productiveAreaHectares
           ? 'Soja/Milho (Est.)'
           : 'N/A';
         componentRef.instance.leadStatus = status;

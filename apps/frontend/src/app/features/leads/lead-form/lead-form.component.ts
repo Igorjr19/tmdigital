@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  inject,
+  signal,
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -14,8 +20,10 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
+import { firstValueFrom } from 'rxjs';
 import { LeadDto } from '../../../api/model/models';
 import { LeadPropertiesComponent } from '../components/lead-properties/lead-properties.component';
+import { LeadWithProperties } from '../models/lead.extension';
 import { LeadsFacadeService } from '../services/leads.facade';
 
 @Component({
@@ -34,6 +42,7 @@ import { LeadsFacadeService } from '../services/leads.facade';
   ],
   providers: [MessageService],
   templateUrl: './lead-form.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LeadFormComponent implements OnInit {
   formBuilder = inject(FormBuilder);
@@ -43,9 +52,9 @@ export class LeadFormComponent implements OnInit {
   messageService = inject(MessageService);
 
   form!: FormGroup;
-  isEditMode = false;
+  isEditMode = signal(false);
   leadId: string | null = null;
-  lead: LeadDto | null = null;
+  lead = signal<LeadDto | null>(null);
 
   statusOptions = [
     { label: 'Novo', value: LeadDto.StatusEnum.New },
@@ -74,27 +83,25 @@ export class LeadFormComponent implements OnInit {
   checkEditMode() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id && id !== 'new') {
-      this.isEditMode = true;
+      this.isEditMode.set(true);
       this.leadId = id;
       this.loadLeadData(id);
     }
   }
 
-  loadLeadData(id: string) {
-    this.leadsFacade.getLeadById(id).subscribe({
-      next: (lead: LeadDto) => {
-        this.lead = lead;
-        this.patchForm(lead);
-      },
-      error: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erro',
-          detail: 'Lead não encontrado.',
-        });
-        this.goBack();
-      },
-    });
+  async loadLeadData(id: string) {
+    try {
+      const lead = await firstValueFrom(this.leadsFacade.getLeadById(id));
+      this.lead.set(lead);
+      this.patchForm(lead);
+    } catch {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro',
+        detail: 'Lead não encontrado.',
+      });
+      this.goBack();
+    }
   }
 
   patchForm(lead: LeadDto) {
@@ -108,7 +115,11 @@ export class LeadFormComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  get leadProperties() {
+    return (this.lead() as unknown as LeadWithProperties).properties || [];
+  }
+
+  async onSubmit() {
     if (this.form.invalid) return;
 
     const formValue = this.form.value;
@@ -121,48 +132,44 @@ export class LeadFormComponent implements OnInit {
       notes: formValue.notes,
     };
 
-    if (this.isEditMode && this.leadId) {
+    if (this.isEditMode() && this.leadId) {
       Object.keys(this.form.controls).forEach((key) => {
         if (!this.form.get(key)?.dirty) {
           delete dto[key as keyof typeof dto];
         }
       });
 
-      this.leadsFacade.updateLead(this.leadId, dto).subscribe({
-        next: () => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Sucesso',
-            detail: 'Lead atualizado!',
-          });
-          setTimeout(() => this.goBack(), 1000);
-        },
-        error: () => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Erro',
-            detail: 'Erro ao atualizar lead.',
-          });
-        },
-      });
+      try {
+        await firstValueFrom(this.leadsFacade.updateLead(this.leadId, dto));
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: 'Lead atualizado!',
+        });
+        this.goBack();
+      } catch {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: 'Erro ao atualizar lead.',
+        });
+      }
     } else {
-      this.leadsFacade.createLead(dto).subscribe({
-        next: () => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Sucesso',
-            detail: 'Lead criado!',
-          });
-          setTimeout(() => this.goBack(), 1000);
-        },
-        error: () => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Erro',
-            detail: 'Erro ao criar lead.',
-          });
-        },
-      });
+      try {
+        await firstValueFrom(this.leadsFacade.createLead(dto));
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: 'Lead criado!',
+        });
+        this.goBack();
+      } catch {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: 'Erro ao criar lead.',
+        });
+      }
     }
   }
 

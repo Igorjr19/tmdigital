@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { MenubarModule } from 'primeng/menubar';
@@ -9,6 +9,7 @@ import { MenubarModule } from 'primeng/menubar';
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App implements OnInit {
   items: MenuItem[] | undefined;
@@ -21,14 +22,14 @@ export class App implements OnInit {
         routerLink: '/dashboard',
       },
       {
-        label: 'Mapa',
-        icon: 'pi pi-map',
-        routerLink: '/map',
-      },
-      {
         label: 'Gestão de Leads',
         icon: 'pi pi-users',
         routerLink: '/leads',
+      },
+      {
+        label: 'Mapa',
+        icon: 'pi pi-map',
+        routerLink: '/map',
       },
     ];
   }

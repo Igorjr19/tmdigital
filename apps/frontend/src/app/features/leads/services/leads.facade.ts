@@ -10,6 +10,7 @@ import {
   LeadDto,
   UpdateLeadDto,
 } from '../../../api/model/models';
+import { LeadWithProperties } from '../models/lead.extension';
 
 @Injectable({
   providedIn: 'root',
@@ -112,10 +113,8 @@ export class LeadsFacadeService {
   allProperties = computed(() => {
     return this.leads()
       .map((lead) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const props = (lead as any).properties || [];
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return props.map((p: any) => ({
+        const props = (lead as unknown as LeadWithProperties).properties || [];
+        return props.map((p) => ({
           ...p,
           leadStatus: lead.status,
           leadName: lead.name,

@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, computed, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  computed,
+  inject,
+} from '@angular/core';
 import { ChartModule } from 'primeng/chart';
 import { LeadsFacadeService } from '../services/leads.facade';
 
@@ -8,6 +14,7 @@ import { LeadsFacadeService } from '../services/leads.facade';
   standalone: true,
   imports: [CommonModule, ChartModule],
   templateUrl: './dashboard.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent implements OnInit {
   private leadsFacade = inject(LeadsFacadeService);

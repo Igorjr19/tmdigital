@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -38,6 +38,7 @@ import { LeadsFacadeService } from '../services/leads.facade';
   ],
   providers: [ConfirmationService, MessageService],
   templateUrl: './lead-list.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LeadListComponent {
   leadsFacade = inject(LeadsFacadeService);
@@ -119,12 +120,19 @@ export class LeadListComponent {
   getSeverity(
     status: string,
   ): 'success' | 'info' | 'warn' | 'danger' | undefined {
-    const s = status ? status.toLowerCase() : '';
-    if (s.includes('approv') || s.includes('new') || s.includes('conv'))
-      return 'success';
-    if (s.includes('anal') || s.includes('qual')) return 'info';
-    if (s.includes('pend') || s.includes('contact')) return 'warn';
-    if (s.includes('reject') || s.includes('lost')) return 'danger';
-    return undefined;
+    switch (status) {
+      case LeadDto.StatusEnum.New:
+      case LeadDto.StatusEnum.Converted:
+      case 'Approved':
+        return 'success';
+      case LeadDto.StatusEnum.Qualified:
+        return 'info';
+      case LeadDto.StatusEnum.Contacted:
+        return 'warn';
+      case LeadDto.StatusEnum.Lost:
+        return 'danger';
+      default:
+        return undefined;
+    }
   }
 }

@@ -5,7 +5,7 @@
     class="flex justify-content-between align-items-center mb-4 border-bottom-1 surface-border pb-3"
   >
     <h2 class="m-0 text-900 font-bold">
-      {{ isEditMode ? 'Editar Lead' : 'Novo Lead' }}
+      {{ isEditMode() ? 'Editar Lead' : 'Novo Lead' }}
     </h2>
     <p-button
       icon="pi pi-arrow-left"
@@ -126,8 +126,7 @@
         formControlName="notes"
         rows="4"
         placeholder="Observações adicionais..."
-        class="w-full"
-        style="resize: none"
+        class="w-full resize-none"
       ></textarea>
     </div>
 
@@ -151,11 +150,11 @@
     </div>
   </form>
 
-  @if (isEditMode && leadId && lead) {
+  @if (isEditMode() && leadId && lead()) {
     <div class="mt-4 pt-3 border-top-1 surface-border">
       <app-lead-properties
         [leadId]="leadId"
-        [properties]="$any(lead).properties || []"
+        [properties]="leadProperties"
       ></app-lead-properties>
     </div>
   }

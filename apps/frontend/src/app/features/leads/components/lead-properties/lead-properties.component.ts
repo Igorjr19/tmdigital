@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  inject,
+  signal,
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -34,6 +40,7 @@ import { LeadsFacadeService } from '../../services/leads.facade';
   ],
   templateUrl: './lead-properties.component.html',
   providers: [ConfirmationService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LeadPropertiesComponent {
   @Input({ required: true }) leadId!: string;
