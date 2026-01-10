@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Point } from 'geojson';
 import { RuralProperty } from '../../domain/entities/rural-property.entity';
+import { PointDto } from './point.dto';
 
 export class RuralPropertyDto {
   @ApiProperty({
@@ -40,8 +40,9 @@ export class RuralPropertyDto {
   @ApiProperty({
     description: 'Localização geográfica (GeoJSON Point)',
     example: { type: 'Point', coordinates: [-52.123, -23.456] },
+    type: PointDto,
   })
-  location: Point;
+  location: PointDto;
 
   @ApiProperty({
     description: 'Cidade da propriedade',

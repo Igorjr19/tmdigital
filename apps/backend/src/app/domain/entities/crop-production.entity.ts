@@ -2,7 +2,7 @@ import { DomainErrorCodes } from '../enums/domain-error-codes.enum';
 import { BusinessRuleException } from '../exceptions/business-rule.exception';
 import { BaseEntity } from './base.entity';
 import { Culture } from './culture.entity';
-import { RuralProperty } from './rural-property.entity';
+import type { RuralProperty } from './rural-property.entity';
 
 export interface CropProductionProps {
   ruralPropertyId: string;
