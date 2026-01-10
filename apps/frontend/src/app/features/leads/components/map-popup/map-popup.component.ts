@@ -6,6 +6,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './map-popup.component.html',
+  styleUrl: './map-popup.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MapPopupComponent {
