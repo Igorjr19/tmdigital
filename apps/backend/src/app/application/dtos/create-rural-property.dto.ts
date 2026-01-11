@@ -1,13 +1,19 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
+  IsArray,
   IsNotEmpty,
   IsNumber,
   IsObject,
+  IsOptional,
   IsString,
   IsUUID,
   Min,
+  MinLength,
+  ValidateNested,
 } from 'class-validator';
 import { Point } from 'geojson';
+import { CropProductionInputDto } from './crop-production-input.dto';
 
 export class CreateRuralPropertyDto {
   @ApiProperty({
@@ -72,4 +78,15 @@ export class CreateRuralPropertyDto {
   @IsString()
   @IsNotEmpty()
   state: string;
+
+  @ApiPropertyOptional({
+    description: 'Lista de plantações para atualizar (substitui a lista atual)',
+    type: [CropProductionInputDto],
+  })
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CropProductionInputDto)
+  @MinLength(1)
+  cropProductions: CropProductionInputDto[];
 }
