@@ -30,10 +30,12 @@ import { Configuration } from '../configuration';
 import { BaseService } from '../api.base.service';
 
 export interface RuralPropertyControllerRemoveRequestParams {
+  leadId: string;
   id: string;
 }
 
 export interface RuralPropertyControllerUpdateRequestParams {
+  leadId: string;
   id: string;
   updateRuralPropertyDto: UpdateRuralPropertyDto;
 }
@@ -51,7 +53,7 @@ export class RuralPropertiesService extends BaseService {
   }
 
   /**
-   * @endpoint delete /api/properties/{id}
+   * @endpoint delete /api/leads/{leadId}/properties/{id}
    * @param requestParameters
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
@@ -97,6 +99,12 @@ export class RuralPropertiesService extends BaseService {
       transferCache?: boolean;
     },
   ): Observable<any> {
+    const leadId = requestParameters?.leadId;
+    if (leadId === null || leadId === undefined) {
+      throw new Error(
+        'Required parameter leadId was null or undefined when calling ruralPropertyControllerRemove.',
+      );
+    }
     const id = requestParameters?.id;
     if (id === null || id === undefined) {
       throw new Error(
@@ -133,7 +141,7 @@ export class RuralPropertiesService extends BaseService {
       }
     }
 
-    let localVarPath = `/api/properties/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+    let localVarPath = `/api/leads/${this.configuration.encodeParam({ name: 'leadId', value: leadId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}/properties/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<any>(
       'delete',
@@ -153,7 +161,7 @@ export class RuralPropertiesService extends BaseService {
   }
 
   /**
-   * @endpoint patch /api/properties/{id}
+   * @endpoint patch /api/leads/{leadId}/properties/{id}
    * @param requestParameters
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
@@ -199,6 +207,12 @@ export class RuralPropertiesService extends BaseService {
       transferCache?: boolean;
     },
   ): Observable<any> {
+    const leadId = requestParameters?.leadId;
+    if (leadId === null || leadId === undefined) {
+      throw new Error(
+        'Required parameter leadId was null or undefined when calling ruralPropertyControllerUpdate.',
+      );
+    }
     const id = requestParameters?.id;
     if (id === null || id === undefined) {
       throw new Error(
@@ -255,7 +269,7 @@ export class RuralPropertiesService extends BaseService {
       }
     }
 
-    let localVarPath = `/api/properties/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+    let localVarPath = `/api/leads/${this.configuration.encodeParam({ name: 'leadId', value: leadId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}/properties/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<any>('patch', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,

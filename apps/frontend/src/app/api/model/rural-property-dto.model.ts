@@ -7,6 +7,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { CropProductionDto } from './crop-production-dto.model';
 import { PointDto } from './point-dto.model';
 
 export interface RuralPropertyDto {
@@ -50,4 +51,8 @@ export interface RuralPropertyDto {
    * Data da última alteração
    */
   updatedAt: string;
+  /**
+   * Plantações da propriedade
+   */
+  cropProductions: Array<CropProductionDto>;
 }

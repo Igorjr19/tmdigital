@@ -7,6 +7,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { CropProductionInputDto } from './crop-production-input-dto.model';
 
 export interface CreateRuralPropertyDto {
   /**
@@ -37,4 +38,8 @@ export interface CreateRuralPropertyDto {
    * Estado (UF) da propriedade
    */
   state: string;
+  /**
+   * Lista de plantações para atualizar (substitui a lista atual)
+   */
+  cropProductions?: Array<CropProductionInputDto>;
 }
