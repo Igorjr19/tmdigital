@@ -18,6 +18,7 @@
         <th>Cidade/UF</th>
         <th>Área Total (ha)</th>
         <th>Área Produtiva (ha)</th>
+        <th>Plantações</th>
         <th style="width: 5rem"></th>
       </tr>
     </ng-template>
@@ -27,6 +28,13 @@
         <td>{{ property.city }} / {{ property.state }}</td>
         <td>{{ property.totalAreaHectares | number }}</td>
         <td>{{ property.productiveAreaHectares | number }}</td>
+        <td>
+          @for (crop of property.cropProductions; track $index) {
+            <div class="text-sm">
+              {{ crop.culture?.name }}: {{ crop.plantedAreaHectares }} ha
+            </div>
+          }
+        </td>
         <td>
           @if (!readOnly) {
             <p-button
@@ -154,6 +162,67 @@
             styleClass="w-full"
           ></p-inputNumber>
         </div>
+      </div>
+
+      <div class="flex align-items-center justify-content-between mb-2 mt-4">
+        <span class="font-bold">Plantações</span>
+        <p-button
+          label="Adicionar Cultura"
+          icon="pi pi-plus"
+          size="small"
+          [text]="true"
+          (onClick)="addCrop()"
+        ></p-button>
+      </div>
+
+      <div formArrayName="cropProductions" class="flex flex-column gap-3">
+        @for (crop of cropProductions.controls; track $index; let i = $index) {
+          <div [formGroupName]="i" class="flex gap-2 align-items-end">
+            <div class="flex-grow-1">
+              @if (i === 0) {
+                <label class="block text-sm mb-1" [for]="'culture-' + i"
+                  >Cultura</label
+                >
+              }
+              <p-select
+                [id]="'culture-' + i"
+                [options]="cultures()"
+                optionLabel="name"
+                optionValue="id"
+                formControlName="cultureId"
+                placeholder="Selecione..."
+                styleClass="w-full"
+                appendTo="body"
+              ></p-select>
+            </div>
+            <div class="w-10rem">
+              @if (i === 0) {
+                <label class="block text-sm mb-1" [for]="'area-' + i"
+                  >Área (ha)</label
+                >
+              }
+              <p-inputNumber
+                [inputId]="'area-' + i"
+                formControlName="plantedAreaHectares"
+                mode="decimal"
+                [minFractionDigits]="2"
+                class="w-full"
+                styleClass="w-full"
+              ></p-inputNumber>
+            </div>
+            <p-button
+              icon="pi pi-trash"
+              severity="danger"
+              [text]="true"
+              [rounded]="true"
+              (onClick)="removeCrop(i)"
+              class="mb-1"
+            ></p-button>
+          </div>
+        }
+        @if (cropProductions.controls.length === 0) {
+          <small class="block text-500"> Nenhuma cultura adicionada. </small>
+        }
       </div>
 
       <div class="flex justify-content-end gap-2 mt-4">

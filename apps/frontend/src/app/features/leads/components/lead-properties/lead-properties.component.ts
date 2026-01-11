@@ -7,6 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import {
+  FormArray,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
@@ -18,6 +19,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
+import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import {
   CreateRuralPropertyDto,
@@ -37,6 +39,7 @@ import { LeadsFacadeService } from '../../services/leads.facade';
     InputTextModule,
     InputNumberModule,
     ConfirmDialogModule,
+    SelectModule,
   ],
   templateUrl: './lead-properties.component.html',
   providers: [ConfirmationService],
@@ -65,8 +68,30 @@ export class LeadPropertiesComponent {
       productiveAreaHectares: [null, Validators.required],
       latitude: [null],
       longitude: [null],
+      cropProductions: this.fb.array([]),
     });
+
+    this.leadsFacade.loadCultures();
   }
+
+  get cropProductions() {
+    return this.form.get('cropProductions') as FormArray;
+  }
+
+  addCrop() {
+    this.cropProductions.push(
+      this.fb.group({
+        cultureId: [null, Validators.required],
+        plantedAreaHectares: [null, Validators.required],
+      }),
+    );
+  }
+
+  removeCrop(index: number) {
+    this.cropProductions.removeAt(index);
+  }
+
+  cultures = this.leadsFacade.cultures;
 
   showDialog() {
     this.visible = true;
@@ -88,6 +113,7 @@ export class LeadPropertiesComponent {
         type: 'Point',
         coordinates: [formValue.longitude || 0, formValue.latitude || 0],
       },
+      cropProductions: formValue.cropProductions,
     };
 
     this.loading.set(true);
@@ -119,13 +145,15 @@ export class LeadPropertiesComponent {
       header: 'Confirmar Exclusão',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.leadsFacade.deleteProperty(property.id!).subscribe(() => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Sucesso',
-            detail: 'Propriedade removida',
+        this.leadsFacade
+          .deleteProperty(this.leadId, property.id!)
+          .subscribe(() => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Sucesso',
+              detail: 'Propriedade removida',
+            });
           });
-        });
       },
     });
   }
