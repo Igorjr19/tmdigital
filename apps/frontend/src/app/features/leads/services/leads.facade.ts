@@ -1,11 +1,13 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { finalize, tap } from 'rxjs/operators';
+import { CulturesService } from '../../../api/api/cultures.service';
 import { LeadsService } from '../../../api/api/leads.service';
 import { RuralPropertiesService } from '../../../api/api/rural-properties.service';
 import {
   CreateLeadDto,
   CreateRuralPropertyDto,
+  CultureDto,
   GetLeadsResponseDto,
   LeadDto,
   UpdateLeadDto,
@@ -18,6 +20,7 @@ import { LeadWithProperties } from '../models/lead.extension';
 export class LeadsFacadeService {
   private leadsService = inject(LeadsService);
   private ruralPropertiesService = inject(RuralPropertiesService);
+  private culturesService = inject(CulturesService);
 
   leads = signal<LeadDto[]>([]);
   totalRecords = signal<number>(0);
@@ -173,15 +176,50 @@ export class LeadsFacadeService {
     return this.leadsService
       .leadControllerAddProperty({ id: leadId, createRuralPropertyDto })
       .pipe(
-        tap(() => {}),
+        tap(() => {
+          this.loadLeads();
+        }),
         finalize(() => this.loading.set(false)),
       );
   }
 
-  deleteProperty(propertyId: string) {
+  updateProperty(
+    leadId: string,
+    propertyId: string,
+    dto: CreateRuralPropertyDto,
+  ) {
     this.loading.set(true);
     return this.ruralPropertiesService
-      .ruralPropertyControllerRemove({ id: propertyId })
-      .pipe(finalize(() => this.loading.set(false)));
+      .ruralPropertyControllerUpdate({
+        leadId,
+        id: propertyId,
+        updateRuralPropertyDto: dto,
+      })
+      .pipe(
+        tap(() => {
+          this.loadLeads();
+        }),
+        finalize(() => this.loading.set(false)),
+      );
+  }
+
+  deleteProperty(leadId: string, propertyId: string) {
+    this.loading.set(true);
+    return this.ruralPropertiesService
+      .ruralPropertyControllerRemove({ leadId, id: propertyId })
+      .pipe(
+        tap(() => {
+          this.loadLeads();
+        }),
+        finalize(() => this.loading.set(false)),
+      );
+  }
+
+  cultures = signal<CultureDto[]>([]);
+
+  loadCultures() {
+    this.culturesService.cultureControllerFindAll().subscribe((cultures) => {
+      this.cultures.set(cultures);
+    });
   }
 }
