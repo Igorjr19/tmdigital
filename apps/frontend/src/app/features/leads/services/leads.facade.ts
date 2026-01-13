@@ -31,13 +31,19 @@ export class LeadsFacadeService {
     page?: number;
     limit?: number;
     name?: string;
+    document?: string;
     status?: LeadDto.StatusEnum;
+    sortBy?: 'name' | 'createdAt' | 'estimatedPotential';
+    sortOrder?: 'ASC' | 'DESC';
   } = {
-    page: 1,
     limit: 10,
+    sortBy: 'createdAt',
+    sortOrder: 'DESC',
   };
 
-  searchQuery = computed(() => this.currentFilter.name || '');
+  searchQuery = computed(() => {
+    return this.currentFilter.name || this.currentFilter.document || '';
+  });
 
   loadLeads(filter?: Partial<typeof this.currentFilter>) {
     this.loading.set(true);
@@ -48,10 +54,19 @@ export class LeadsFacadeService {
       this.currentFilter = { ...this.currentFilter, ...filter };
     }
 
-    const { page, limit, name, status } = this.currentFilter;
+    const { page, limit, name, document, status, sortBy, sortOrder } =
+      this.currentFilter;
 
     this.leadsService
-      .leadControllerFindAll({ page, limit, name, status })
+      .leadControllerFindAll({
+        page,
+        limit,
+        name,
+        document,
+        status,
+        sortBy,
+        sortOrder,
+      })
       .pipe(
         tap((response: GetLeadsResponseDto) => {
           this.leads.set(response.data);
@@ -124,8 +139,19 @@ export class LeadsFacadeService {
     );
   }
 
-  searchLeadsByName(name: string) {
-    this.loadLeads({ name, page: 1 });
+  searchLeads(query: string) {
+    // Regex matches common document formats (CPF/CNPJ) or just digits
+    // Removes dots, dashes, slashes to check if it's mostly numeric
+    const cleanQuery = query.replace(/[.\-/]/g, '');
+    const isDocument = /^\d+$/.test(cleanQuery) && cleanQuery.length >= 3;
+
+    if (isDocument) {
+      // It's likely a document
+      this.loadLeads({ document: cleanQuery, name: undefined, page: 1 });
+    } else {
+      // It's a name
+      this.loadLeads({ name: query, document: undefined, page: 1 });
+    }
     return new Observable();
   }
 

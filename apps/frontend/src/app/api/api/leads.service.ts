@@ -62,8 +62,14 @@ export interface LeadControllerFindAllRequestParams {
   limit?: number;
   /** Filtrar leads pelo nome (busca parcial) */
   name?: string;
+  /** Filtrar leads pelo documento (CPF/CNPJ - busca parcial) */
+  document?: string;
   /** Filtrar leads por status específico */
   status?: 'NEW' | 'CONTACTED' | 'QUALIFIED' | 'CONVERTED' | 'LOST';
+  /** Campo para ordenação */
+  sortBy?: 'name' | 'createdAt' | 'estimatedPotential';
+  /** Direção da ordenação */
+  sortOrder?: 'ASC' | 'DESC';
 }
 
 export interface LeadControllerFindNearbyRequestParams {
@@ -500,7 +506,10 @@ export class LeadsService extends BaseService {
     const page = requestParameters?.page;
     const limit = requestParameters?.limit;
     const name = requestParameters?.name;
+    const document = requestParameters?.document;
     const status = requestParameters?.status;
+    const sortBy = requestParameters?.sortBy;
+    const sortOrder = requestParameters?.sortOrder;
 
     let localVarQueryParameters = new OpenApiHttpParams(this.encoder);
 
@@ -530,8 +539,32 @@ export class LeadsService extends BaseService {
 
     localVarQueryParameters = this.addToHttpParams(
       localVarQueryParameters,
+      'document',
+      <any>document,
+      QueryParamStyle.Form,
+      true,
+    );
+
+    localVarQueryParameters = this.addToHttpParams(
+      localVarQueryParameters,
       'status',
       <any>status,
+      QueryParamStyle.Form,
+      true,
+    );
+
+    localVarQueryParameters = this.addToHttpParams(
+      localVarQueryParameters,
+      'sortBy',
+      <any>sortBy,
+      QueryParamStyle.Form,
+      true,
+    );
+
+    localVarQueryParameters = this.addToHttpParams(
+      localVarQueryParameters,
+      'sortOrder',
+      <any>sortOrder,
       QueryParamStyle.Form,
       true,
     );

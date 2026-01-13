@@ -6,6 +6,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputTextModule } from 'primeng/inputtext';
+import { SelectModule } from 'primeng/select';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
@@ -40,8 +41,11 @@ import { I18N } from '../../../core/i18n/i18n';
     ConfirmDialogModule,
     ToastModule,
     TooltipModule,
+    ToastModule,
+    TooltipModule,
     DocumentPipe,
     FormsModule,
+    SelectModule,
   ],
   providers: [ConfirmationService, MessageService, DialogService],
   templateUrl: './lead-list.component.html',
@@ -69,7 +73,7 @@ export class LeadListComponent {
           if (query.length < 3 && query.length > 0) {
             return of([]);
           }
-          return this.leadsFacade.searchLeadsByName(query);
+          return this.leadsFacade.searchLeads(query);
         }),
         takeUntilDestroyed(),
         catchError((error) => {
@@ -86,6 +90,25 @@ export class LeadListComponent {
     const limit = event.rows ?? 10;
 
     this.leadsFacade.loadLeads({ page, limit });
+  }
+
+  sortOptions = [
+    { label: 'Mais recentes', value: 'createdAt_DESC' },
+    { label: 'Mais antigos', value: 'createdAt_ASC' },
+    { label: 'Nome (A-Z)', value: 'name_ASC' },
+    { label: 'Nome (Z-A)', value: 'name_DESC' },
+    { label: 'Maior Potencial', value: 'estimatedPotential_DESC' },
+    { label: 'Menor Potencial', value: 'estimatedPotential_ASC' },
+  ];
+
+  selectedSort = 'createdAt_DESC';
+
+  onSortChange(value: string) {
+    const [sortBy, sortOrder] = value.split('_') as [
+      'name' | 'createdAt' | 'estimatedPotential',
+      'ASC' | 'DESC',
+    ];
+    this.leadsFacade.loadLeads({ sortBy, sortOrder });
   }
 
   // searchSubject handles the input event

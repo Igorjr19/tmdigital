@@ -13,7 +13,7 @@ export const I18N = {
     DELETE: 'Excluir',
     CLOSE: 'Fechar',
     BACK: 'Voltar',
-    SEARCH: 'Buscar por nome...',
+    SEARCH: 'Buscar por nome, CPF/CNPJ',
     LOADING: 'Carregando...',
     SUCCESS: 'Sucesso',
     ERROR: 'Erro',

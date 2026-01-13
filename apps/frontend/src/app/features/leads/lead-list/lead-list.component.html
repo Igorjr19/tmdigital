@@ -42,6 +42,15 @@
             class="w-full"
           />
         </span>
+        <p-select
+          [options]="sortOptions"
+          [(ngModel)]="selectedSort"
+          (onChange)="onSortChange($event.value)"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Ordenar por"
+          class="min-w-[200px]"
+        ></p-select>
       </div>
     </ng-template>
 
