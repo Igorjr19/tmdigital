@@ -41,6 +41,15 @@
             [value]="leadsFacade.searchQuery()"
             class="w-full"
           />
+          <p-select
+            [options]="statusOptions"
+            [(ngModel)]="selectedStatus"
+            (onChange)="onStatusChange($event.value)"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Filtrar por Status"
+            class="mr-2 min-w-[150px]"
+          ></p-select>
         </span>
         <p-select
           [options]="sortOptions"

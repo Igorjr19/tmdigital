@@ -101,7 +101,16 @@ export class LeadListComponent {
     { label: 'Menor Potencial', value: 'estimatedPotential_ASC' },
   ];
 
+  statusOptions = [
+    { label: 'Todos', value: undefined },
+    ...Object.entries(I18N.LEAD.STATUS).map(([value, label]) => ({
+      label,
+      value: value as LeadDto.StatusEnum,
+    })),
+  ];
+
   selectedSort = 'createdAt_DESC';
+  selectedStatus: LeadDto.StatusEnum | undefined = undefined;
 
   onSortChange(value: string) {
     const [sortBy, sortOrder] = value.split('_') as [
@@ -109,6 +118,10 @@ export class LeadListComponent {
       'ASC' | 'DESC',
     ];
     this.leadsFacade.loadLeads({ sortBy, sortOrder });
+  }
+
+  onStatusChange(value: LeadDto.StatusEnum | undefined) {
+    this.leadsFacade.loadLeads({ status: value, page: 1 });
   }
 
   onSearch(event: Event) {
