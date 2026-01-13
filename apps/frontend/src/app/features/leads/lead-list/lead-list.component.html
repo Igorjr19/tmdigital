@@ -59,7 +59,6 @@
         <th>{{ I18N.LEAD.LIST.HEADERS.NAME }}</th>
         <th>{{ I18N.LEAD.LIST.HEADERS.DOCUMENT }}</th>
         <th>{{ I18N.LEAD.LIST.HEADERS.STATUS }}</th>
-        <th>{{ I18N.LEAD.LIST.HEADERS.AREA }}</th>
         <th>{{ I18N.LEAD.LIST.HEADERS.POTENTIAL }}</th>
         <th class="text-center">{{ I18N.COMMON.ACTIONS }}</th>
       </tr>
@@ -79,7 +78,6 @@
             [severity]="getSeverity(lead.status)"
           ></p-tag>
         </td>
-        <td>{{ lead.area || '-' }}</td>
         <td>{{ lead.estimatedPotential | currency: 'BRL' }}</td>
         <td class="text-center">
           <div class="flex gap-2 justify-content-center">

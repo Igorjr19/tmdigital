@@ -115,10 +115,16 @@ export const I18N = {
       ACTIVE_LEADS: 'Leads Ativos',
       CONVERTED_LEADS: 'Leads Convertidos',
       ESTIMATED_POTENTIAL: 'Potencial Estimado',
+      STALE_LEADS: 'Leads Estagnados (> 15 dias)',
+      PLANTING_ALERTS: 'Culturas em Época de Plantio',
+      MARKET_SHARE: 'Market Share (Fornecedores)',
+      FORECAST: 'Previsão de Vendas (Ponderado)',
     },
     CHARTS: {
       LEADS_BY_STATUS: 'Leads por Status',
       LEADS_EVOLUTION: 'Evolução de Leads',
+      MARKET_SHARE: 'Distribuição de Market Share',
+      FORECAST: 'Quantidade de Leads por Status',
     },
   },
 };

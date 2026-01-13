@@ -3,13 +3,13 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
-  EnvironmentInjector,
-  OnInit,
-  ViewChild,
   createComponent,
   effect,
+  ElementRef,
+  EnvironmentInjector,
   inject,
+  OnInit,
+  ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as leaflet from 'leaflet';
@@ -76,21 +76,6 @@ export class MapViewComponent implements OnInit, AfterViewInit {
 
     this.markers = leaflet.layerGroup().addTo(this.map);
 
-    const iconRetinaUrl = 'assets/marker-icon-2x.png';
-    const iconUrl = 'assets/marker-icon.png';
-    const shadowUrl = 'assets/marker-shadow.png';
-    const iconDefault = leaflet.icon({
-      iconRetinaUrl,
-      iconUrl,
-      shadowUrl,
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      tooltipAnchor: [16, -28],
-      shadowSize: [41, 41],
-    });
-    leaflet.Marker.prototype.options.icon = iconDefault;
-
     this.updateMarkers(this.leadsFacade.allProperties());
   }
 
@@ -112,7 +97,16 @@ export class MapViewComponent implements OnInit, AfterViewInit {
         const [lng, lat] = loc.coordinates;
         const status = prop.leadStatus || '';
 
-        const marker = leaflet.marker([lat, lng]);
+        const color = this.getStatusColor(status);
+        const markerIcon = leaflet.divIcon({
+          className: 'custom-div-icon',
+          html: `<i class="pi pi-map-marker" style="color: ${color}; font-size: 24px; text-shadow: 0 0 2px #fff;"></i>`,
+          iconSize: [24, 34],
+          iconAnchor: [12, 34],
+          popupAnchor: [0, -34],
+        });
+
+        const marker = leaflet.marker([lat, lng], { icon: markerIcon });
 
         const componentRef = createComponent(MapPopupComponent, {
           environmentInjector: this.injector,
@@ -159,5 +153,22 @@ export class MapViewComponent implements OnInit, AfterViewInit {
     this.ref!.onClose.subscribe(() => {
       this.leadsFacade.loadAllLeadsForDashboard();
     });
+  }
+
+  private getStatusColor(status: string): string {
+    switch (status) {
+      case 'NEW':
+        return '#66BB6A';
+      case 'CONTACTED':
+        return '#FFA726';
+      case 'QUALIFIED':
+        return '#42A5F5';
+      case 'CONVERTED':
+        return '#66BB6A';
+      case 'LOST':
+        return '#EF5350';
+      default:
+        return '#757575';
+    }
   }
 }

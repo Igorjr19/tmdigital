@@ -14,7 +14,7 @@ export interface DashboardForecastDto {
    */
   totalPotential: number;
   /**
-   * Weighted revenue forecast based on lead probability (Status).
+   * Count of leads by status.
    */
-  weightedForecast: number;
+  countByStatus: object;
 }
