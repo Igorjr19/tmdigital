@@ -101,7 +101,7 @@ export class LeadDialogComponent implements OnInit {
   }
 
   onSaved() {
-    this.loadLead(); // Reload data to refresh VIEW
+    this.loadLead();
     this.mode.set('VIEW');
   }
 

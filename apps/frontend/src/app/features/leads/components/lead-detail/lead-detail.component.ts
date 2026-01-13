@@ -7,15 +7,26 @@ import {
   signal,
 } from '@angular/core';
 import { LeadDto } from '../../../../api/model/models';
+import { DocumentPipe } from '../../../../core/pipes/document.pipe';
 import { LeadWithProperties } from '../../models/lead.extension';
 import { LeadPropertiesComponent } from '../lead-properties/lead-properties.component';
 
+import { CurrencyPipe } from '@angular/common';
+import { DialogModule } from 'primeng/dialog';
+import { TagModule } from 'primeng/tag';
 import { I18N } from '../../../../core/i18n/i18n';
 
 @Component({
   selector: 'app-lead-detail',
   standalone: true,
-  imports: [CommonModule, LeadPropertiesComponent],
+  imports: [
+    CommonModule,
+    DialogModule,
+    TagModule,
+    LeadPropertiesComponent,
+    CurrencyPipe,
+    DocumentPipe,
+  ],
   template: `
     <div class="flex flex-column gap-3 p-3">
       <div class="grid">
@@ -30,7 +41,7 @@ import { I18N } from '../../../../core/i18n/i18n';
             I18N.LEAD.FORM.LABELS.DOCUMENT
           }}</span>
           <span class="text-900 font-medium text-xl">{{
-            lead()?.document
+            lead()?.document | document
           }}</span>
         </div>
         <div class="col-12 md:col-6">

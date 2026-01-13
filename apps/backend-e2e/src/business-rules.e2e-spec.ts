@@ -18,9 +18,10 @@ describe('Business Rules Adjustments (E2E)', () => {
   });
 
   describe('Lead Reactivation', () => {
+    const uniqueDoc = `9${Date.now().toString().slice(-10)}`;
     const leadData: CreateLeadDto = {
       name: 'Reactivation Candidate',
-      document: '99988877700',
+      document: uniqueDoc,
       estimatedPotential: 50000,
       status: LeadStatus.NEW,
     };
@@ -58,11 +59,13 @@ describe('Business Rules Adjustments (E2E)', () => {
 
   describe('Lead Document Update', () => {
     it('should allow updating the lead document', async () => {
+      const uniqueDoc = `1${Date.now().toString().slice(-10)}`;
+      const newDoc = `2${Date.now().toString().slice(-10)}`;
       const res = await request(app.getHttpServer())
         .post('/api/leads')
         .send({
           name: 'Doc Update Test',
-          document: '11111111111',
+          document: uniqueDoc,
           estimatedPotential: 1000,
         })
         .expect(201);
@@ -70,23 +73,24 @@ describe('Business Rules Adjustments (E2E)', () => {
 
       await request(app.getHttpServer())
         .patch(`/api/leads/${id}`)
-        .send({ document: '22222222222' })
+        .send({ document: newDoc })
         .expect(200);
 
       const getRes = await request(app.getHttpServer())
         .get(`/api/leads/${id}`)
         .expect(200);
-      expect(getRes.body.document).toBe('22222222222');
+      expect(getRes.body.document).toBe(newDoc);
     });
   });
 
   describe('Optional Crop Productions', () => {
     it('should create property without crop productions', async () => {
+      const uniqueDoc = `3${Date.now().toString().slice(-10)}`;
       const leadRes = await request(app.getHttpServer())
         .post('/api/leads')
         .send({
           name: 'Crop Test Lead',
-          document: '33333333300',
+          document: uniqueDoc,
           estimatedPotential: 0,
         })
         .expect(201);

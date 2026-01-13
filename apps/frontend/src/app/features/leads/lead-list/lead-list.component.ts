@@ -23,6 +23,7 @@ import {
   switchMap,
 } from 'rxjs';
 import { LeadDto } from '../../../api/model/models';
+import { DocumentPipe } from '../../../core/pipes/document.pipe';
 import { LeadDialogComponent } from '../components/lead-dialog/lead-dialog.component';
 import { LeadsFacadeService } from '../services/leads.facade';
 
@@ -40,6 +41,7 @@ import { I18N } from '../../../core/i18n/i18n';
     ConfirmDialogModule,
     ToastModule,
     TooltipModule,
+    DocumentPipe,
     FormsModule,
   ],
   providers: [ConfirmationService, MessageService, DialogService],

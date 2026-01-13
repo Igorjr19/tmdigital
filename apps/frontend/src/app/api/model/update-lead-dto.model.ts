@@ -14,6 +14,10 @@ export interface UpdateLeadDto {
    */
   name?: string;
   /**
+   * Documento do lead (CPF/CNPJ)
+   */
+  document?: string;
+  /**
    * Fornecedor atual do lead
    */
   currentSupplier?: string;
