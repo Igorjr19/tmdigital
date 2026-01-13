@@ -65,4 +65,35 @@ describe('FindAllLeadsUseCase', () => {
     expect(leadRepository.findAll).toHaveBeenCalledWith(query);
     expect(result).toEqual(mockResponse);
   });
+
+  it('should pass sorting parameters to repository', async () => {
+    const mockResponse = { items: [], total: 0 };
+    mockLeadRepository.findAll.mockResolvedValue(mockResponse);
+
+    const query: GetLeadsDto = {
+      page: 1,
+      limit: 10,
+      sortBy: 'estimatedPotential',
+      sortOrder: 'DESC',
+    };
+
+    await useCase.execute(query);
+
+    expect(leadRepository.findAll).toHaveBeenCalledWith(query);
+  });
+
+  it('should pass document filter to repository', async () => {
+    const mockResponse = { items: [], total: 0 };
+    mockLeadRepository.findAll.mockResolvedValue(mockResponse);
+
+    const query: GetLeadsDto = {
+      page: 1,
+      limit: 10,
+      document: '123',
+    };
+
+    await useCase.execute(query);
+
+    expect(leadRepository.findAll).toHaveBeenCalledWith(query);
+  });
 });

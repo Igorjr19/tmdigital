@@ -13,6 +13,14 @@ export class GetLeadsDto extends PaginationDto {
   name?: string;
 
   @ApiPropertyOptional({
+    description: 'Filtrar leads pelo documento (CPF/CNPJ - busca parcial)',
+    example: '12345678901',
+  })
+  @IsOptional()
+  @IsString()
+  document?: string;
+
+  @ApiPropertyOptional({
     description: 'Filtrar leads por status específico',
     enum: LeadStatus,
     example: LeadStatus.QUALIFIED,
@@ -20,4 +28,22 @@ export class GetLeadsDto extends PaginationDto {
   @IsOptional()
   @IsEnum(LeadStatus)
   status?: LeadStatus;
+
+  @ApiPropertyOptional({
+    description: 'Campo para ordenação',
+    enum: ['name', 'createdAt', 'estimatedPotential'],
+    example: 'createdAt',
+  })
+  @IsOptional()
+  @IsString()
+  sortBy?: 'name' | 'createdAt' | 'estimatedPotential';
+
+  @ApiPropertyOptional({
+    description: 'Direção da ordenação',
+    enum: ['ASC', 'DESC'],
+    example: 'DESC',
+  })
+  @IsOptional()
+  @IsString()
+  sortOrder?: 'ASC' | 'DESC';
 }

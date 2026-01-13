@@ -101,6 +101,12 @@ export class TypeOrmLeadRepository implements LeadRepository {
       query.andWhere('lead.name ILIKE :name', { name: `%${params.name}%` });
     }
 
+    if (params?.document) {
+      query.andWhere('lead.document ILIKE :document', {
+        document: `%${params.document}%`,
+      });
+    }
+
     if (params?.status) {
       query.andWhere('lead.status = :status', { status: params.status });
     }
@@ -108,7 +114,10 @@ export class TypeOrmLeadRepository implements LeadRepository {
     const [schemas, total] = await query
       .skip(skip)
       .take(take)
-      .orderBy('lead.createdAt', 'DESC')
+      .orderBy(
+        params?.sortBy ? `lead.${params.sortBy}` : 'lead.createdAt',
+        params?.sortOrder || 'DESC',
+      )
       .getManyAndCount();
 
     return {
