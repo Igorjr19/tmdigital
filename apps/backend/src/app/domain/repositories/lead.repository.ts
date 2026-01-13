@@ -13,9 +13,27 @@ export abstract class LeadRepository {
   abstract findNearby(
     lat: number,
     long: number,
-    rangeKm: number,
-    params?: PaginationDto,
+    range: number,
+    pagination: PaginationDto,
   ): Promise<ItemCount<Lead>>;
+
+  abstract findStale(daysSinceUpdate: number): Promise<Lead[]>;
+
+  abstract getMarketShare(): Promise<
+    { supplier: string; count: number; percentage: number }[]
+  >;
+
+  abstract getGeoStats(): Promise<{
+    totalArea: number;
+    convertedArea: number;
+    heatmap: { lat: number; lng: number; weight: number }[];
+  }>;
+
+  abstract getForecast(): Promise<{
+    totalPotential: number;
+    weightedForecast: number;
+  }>;
+
   abstract findAll(params?: PaginationDto): Promise<ItemCount<Lead>>;
   abstract update(lead: Lead): Promise<Lead>;
   abstract delete(id: string): Promise<void>;

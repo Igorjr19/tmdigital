@@ -23,7 +23,9 @@ describe('GeoSpatial (e2e)', () => {
         status: 'NEW',
         estimatedPotential: 0,
       });
+
     leadNearId = lead1.body.id;
+
     await request(app.getHttpServer())
       .post(`/api/leads/${leadNearId}/properties`)
       .send({
@@ -44,7 +46,9 @@ describe('GeoSpatial (e2e)', () => {
         status: 'NEW',
         estimatedPotential: 0,
       });
+
     leadFarId = lead2.body.id;
+
     await request(app.getHttpServer())
       .post(`/api/leads/${leadFarId}/properties`)
       .send({
@@ -77,6 +81,7 @@ describe('GeoSpatial (e2e)', () => {
       .expect(200);
 
     const leads = res.body.data;
+
     const foundNear = leads.find((l: { id: string }) => l.id === leadNearId);
     const foundFar = leads.find((l: { id: string }) => l.id === leadFarId);
 
@@ -95,6 +100,7 @@ describe('GeoSpatial (e2e)', () => {
       .expect(200);
 
     const leads = res.body.data;
+
     const foundNear = leads.find((l: { id: string }) => l.id === leadNearId);
     const foundFar = leads.find((l: { id: string }) => l.id === leadFarId);
 

@@ -36,7 +36,7 @@ export class SeedService implements OnApplicationBootstrap {
       cultures = await this.createCultures();
     } else {
       this.logger.log('Cultures already seeded.');
-      cultures = await this.cultureRepository.find();
+      cultures = await this.cultureRepository.findAll();
     }
 
     const leadsCount = (await this.leadRepository.findAll({ limit: 1 })).total;
@@ -49,17 +49,22 @@ export class SeedService implements OnApplicationBootstrap {
   }
 
   private async createCultures(): Promise<Culture[]> {
-    const cultureNames = ['Soja', 'Milho', 'Algodão'];
+    const culturesData = [
+      { name: 'Soja', months: [10, 11, 12, 1] },
+      { name: 'Milho', months: [1, 2, 3, 9, 10] },
+      { name: 'Algodão', months: [11, 12, 1] },
+    ];
     const createdCultures: Culture[] = [];
 
-    for (const name of cultureNames) {
+    for (const data of culturesData) {
       const culture = Culture.create({
-        name,
+        name: data.name,
         currentPrice: faker.number.float({
           min: 50,
           max: 200,
           fractionDigits: 2,
         }),
+        plantingMonths: data.months,
       });
 
       const savedCulture = await this.cultureRepository.save(culture);

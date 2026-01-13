@@ -5,6 +5,7 @@ import { GetLeadsDto } from '../../../application/dtos/get-leads.dto';
 import { PaginationDto } from '../../../application/dtos/pagination.dto';
 import { ItemCount } from '../../../application/interfaces/item-count.interface';
 import { Lead } from '../../../domain/entities/lead.entity';
+import { LeadStatus } from '../../../domain/enums/lead-status.enum';
 import { LeadRepository } from '../../../domain/repositories/lead.repository';
 import { HandleDbErrors } from '../decorators/handle-db-errors.decorator';
 import { LeadMapper } from '../mappers/lead.mapper';
@@ -80,6 +81,7 @@ export class TypeOrmLeadRepository implements LeadRepository {
         long,
         range: range,
       })
+      .orderBy('lead.createdAt', 'DESC')
       .skip(skip)
       .take(take)
       .getManyAndCount();
@@ -123,6 +125,110 @@ export class TypeOrmLeadRepository implements LeadRepository {
     return {
       items: schemas.map(LeadMapper.toDomain),
       total,
+    };
+  }
+
+  async findStale(daysSinceUpdate: number): Promise<Lead[]> {
+    const date = new Date();
+    date.setDate(date.getDate() - daysSinceUpdate);
+
+    const schemas = await this.typeOrmRepository
+      .createQueryBuilder('lead')
+      .where('lead.status IN (:...statuses)', {
+        statuses: ['IN_NEGOTIATION', 'PROPOSAL', 'QUALIFIED'],
+      })
+      .andWhere('lead.updatedAt < :date', { date })
+      .getMany();
+
+    return schemas.map(LeadMapper.toDomain);
+  }
+
+  async getMarketShare(): Promise<
+    { supplier: string; count: number; percentage: number }[]
+  > {
+    const total = await this.typeOrmRepository.count();
+    const raw = await this.typeOrmRepository
+      .createQueryBuilder('lead')
+      .select('lead.currentSupplier', 'supplier')
+      .addSelect('COUNT(lead.id)', 'count')
+      .where('lead.currentSupplier IS NOT NULL')
+      .groupBy('lead.currentSupplier')
+      .getRawMany();
+
+    return raw.map((r) => ({
+      supplier: r.supplier,
+      count: Number(r.count),
+      percentage: total > 0 ? (Number(r.count) / total) * 100 : 0,
+    }));
+  }
+
+  async getGeoStats(): Promise<{
+    totalArea: number;
+    convertedArea: number;
+    heatmap: { lat: number; lng: number; weight: number }[];
+  }> {
+    const query = this.typeOrmRepository.manager
+      .createQueryBuilder('rural_properties', 'rp')
+      .leftJoin('leads', 'l', 'l.id = rp.lead_id');
+
+    const totalAreaResult = await query
+      .select('SUM(rp.productive_area_hectares)', 'total')
+      .getRawOne();
+
+    const convertedAreaResult = await this.typeOrmRepository.manager
+      .createQueryBuilder('rural_properties', 'rp')
+      .leftJoin('leads', 'l', 'l.id = rp.lead_id')
+      .where('l.status IN (:...statuses)', { statuses: [LeadStatus.CONVERTED] })
+      .select('SUM(rp.productive_area_hectares)', 'total')
+      .getRawOne();
+
+    const heatmapSafe = await this.typeOrmRepository
+      .createQueryBuilder('lead')
+      .leftJoin('lead.properties', 'property')
+      .select('ST_Y(property.location::geometry)', 'lat')
+      .addSelect('ST_X(property.location::geometry)', 'lng')
+      .addSelect('lead.estimatedPotential', 'weight')
+      .where('property.location IS NOT NULL')
+      .getRawMany();
+
+    return {
+      totalArea: Number(totalAreaResult?.total || 0),
+      convertedArea: Number(convertedAreaResult?.total || 0),
+      heatmap: heatmapSafe.map((r) => ({
+        lat: r.lat,
+        lng: r.lng,
+        weight: Number(r.weight || 0),
+      })),
+    };
+  }
+
+  async getForecast(): Promise<{
+    totalPotential: number;
+    weightedForecast: number;
+  }> {
+    const raw = await this.typeOrmRepository
+      .createQueryBuilder('lead')
+      .select('SUM(lead.estimatedPotential)', 'total')
+      .addSelect(
+        `SUM(
+          CASE 
+            WHEN lead.status = 'NEW' THEN lead.estimatedPotential * 0.10
+            WHEN lead.status = 'CONTACTED' THEN lead.estimatedPotential * 0.30
+            WHEN lead.status = 'QUALIFIED' THEN lead.estimatedPotential * 0.50
+            WHEN lead.status = 'PROPOSAL' THEN lead.estimatedPotential * 0.60
+            WHEN lead.status = 'IN_NEGOTIATION' THEN lead.estimatedPotential * 0.80
+            WHEN lead.status = 'CONVERTED' THEN lead.estimatedPotential * 1.00
+            ELSE 0 
+          END
+        )`,
+        'weighted',
+      )
+      .where('lead.deletedAt IS NULL')
+      .getRawOne();
+
+    return {
+      totalPotential: Number(raw?.total || 0),
+      weightedForecast: Number(raw?.weighted || 0),
     };
   }
 

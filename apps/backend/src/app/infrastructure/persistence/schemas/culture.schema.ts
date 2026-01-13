@@ -8,4 +8,7 @@ export class CultureSchema extends BaseSchema {
 
   @Column({ name: 'current_price', type: 'decimal', precision: 10, scale: 2 })
   currentPrice: number;
+
+  @Column({ name: 'planting_months', type: 'int', array: true, default: '{}' })
+  plantingMonths: number[];
 }

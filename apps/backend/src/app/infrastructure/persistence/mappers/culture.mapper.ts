@@ -7,6 +7,7 @@ export class CultureMapper {
       id: schema.id,
       name: schema.name,
       currentPrice: Number(schema.currentPrice),
+      plantingMonths: schema.plantingMonths,
       createdAt: schema.createdAt,
       updatedAt: schema.updatedAt,
     });
@@ -17,6 +18,7 @@ export class CultureMapper {
     schema.id = domain.id;
     schema.name = domain.name;
     schema.currentPrice = domain.currentPrice;
+    schema.plantingMonths = domain.plantingMonths;
     schema.createdAt = domain.createdAt;
     schema.updatedAt = domain.updatedAt;
     return schema;

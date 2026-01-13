@@ -59,12 +59,6 @@ describe('RuralPropertyController (e2e)', () => {
         .send(propertyData)
         .send(propertyData);
 
-      if (response.status !== 201) {
-        console.error(
-          'Create Property Failed:',
-          JSON.stringify(response.body, null, 2),
-        );
-      }
       expect(response.status).toBe(201);
 
       expect(response.body).toHaveProperty('id');
