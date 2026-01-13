@@ -12,8 +12,11 @@ export class CreateLeadUseCase implements UseCase<CreateLeadDto, Lead> {
   constructor(private readonly leadRepository: LeadRepository) {}
 
   async execute(input: CreateLeadDto): Promise<Lead> {
+    const sanitizedDocument = input.document.replace(/\D/g, '');
     const existingLeadIncludingDeleted =
-      await this.leadRepository.findIncludingDeletedByDocument(input.document);
+      await this.leadRepository.findIncludingDeletedByDocument(
+        sanitizedDocument,
+      );
 
     if (existingLeadIncludingDeleted) {
       if (existingLeadIncludingDeleted.deletedAt) {

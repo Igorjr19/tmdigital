@@ -30,7 +30,7 @@ export class Lead extends BaseEntity {
   private constructor(props: LeadProps) {
     super(props.id, props.createdAt, props.updatedAt, props.deletedAt);
     this._name = props.name;
-    this._document = props.document;
+    this._document = this.sanitizeDocument(props.document);
     this._currentSupplier = props.currentSupplier;
     this._status = props.status;
     this._estimatedPotential = props.estimatedPotential;
@@ -104,7 +104,7 @@ export class Lead extends BaseEntity {
     }
 
     if (props.document) {
-      this._document = props.document;
+      this._document = this.sanitizeDocument(props.document);
     }
 
     if (props.currentSupplier !== undefined) {
@@ -138,5 +138,9 @@ export class Lead extends BaseEntity {
 
   restore(): void {
     this.deletedAt = undefined;
+  }
+
+  private sanitizeDocument(doc: string): string {
+    return doc.replace(/\D/g, '');
   }
 }

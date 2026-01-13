@@ -22,5 +22,5 @@ export abstract class BaseSchema {
   @DeleteDateColumn({
     name: 'deleted_at',
   })
-  deletedAt?: Date;
+  deletedAt?: Date | null;
 }

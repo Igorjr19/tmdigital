@@ -14,7 +14,7 @@ export class LeadMapper {
       notes: schema.notes,
       createdAt: schema.createdAt,
       updatedAt: schema.updatedAt,
-      deletedAt: schema.deletedAt,
+      deletedAt: schema.deletedAt ?? undefined,
       properties: schema.properties
         ? schema.properties.map(RuralPropertyMapper.toDomain)
         : [],
@@ -32,7 +32,7 @@ export class LeadMapper {
     schema.notes = domain.notes;
     schema.createdAt = domain.createdAt;
     schema.updatedAt = domain.updatedAt;
-    schema.deletedAt = domain.deletedAt;
+    schema.deletedAt = domain.deletedAt ?? null;
     schema.properties = domain.properties
       ? domain.properties.map(RuralPropertyMapper.toPersistence)
       : [];
