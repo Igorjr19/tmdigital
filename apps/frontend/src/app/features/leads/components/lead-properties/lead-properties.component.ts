@@ -57,6 +57,7 @@ export class LeadPropertiesComponent {
 
   visible = false;
   loading = signal(false);
+  editingPropertyId: string | null = null;
   form: FormGroup;
 
   constructor() {
@@ -95,7 +96,42 @@ export class LeadPropertiesComponent {
 
   showDialog() {
     this.visible = true;
+    this.editingPropertyId = null;
     this.form.reset();
+    this.cropProductions.clear();
+  }
+
+  edit(property: RuralPropertyDto) {
+    this.visible = true;
+    this.editingPropertyId = property.id;
+    this.form.patchValue({
+      name: property.name,
+      city: property.city,
+      state: property.state,
+      totalAreaHectares: property.totalAreaHectares,
+      productiveAreaHectares: property.productiveAreaHectares,
+
+      latitude: property.location?.coordinates?.[1],
+      longitude: property.location?.coordinates?.[0],
+    });
+
+    this.cropProductions.clear();
+    if (property.cropProductions) {
+      property.cropProductions.forEach((crop) => {
+        this.cropProductions.push(
+          this.fb.group({
+            cultureId: [
+              crop.cultureId || crop.culture?.id,
+              Validators.required,
+            ],
+            plantedAreaHectares: [
+              crop.plantedAreaHectares,
+              Validators.required,
+            ],
+          }),
+        );
+      });
+    }
   }
 
   save() {
@@ -117,12 +153,23 @@ export class LeadPropertiesComponent {
     };
 
     this.loading.set(true);
-    this.leadsFacade.addProperty(this.leadId, dto).subscribe({
+
+    const request$ = this.editingPropertyId
+      ? this.leadsFacade.updateProperty(
+          this.leadId,
+          this.editingPropertyId,
+          dto,
+        )
+      : this.leadsFacade.addProperty(this.leadId, dto);
+
+    request$.subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
-          detail: 'Propriedade adicionada com sucesso',
+          detail: this.editingPropertyId
+            ? 'Propriedade atualizada com sucesso'
+            : 'Propriedade adicionada com sucesso',
         });
         this.visible = false;
         this.loading.set(false);
@@ -131,7 +178,7 @@ export class LeadPropertiesComponent {
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: 'Erro ao adicionar propriedade',
+          detail: 'Erro ao salvar propriedade',
         });
         this.loading.set(false);
       },

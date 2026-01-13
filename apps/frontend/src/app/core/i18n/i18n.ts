@@ -39,7 +39,7 @@ export const I18N = {
       NEW_LEAD: 'Novo Lead',
       HEADERS: {
         NAME: 'Nome',
-        DOCUMENT: 'Documento',
+        DOCUMENT: 'CPF/CNPJ',
         STATUS: 'Status',
         AREA: 'Área',
         POTENTIAL: 'Potencial',
@@ -53,7 +53,7 @@ export const I18N = {
       TITLE_EDIT: 'Editar Lead',
       LABELS: {
         NAME: 'Nome',
-        DOCUMENT: 'Documento',
+        DOCUMENT: 'CPF/CNPJ',
         STATUS: 'Status',
         POTENTIAL: 'Potencial (R$)',
         CURRENT_SUPPLIER: 'Fornecedor Atual',

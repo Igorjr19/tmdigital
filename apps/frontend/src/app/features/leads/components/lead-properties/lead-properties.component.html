@@ -37,13 +37,21 @@
         </td>
         <td>
           @if (!readOnly) {
-            <p-button
-              icon="pi pi-trash"
-              severity="danger"
-              [text]="true"
-              [rounded]="true"
-              (onClick)="confirmDelete(property)"
-            ></p-button>
+            <div class="flex gap-2">
+              <p-button
+                icon="pi pi-pencil"
+                [text]="true"
+                [rounded]="true"
+                (onClick)="edit(property)"
+              ></p-button>
+              <p-button
+                icon="pi pi-trash"
+                severity="danger"
+                [text]="true"
+                [rounded]="true"
+                (onClick)="confirmDelete(property)"
+              ></p-button>
+            </div>
           }
         </td>
       </tr>
@@ -56,7 +64,7 @@
   </p-table>
 
   <p-dialog
-    header="Nova Propriedade"
+    [header]="editingPropertyId ? 'Editar Propriedade' : 'Nova Propriedade'"
     [(visible)]="visible"
     [modal]="true"
     [style]="{ width: '50vw' }"

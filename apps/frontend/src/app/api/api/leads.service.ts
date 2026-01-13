@@ -32,6 +32,8 @@ import { LeadDto } from '../model/lead-dto.model';
 // @ts-ignore
 import { LeadScoreDto } from '../model/lead-score-dto.model';
 // @ts-ignore
+import { RuralPropertyDto } from '../model/rural-property-dto.model';
+// @ts-ignore
 import { UpdateLeadDto } from '../model/update-lead-dto.model';
 
 // @ts-ignore
@@ -40,6 +42,7 @@ import { Configuration } from '../configuration';
 import { BaseService } from '../api.base.service';
 
 export interface LeadControllerAddPropertyRequestParams {
+  /** ID do Lead (UUID) */
   id: string;
   createRuralPropertyDto: CreateRuralPropertyDto;
 }
@@ -102,6 +105,7 @@ export class LeadsService extends BaseService {
   }
 
   /**
+   * Adiciona uma propriedade rural a um Lead
    * @endpoint post /api/leads/{id}/properties
    * @param requestParameters
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -113,37 +117,37 @@ export class LeadsService extends BaseService {
     observe?: 'body',
     reportProgress?: boolean,
     options?: {
-      httpHeaderAccept?: undefined;
+      httpHeaderAccept?: 'application/json';
       context?: HttpContext;
       transferCache?: boolean;
     },
-  ): Observable<any>;
+  ): Observable<RuralPropertyDto>;
   public leadControllerAddProperty(
     requestParameters: LeadControllerAddPropertyRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: {
-      httpHeaderAccept?: undefined;
+      httpHeaderAccept?: 'application/json';
       context?: HttpContext;
       transferCache?: boolean;
     },
-  ): Observable<HttpResponse<any>>;
+  ): Observable<HttpResponse<RuralPropertyDto>>;
   public leadControllerAddProperty(
     requestParameters: LeadControllerAddPropertyRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: {
-      httpHeaderAccept?: undefined;
+      httpHeaderAccept?: 'application/json';
       context?: HttpContext;
       transferCache?: boolean;
     },
-  ): Observable<HttpEvent<any>>;
+  ): Observable<HttpEvent<RuralPropertyDto>>;
   public leadControllerAddProperty(
     requestParameters: LeadControllerAddPropertyRequestParams,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: {
-      httpHeaderAccept?: undefined;
+      httpHeaderAccept?: 'application/json';
       context?: HttpContext;
       transferCache?: boolean;
     },
@@ -167,7 +171,8 @@ export class LeadsService extends BaseService {
     let localVarHeaders = this.defaultHeaders;
 
     const localVarHttpHeaderAcceptSelected: string | undefined =
-      options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([]);
+      options?.httpHeaderAccept ??
+      this.configuration.selectHeaderAccept(['application/json']);
     if (localVarHttpHeaderAcceptSelected !== undefined) {
       localVarHeaders = localVarHeaders.set(
         'Accept',
@@ -206,18 +211,22 @@ export class LeadsService extends BaseService {
 
     let localVarPath = `/api/leads/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}/properties`;
     const { basePath, withCredentials } = this.configuration;
-    return this.httpClient.request<any>('post', `${basePath}${localVarPath}`, {
-      context: localVarHttpContext,
-      body: createRuralPropertyDto,
-      responseType: <any>responseType_,
-      ...(withCredentials ? { withCredentials } : {}),
-      headers: localVarHeaders,
-      observe: observe,
-      ...(localVarTransferCache !== undefined
-        ? { transferCache: localVarTransferCache }
-        : {}),
-      reportProgress: reportProgress,
-    });
+    return this.httpClient.request<RuralPropertyDto>(
+      'post',
+      `${basePath}${localVarPath}`,
+      {
+        context: localVarHttpContext,
+        body: createRuralPropertyDto,
+        responseType: <any>responseType_,
+        ...(withCredentials ? { withCredentials } : {}),
+        headers: localVarHeaders,
+        observe: observe,
+        ...(localVarTransferCache !== undefined
+          ? { transferCache: localVarTransferCache }
+          : {}),
+        reportProgress: reportProgress,
+      },
+    );
   }
 
   /**

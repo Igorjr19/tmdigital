@@ -22,6 +22,8 @@ import { Observable } from 'rxjs';
 import { OpenApiHttpParams, QueryParamStyle } from '../query.params';
 
 // @ts-ignore
+import { RuralPropertyDto } from '../model/rural-property-dto.model';
+// @ts-ignore
 import { UpdateRuralPropertyDto } from '../model/update-rural-property-dto.model';
 
 // @ts-ignore
@@ -29,13 +31,29 @@ import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
 import { BaseService } from '../api.base.service';
 
-export interface RuralPropertyControllerRemoveRequestParams {
+export interface RuralPropertyControllerFindAllRequestParams {
+  /** ID do Lead (UUID) */
   leadId: string;
+}
+
+export interface RuralPropertyControllerFindOneRequestParams {
+  /** ID do Lead proprietário (UUID) */
+  leadId: string;
+  /** ID da propriedade (UUID) */
+  id: string;
+}
+
+export interface RuralPropertyControllerRemoveRequestParams {
+  /** ID do Lead proprietário (UUID) */
+  leadId: string;
+  /** ID da propriedade (UUID) */
   id: string;
 }
 
 export interface RuralPropertyControllerUpdateRequestParams {
+  /** ID do Lead proprietário (UUID) */
   leadId: string;
+  /** ID da propriedade (UUID) */
   id: string;
   updateRuralPropertyDto: UpdateRuralPropertyDto;
 }
@@ -53,6 +71,221 @@ export class RuralPropertiesService extends BaseService {
   }
 
   /**
+   * Lista todas as propriedades rurais de um Lead
+   * @endpoint get /api/leads/{leadId}/properties
+   * @param requestParameters
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   * @param options additional options
+   */
+  public ruralPropertyControllerFindAll(
+    requestParameters: RuralPropertyControllerFindAllRequestParams,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+      transferCache?: boolean;
+    },
+  ): Observable<Array<RuralPropertyDto>>;
+  public ruralPropertyControllerFindAll(
+    requestParameters: RuralPropertyControllerFindAllRequestParams,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+      transferCache?: boolean;
+    },
+  ): Observable<HttpResponse<Array<RuralPropertyDto>>>;
+  public ruralPropertyControllerFindAll(
+    requestParameters: RuralPropertyControllerFindAllRequestParams,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+      transferCache?: boolean;
+    },
+  ): Observable<HttpEvent<Array<RuralPropertyDto>>>;
+  public ruralPropertyControllerFindAll(
+    requestParameters: RuralPropertyControllerFindAllRequestParams,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+      transferCache?: boolean;
+    },
+  ): Observable<any> {
+    const leadId = requestParameters?.leadId;
+    if (leadId === null || leadId === undefined) {
+      throw new Error(
+        'Required parameter leadId was null or undefined when calling ruralPropertyControllerFindAll.',
+      );
+    }
+
+    let localVarHeaders = this.defaultHeaders;
+
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ??
+      this.configuration.selectHeaderAccept(['application/json']);
+    if (localVarHttpHeaderAcceptSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set(
+        'Accept',
+        localVarHttpHeaderAcceptSelected,
+      );
+    }
+
+    const localVarHttpContext: HttpContext =
+      options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+    let responseType_: 'text' | 'json' | 'blob' = 'json';
+    if (localVarHttpHeaderAcceptSelected) {
+      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+        responseType_ = 'text';
+      } else if (
+        this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)
+      ) {
+        responseType_ = 'json';
+      } else {
+        responseType_ = 'blob';
+      }
+    }
+
+    let localVarPath = `/api/leads/${this.configuration.encodeParam({ name: 'leadId', value: leadId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}/properties`;
+    const { basePath, withCredentials } = this.configuration;
+    return this.httpClient.request<Array<RuralPropertyDto>>(
+      'get',
+      `${basePath}${localVarPath}`,
+      {
+        context: localVarHttpContext,
+        responseType: <any>responseType_,
+        ...(withCredentials ? { withCredentials } : {}),
+        headers: localVarHeaders,
+        observe: observe,
+        ...(localVarTransferCache !== undefined
+          ? { transferCache: localVarTransferCache }
+          : {}),
+        reportProgress: reportProgress,
+      },
+    );
+  }
+
+  /**
+   * Busca uma propriedade rural por ID
+   * @endpoint get /api/leads/{leadId}/properties/{id}
+   * @param requestParameters
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   * @param options additional options
+   */
+  public ruralPropertyControllerFindOne(
+    requestParameters: RuralPropertyControllerFindOneRequestParams,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+      transferCache?: boolean;
+    },
+  ): Observable<RuralPropertyDto>;
+  public ruralPropertyControllerFindOne(
+    requestParameters: RuralPropertyControllerFindOneRequestParams,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+      transferCache?: boolean;
+    },
+  ): Observable<HttpResponse<RuralPropertyDto>>;
+  public ruralPropertyControllerFindOne(
+    requestParameters: RuralPropertyControllerFindOneRequestParams,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+      transferCache?: boolean;
+    },
+  ): Observable<HttpEvent<RuralPropertyDto>>;
+  public ruralPropertyControllerFindOne(
+    requestParameters: RuralPropertyControllerFindOneRequestParams,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+      transferCache?: boolean;
+    },
+  ): Observable<any> {
+    const leadId = requestParameters?.leadId;
+    if (leadId === null || leadId === undefined) {
+      throw new Error(
+        'Required parameter leadId was null or undefined when calling ruralPropertyControllerFindOne.',
+      );
+    }
+    const id = requestParameters?.id;
+    if (id === null || id === undefined) {
+      throw new Error(
+        'Required parameter id was null or undefined when calling ruralPropertyControllerFindOne.',
+      );
+    }
+
+    let localVarHeaders = this.defaultHeaders;
+
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ??
+      this.configuration.selectHeaderAccept(['application/json']);
+    if (localVarHttpHeaderAcceptSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set(
+        'Accept',
+        localVarHttpHeaderAcceptSelected,
+      );
+    }
+
+    const localVarHttpContext: HttpContext =
+      options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+    let responseType_: 'text' | 'json' | 'blob' = 'json';
+    if (localVarHttpHeaderAcceptSelected) {
+      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+        responseType_ = 'text';
+      } else if (
+        this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)
+      ) {
+        responseType_ = 'json';
+      } else {
+        responseType_ = 'blob';
+      }
+    }
+
+    let localVarPath = `/api/leads/${this.configuration.encodeParam({ name: 'leadId', value: leadId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}/properties/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+    const { basePath, withCredentials } = this.configuration;
+    return this.httpClient.request<RuralPropertyDto>(
+      'get',
+      `${basePath}${localVarPath}`,
+      {
+        context: localVarHttpContext,
+        responseType: <any>responseType_,
+        ...(withCredentials ? { withCredentials } : {}),
+        headers: localVarHeaders,
+        observe: observe,
+        ...(localVarTransferCache !== undefined
+          ? { transferCache: localVarTransferCache }
+          : {}),
+        reportProgress: reportProgress,
+      },
+    );
+  }
+
+  /**
+   * Remove uma propriedade rural
    * @endpoint delete /api/leads/{leadId}/properties/{id}
    * @param requestParameters
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -161,6 +394,7 @@ export class RuralPropertiesService extends BaseService {
   }
 
   /**
+   * Atualiza uma propriedade rural
    * @endpoint patch /api/leads/{leadId}/properties/{id}
    * @param requestParameters
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -172,37 +406,37 @@ export class RuralPropertiesService extends BaseService {
     observe?: 'body',
     reportProgress?: boolean,
     options?: {
-      httpHeaderAccept?: undefined;
+      httpHeaderAccept?: 'application/json';
       context?: HttpContext;
       transferCache?: boolean;
     },
-  ): Observable<any>;
+  ): Observable<RuralPropertyDto>;
   public ruralPropertyControllerUpdate(
     requestParameters: RuralPropertyControllerUpdateRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: {
-      httpHeaderAccept?: undefined;
+      httpHeaderAccept?: 'application/json';
       context?: HttpContext;
       transferCache?: boolean;
     },
-  ): Observable<HttpResponse<any>>;
+  ): Observable<HttpResponse<RuralPropertyDto>>;
   public ruralPropertyControllerUpdate(
     requestParameters: RuralPropertyControllerUpdateRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: {
-      httpHeaderAccept?: undefined;
+      httpHeaderAccept?: 'application/json';
       context?: HttpContext;
       transferCache?: boolean;
     },
-  ): Observable<HttpEvent<any>>;
+  ): Observable<HttpEvent<RuralPropertyDto>>;
   public ruralPropertyControllerUpdate(
     requestParameters: RuralPropertyControllerUpdateRequestParams,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: {
-      httpHeaderAccept?: undefined;
+      httpHeaderAccept?: 'application/json';
       context?: HttpContext;
       transferCache?: boolean;
     },
@@ -232,7 +466,8 @@ export class RuralPropertiesService extends BaseService {
     let localVarHeaders = this.defaultHeaders;
 
     const localVarHttpHeaderAcceptSelected: string | undefined =
-      options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([]);
+      options?.httpHeaderAccept ??
+      this.configuration.selectHeaderAccept(['application/json']);
     if (localVarHttpHeaderAcceptSelected !== undefined) {
       localVarHeaders = localVarHeaders.set(
         'Accept',
@@ -271,17 +506,21 @@ export class RuralPropertiesService extends BaseService {
 
     let localVarPath = `/api/leads/${this.configuration.encodeParam({ name: 'leadId', value: leadId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}/properties/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
     const { basePath, withCredentials } = this.configuration;
-    return this.httpClient.request<any>('patch', `${basePath}${localVarPath}`, {
-      context: localVarHttpContext,
-      body: updateRuralPropertyDto,
-      responseType: <any>responseType_,
-      ...(withCredentials ? { withCredentials } : {}),
-      headers: localVarHeaders,
-      observe: observe,
-      ...(localVarTransferCache !== undefined
-        ? { transferCache: localVarTransferCache }
-        : {}),
-      reportProgress: reportProgress,
-    });
+    return this.httpClient.request<RuralPropertyDto>(
+      'patch',
+      `${basePath}${localVarPath}`,
+      {
+        context: localVarHttpContext,
+        body: updateRuralPropertyDto,
+        responseType: <any>responseType_,
+        ...(withCredentials ? { withCredentials } : {}),
+        headers: localVarHeaders,
+        observe: observe,
+        ...(localVarTransferCache !== undefined
+          ? { transferCache: localVarTransferCache }
+          : {}),
+        reportProgress: reportProgress,
+      },
+    );
   }
 }
