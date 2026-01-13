@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { DataSource } from 'typeorm';
 import { CropProduction } from '../../../domain/entities/crop-production.entity';
 import { Culture } from '../../../domain/entities/culture.entity';
 import { Lead } from '../../../domain/entities/lead.entity';
@@ -17,6 +18,7 @@ export class SeedService implements OnApplicationBootstrap {
     private readonly configService: ConfigService,
     private readonly cultureRepository: CultureRepository,
     private readonly leadRepository: LeadRepository,
+    private readonly dataSource: DataSource,
   ) {}
 
   async onApplicationBootstrap() {
@@ -105,15 +107,93 @@ export class SeedService implements OnApplicationBootstrap {
         lat: -19.7502,
         long: -47.9325,
       },
+      {
+        city: 'Sete Lagoas',
+        state: 'MG',
+        lat: -19.4658,
+        long: -44.2466,
+      },
+      {
+        city: 'Montes Claros',
+        state: 'MG',
+        lat: -16.7321,
+        long: -43.865,
+      },
+      {
+        city: 'Teófilo Otoni',
+        state: 'MG',
+        lat: -17.8575,
+        long: -41.5053,
+      },
+      {
+        city: 'Governador Valadares',
+        state: 'MG',
+        lat: -18.8508,
+        long: -41.9489,
+      },
+      {
+        city: 'Lavras',
+        state: 'MG',
+        lat: -21.245,
+        long: -45,
+      },
+      {
+        city: 'Varginha',
+        state: 'MG',
+        lat: -21.5508,
+        long: -45.43,
+      },
     ];
 
-    for (let i = 0; i < 20; i++) {
+    const suppliers = [
+      'Concorrente A',
+      'Concorrente B',
+      'Concorrente C',
+      'Concorrente D',
+      'Concorrente E',
+      'Concorrente F',
+    ];
+
+    for (let i = 0; i < 200; i++) {
+      const isStale = i % 10 === 0;
+      const isConverted = i % 5 === 0;
+
+      let status = faker.helpers.enumValue(LeadStatus);
+      let updatedAt = new Date();
+      const createdAt = faker.date.past({ years: 1 });
+      let currentSupplier = faker.datatype.boolean()
+        ? faker.helpers.arrayElement(suppliers)
+        : undefined;
+
+      if (isStale) {
+        status = LeadStatus.QUALIFIED;
+        updatedAt = faker.date.past({
+          years: 1,
+          refDate: new Date(Date.now() - 100 * 24 * 60 * 60 * 1000),
+        });
+      } else if (isConverted) {
+        status = LeadStatus.CONVERTED;
+        updatedAt = faker.date.recent({ days: 30 });
+        currentSupplier = 'TMDigital';
+      } else {
+        updatedAt = faker.date.between({ from: createdAt, to: new Date() });
+      }
+
+      const isCompany = faker.datatype.boolean();
+      const name = isCompany ? faker.company.name() : faker.person.fullName();
+      const document = isCompany
+        ? faker.helpers.replaceSymbols('##.###.###/####-##')
+        : faker.helpers.replaceSymbols('###.###.###-##');
+
       const lead = Lead.create({
-        name: faker.person.fullName(),
-        document: faker.helpers.replaceSymbols('###.###.###-##'),
-        status: faker.helpers.enumValue(LeadStatus),
+        name,
+        document,
+        status: status,
+        currentSupplier: currentSupplier,
         estimatedPotential: 0,
         notes: faker.lorem.sentence(),
+        createdAt: createdAt,
+        updatedAt: updatedAt,
       });
 
       const numProperties = faker.number.int({ min: 1, max: 3 });
@@ -147,12 +227,14 @@ export class SeedService implements OnApplicationBootstrap {
 
         const property = RuralProperty.create({
           leadId: lead.id,
-          name: `${faker.helpers.arrayElement(names)} ${faker.word.adjective()} ${faker.word.noun()}`,
+          name: `${faker.helpers.arrayElement(names)} ${faker.company.name()}`,
           totalAreaHectares: totalArea,
           productiveAreaHectares: productiveArea,
           city: selectedCity.city,
           state: selectedCity.state,
           location: { type: 'Point', coordinates: [long, lat] },
+          createdAt: createdAt,
+          updatedAt: updatedAt,
         });
 
         const numCrops = faker.number.int({ min: 1, max: 3 });
@@ -181,7 +263,18 @@ export class SeedService implements OnApplicationBootstrap {
       }
 
       lead.calculatePotential();
+
       await this.leadRepository.save(lead);
+
+      // FORCE update date logic
+      if (isStale) {
+        // Use raw query to bypass TypeORM's UpdateDateColumn behavior
+        await this.dataSource.query(
+          'UPDATE leads SET updated_at = $1 WHERE id = $2',
+          [updatedAt, lead.id],
+        );
+        this.logger.log(`Forced stale date for lead ${lead.id}: ${updatedAt}`);
+      }
     }
   }
 }
