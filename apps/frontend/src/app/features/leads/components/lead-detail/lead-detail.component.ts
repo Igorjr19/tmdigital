@@ -48,9 +48,16 @@ import { I18N } from '../../../../core/i18n/i18n';
           <span class="text-500 block mb-1">{{
             I18N.LEAD.FORM.LABELS.STATUS
           }}</span>
-          <span class="text-900 font-medium text-xl">{{
-            lead()?.status ? $any(I18N.LEAD.STATUS)[lead()!.status] : '-'
-          }}</span>
+          <div class="text-xl">
+            <p-tag
+              [value]="
+                lead()?.status
+                  ? $any(I18N.LEAD.STATUS)[lead()!.status] || lead()?.status
+                  : '-'
+              "
+              [severity]="getSeverity(lead()?.status)"
+            ></p-tag>
+          </div>
         </div>
         <div class="col-12 md:col-6">
           <span class="text-500 block mb-1">{{
@@ -93,4 +100,23 @@ export class LeadDetailComponent {
   leadProperties = computed(() => {
     return (this.lead() as unknown as LeadWithProperties)?.properties || [];
   });
+
+  getSeverity(
+    status: string | undefined,
+  ): 'success' | 'info' | 'warn' | 'danger' | undefined {
+    switch (status) {
+      case LeadDto.StatusEnum.New:
+      case LeadDto.StatusEnum.Converted:
+      case 'Approved':
+        return 'success';
+      case LeadDto.StatusEnum.Qualified:
+        return 'info';
+      case LeadDto.StatusEnum.Contacted:
+        return 'warn';
+      case LeadDto.StatusEnum.Lost:
+        return 'danger';
+      default:
+        return undefined;
+    }
+  }
 }
