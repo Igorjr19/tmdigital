@@ -31,7 +31,7 @@ export class TypeOrmCultureRepository implements CultureRepository {
   async findPlantingIn(months: number[]): Promise<Culture[]> {
     const schemas = await this.repository
       .createQueryBuilder('c')
-      .where('c.planting_months && ARRAY[:...months]', { months })
+      .where('c.planting_months && ARRAY[:...months]::int[]', { months })
       .getMany();
     return schemas.map(CultureMapper.toDomain);
   }

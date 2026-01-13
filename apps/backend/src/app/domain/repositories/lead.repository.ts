@@ -31,7 +31,7 @@ export abstract class LeadRepository {
 
   abstract getForecast(): Promise<{
     totalPotential: number;
-    weightedForecast: number;
+    countByStatus: Record<string, number>;
   }>;
 
   abstract findAll(params?: PaginationDto): Promise<ItemCount<Lead>>;

@@ -11,7 +11,7 @@ export class GetForecastUseCase implements UseCase<void, DashboardForecastDto> {
     const forecast = await this.leadRepository.getForecast();
     return {
       totalPotential: forecast.totalPotential,
-      weightedForecast: forecast.weightedForecast,
+      countByStatus: forecast.countByStatus,
     };
   }
 }

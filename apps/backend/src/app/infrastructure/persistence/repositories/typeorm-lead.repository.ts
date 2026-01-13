@@ -135,7 +135,7 @@ export class TypeOrmLeadRepository implements LeadRepository {
     const schemas = await this.typeOrmRepository
       .createQueryBuilder('lead')
       .where('lead.status IN (:...statuses)', {
-        statuses: ['IN_NEGOTIATION', 'PROPOSAL', 'QUALIFIED'],
+        statuses: [LeadStatus.QUALIFIED],
       })
       .andWhere('lead.updatedAt < :date', { date })
       .getMany();
@@ -204,31 +204,29 @@ export class TypeOrmLeadRepository implements LeadRepository {
 
   async getForecast(): Promise<{
     totalPotential: number;
-    weightedForecast: number;
+    countByStatus: Record<string, number>;
   }> {
     const raw = await this.typeOrmRepository
       .createQueryBuilder('lead')
       .select('SUM(lead.estimatedPotential)', 'total')
-      .addSelect(
-        `SUM(
-          CASE 
-            WHEN lead.status = 'NEW' THEN lead.estimatedPotential * 0.10
-            WHEN lead.status = 'CONTACTED' THEN lead.estimatedPotential * 0.30
-            WHEN lead.status = 'QUALIFIED' THEN lead.estimatedPotential * 0.50
-            WHEN lead.status = 'PROPOSAL' THEN lead.estimatedPotential * 0.60
-            WHEN lead.status = 'IN_NEGOTIATION' THEN lead.estimatedPotential * 0.80
-            WHEN lead.status = 'CONVERTED' THEN lead.estimatedPotential * 1.00
-            ELSE 0 
-          END
-        )`,
-        'weighted',
-      )
+      .addSelect('lead.status', 'status')
+      .addSelect('COUNT(lead.id)', 'count')
       .where('lead.deletedAt IS NULL')
-      .getRawOne();
+      .groupBy('lead.status')
+      .getRawMany();
+
+    const totalPotential = raw.reduce(
+      (sum, r) => sum + Number(r.total || 0),
+      0,
+    );
+    const countByStatus = raw.reduce((acc, r) => {
+      acc[r.status] = Number(r.count);
+      return acc;
+    }, {});
 
     return {
-      totalPotential: Number(raw?.total || 0),
-      weightedForecast: Number(raw?.weighted || 0),
+      totalPotential,
+      countByStatus,
     };
   }
 

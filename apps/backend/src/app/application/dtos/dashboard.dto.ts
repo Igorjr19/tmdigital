@@ -101,9 +101,8 @@ export class DashboardForecastDto {
   totalPotential: number;
 
   @ApiProperty({
-    description:
-      'Weighted revenue forecast based on lead probability (Status).',
-    example: 650000,
+    description: 'Count of leads by status.',
+    example: { NEW: 10, QUALIFIED: 5, CONVERTED: 2, CONTACTED: 3 },
   })
-  weightedForecast: number;
+  countByStatus: Record<string, number>;
 }

@@ -7,11 +7,11 @@ import {
   DashboardPlantingAlertDto,
   DashboardStaleLeadDto,
 } from '../../application/dtos/dashboard.dto';
-import { GetForecastUseCase } from '../../application/use-cases/dashboard/get-forecast.use-case';
-import { GetGeoStatsUseCase } from '../../application/use-cases/dashboard/get-geo-stats.use-case';
-import { GetMarketShareUseCase } from '../../application/use-cases/dashboard/get-market-share.use-case';
-import { GetPlantingAlertsUseCase } from '../../application/use-cases/dashboard/get-planting-alerts.use-case';
-import { GetStaleLeadsUseCase } from '../../application/use-cases/dashboard/get-stale-leads.use-case';
+import { GetForecastUseCase } from '../../application/use-cases/get-forecast.use-case';
+import { GetGeoStatsUseCase } from '../../application/use-cases/get-geo-stats.use-case';
+import { GetMarketShareUseCase } from '../../application/use-cases/get-market-share.use-case';
+import { GetPlantingAlertsUseCase } from '../../application/use-cases/get-planting-alerts.use-case';
+import { GetStaleLeadsUseCase } from '../../application/use-cases/get-stale-leads.use-case';
 import {
   ApiDocGetForecast,
   ApiDocGetGeoStats,
