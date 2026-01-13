@@ -74,7 +74,6 @@ export class RuralPropertyDto {
   @ApiProperty({
     description: 'Plantações da propriedade',
     type: [CropProductionDto],
-    minItems: 1,
   })
   cropProductions: CropProductionDto[];
 

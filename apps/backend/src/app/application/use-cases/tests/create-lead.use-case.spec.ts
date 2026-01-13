@@ -12,6 +12,7 @@ describe('CreateLeadUseCase', () => {
 
   const mockLeadRepository = {
     findByDocument: jest.fn(),
+    findIncludingDeletedByDocument: jest.fn(),
     save: jest.fn(),
   };
 
@@ -56,12 +57,12 @@ describe('CreateLeadUseCase', () => {
       status: LeadStatus.NEW,
     });
 
-    mockLeadRepository.findByDocument.mockResolvedValue(null);
+    mockLeadRepository.findIncludingDeletedByDocument.mockResolvedValue(null);
     mockLeadRepository.save.mockResolvedValue(createdLead);
 
     const result = await useCase.execute(createLeadDto);
 
-    expect(leadRepository.findByDocument).toHaveBeenCalledWith(
+    expect(leadRepository.findIncludingDeletedByDocument).toHaveBeenCalledWith(
       createLeadDto.document,
     );
     expect(leadRepository.save).toHaveBeenCalled();
@@ -81,12 +82,14 @@ describe('CreateLeadUseCase', () => {
       status: LeadStatus.NEW,
     });
 
-    mockLeadRepository.findByDocument.mockResolvedValue(existingLead);
+    mockLeadRepository.findIncludingDeletedByDocument.mockResolvedValue(
+      existingLead,
+    );
 
     await expect(useCase.execute(createLeadDto)).rejects.toThrow(
       ResourceAlreadyExistsException,
     );
-    expect(leadRepository.findByDocument).toHaveBeenCalledWith(
+    expect(leadRepository.findIncludingDeletedByDocument).toHaveBeenCalledWith(
       createLeadDto.document,
     );
     expect(leadRepository.save).not.toHaveBeenCalled();

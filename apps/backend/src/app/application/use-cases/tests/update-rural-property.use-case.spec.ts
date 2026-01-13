@@ -16,12 +16,14 @@ describe('UpdateRuralPropertyUseCase', () => {
 
   const mockRuralPropertyRepository = {
     findById: jest.fn(),
+    findByIdWithRelations: jest.fn(),
     update: jest.fn(),
   };
 
   const mockLeadRepository = {
     findByIdWithRelations: jest.fn(),
     save: jest.fn(),
+    update: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -68,6 +70,7 @@ describe('UpdateRuralPropertyUseCase', () => {
     const leadId = 'lead1';
     const input: UpdateRuralPropertyInput = {
       id: propId,
+      leadId: leadId,
       data: { name: 'Updated Farm Name' },
     };
 
@@ -93,6 +96,9 @@ describe('UpdateRuralPropertyUseCase', () => {
 
     mockRuralPropertyRepository.findById.mockResolvedValue(mockProperty);
     mockRuralPropertyRepository.update.mockResolvedValue(mockProperty);
+    mockRuralPropertyRepository.findByIdWithRelations.mockResolvedValue(
+      mockProperty,
+    );
     mockLeadRepository.findByIdWithRelations.mockResolvedValue(mockLead);
     mockLeadRepository.save.mockResolvedValue(mockLead);
 
@@ -104,7 +110,7 @@ describe('UpdateRuralPropertyUseCase', () => {
     expect(ruralPropertyRepository.update).toHaveBeenCalled();
     expect(leadRepository.findByIdWithRelations).toHaveBeenCalledWith(leadId);
     expect(mockLead.calculatePotential).toHaveBeenCalled();
-    expect(leadRepository.save).toHaveBeenCalledWith(mockLead);
+    expect(leadRepository.update).toHaveBeenCalledWith(mockLead);
     expect(result.name).toBe('Updated Farm Name');
   });
 
@@ -112,6 +118,7 @@ describe('UpdateRuralPropertyUseCase', () => {
     const propId = 'prop1';
     const input: UpdateRuralPropertyInput = {
       id: propId,
+      leadId: 'lead1',
       data: { name: 'Updated Farm Name' },
     };
 

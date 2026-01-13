@@ -29,6 +29,7 @@ import { FindAllLeadsUseCase } from '../../application/use-cases/find-all-leads.
 import { FindOneLeadUseCase } from '../../application/use-cases/find-one-lead.use-case';
 import { GetNearbyLeadsUseCase } from '../../application/use-cases/get-nearby-leads.use-case';
 import { UpdateLeadUseCase } from '../../application/use-cases/update-lead.use-case';
+import { ApiDocAddRuralProperty } from '../decorators/api-doc-add-rural-property.decorator';
 import { ApiDocCalculateLeadScore } from '../decorators/api-doc-calculate-lead-score.decorator';
 import { ApiDocCreateLead } from '../decorators/api-doc-create-lead.decorator';
 import { ApiDocDeleteLead } from '../decorators/api-doc-delete-lead.decorator';
@@ -134,6 +135,7 @@ export class LeadController {
 
   @Post(':id/properties')
   @HttpCode(HttpStatus.CREATED)
+  @ApiDocAddRuralProperty()
   async addProperty(
     @Param('id') id: string,
     @Body() createRuralPropertyDto: CreateRuralPropertyDto,

@@ -61,7 +61,7 @@ describe('DeleteRuralPropertyUseCase', () => {
 
     mockRuralPropertyRepository.findById.mockResolvedValue(mockProperty);
 
-    await useCase.execute(propId);
+    await useCase.execute({ id: propId, leadId: 'lead1' });
 
     expect(ruralPropertyRepository.findById).toHaveBeenCalledWith(propId);
     expect(ruralPropertyRepository.delete).toHaveBeenCalledWith(propId);
@@ -71,9 +71,9 @@ describe('DeleteRuralPropertyUseCase', () => {
     const propId = 'prop1';
     mockRuralPropertyRepository.findById.mockResolvedValue(null);
 
-    await expect(useCase.execute(propId)).rejects.toThrow(
-      ResourceNotFoundException,
-    );
+    await expect(
+      useCase.execute({ id: propId, leadId: 'lead1' }),
+    ).rejects.toThrow(ResourceNotFoundException);
     expect(ruralPropertyRepository.findById).toHaveBeenCalledWith(propId);
     expect(ruralPropertyRepository.delete).not.toHaveBeenCalled();
   });

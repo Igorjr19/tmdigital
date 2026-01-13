@@ -6,7 +6,9 @@ import { CreateLeadUseCase } from './application/use-cases/create-lead.use-case'
 import { DeleteLeadUseCase } from './application/use-cases/delete-lead.use-case';
 import { DeleteRuralPropertyUseCase } from './application/use-cases/delete-rural-property.use-case';
 import { FindAllLeadsUseCase } from './application/use-cases/find-all-leads.use-case';
+import { FindAllRuralPropertiesByLeadUseCase } from './application/use-cases/find-all-rural-properties-by-lead.use-case';
 import { FindOneLeadUseCase } from './application/use-cases/find-one-lead.use-case';
+import { FindOneRuralPropertyUseCase } from './application/use-cases/find-one-rural-property.use-case';
 import { GetCulturesUseCase } from './application/use-cases/get-cultures.use-case';
 import { GetNearbyLeadsUseCase } from './application/use-cases/get-nearby-leads.use-case';
 import { UpdateLeadUseCase } from './application/use-cases/update-lead.use-case';
@@ -39,6 +41,8 @@ import { RuralPropertyController } from './presentation/controllers/rural-proper
     AddRuralPropertyUseCase,
     UpdateRuralPropertyUseCase,
     DeleteRuralPropertyUseCase,
+    FindAllRuralPropertiesByLeadUseCase,
+    FindOneRuralPropertyUseCase,
     GetCulturesUseCase,
   ],
 })

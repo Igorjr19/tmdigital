@@ -22,6 +22,7 @@ describe('AddRuralPropertyUseCase', () => {
     findById: jest.fn(),
     findByIdWithRelations: jest.fn(),
     save: jest.fn(),
+    update: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -91,6 +92,7 @@ describe('AddRuralPropertyUseCase', () => {
     mockRuralPropertyRepository.save.mockResolvedValue(mockSavedProperty);
     mockLeadRepository.findByIdWithRelations.mockResolvedValue(mockLead);
     mockLeadRepository.save.mockResolvedValue(mockLead);
+    mockLeadRepository.update.mockResolvedValue(mockLead);
 
     jest.spyOn(mockLead, 'calculatePotential');
 
@@ -100,7 +102,7 @@ describe('AddRuralPropertyUseCase', () => {
     expect(ruralPropertyRepository.save).toHaveBeenCalled();
     expect(leadRepository.findByIdWithRelations).toHaveBeenCalledWith(leadId);
     expect(mockLead.calculatePotential).toHaveBeenCalled();
-    expect(leadRepository.save).toHaveBeenCalledWith(mockLead);
+    expect(leadRepository.update).toHaveBeenCalledWith(mockLead);
     expect(result).toEqual(mockSavedProperty);
   });
 

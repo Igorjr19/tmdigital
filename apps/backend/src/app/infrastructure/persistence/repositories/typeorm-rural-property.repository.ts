@@ -32,6 +32,15 @@ export class TypeOrmRuralPropertyRepository implements RuralPropertyRepository {
     return RuralPropertyMapper.toDomain(savedSchema);
   }
 
+  async findAllByLeadId(leadId: string): Promise<RuralProperty[]> {
+    const schemas = await this.typeOrmRepository.find({
+      where: { lead: { id: leadId } },
+      relations: ['cropProductions', 'cropProductions.culture', 'lead'],
+      order: { createdAt: 'DESC' },
+    });
+    return schemas.map(RuralPropertyMapper.toDomain);
+  }
+
   async deleteCropProductions(ruralPropertyId: string): Promise<void> {
     await this.typeOrmRepository.manager.delete(CropProductionSchema, {
       ruralPropertyId,
