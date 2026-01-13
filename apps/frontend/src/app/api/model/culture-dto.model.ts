@@ -21,4 +21,8 @@ export interface CultureDto {
    * Preço atual da saca/unidade
    */
   currentPrice: number;
+  /**
+   * Meses de plantio (1-12)
+   */
+  plantingMonths: Array<number>;
 }
