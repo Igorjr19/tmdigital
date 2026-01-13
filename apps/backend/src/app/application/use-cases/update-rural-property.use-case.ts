@@ -35,6 +35,9 @@ export class UpdateRuralPropertyUseCase implements UseCase<
     }
 
     if (input.data) {
+      if (input.data.cropProductions) {
+        await this.ruralPropertyRepository.deleteCropProductions(property.id);
+      }
       property.updateInformation(input.data);
     }
 
@@ -46,9 +49,16 @@ export class UpdateRuralPropertyUseCase implements UseCase<
 
     if (leadWithRelations) {
       leadWithRelations.calculatePotential();
-      await this.leadRepository.save(leadWithRelations);
+      await this.leadRepository.update(leadWithRelations);
     }
 
-    return updatedProperty;
+    const finalProperty =
+      await this.ruralPropertyRepository.findByIdWithRelations(input.id);
+
+    if (!finalProperty) {
+      return updatedProperty;
+    }
+
+    return finalProperty;
   }
 }

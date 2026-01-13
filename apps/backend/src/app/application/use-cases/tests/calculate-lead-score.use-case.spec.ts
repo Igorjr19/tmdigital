@@ -66,7 +66,7 @@ describe('CalculateLeadScoreUseCase', () => {
       status: LeadStatus.NEW,
       estimatedPotential: initialPotential,
     });
-    // Manually add property since we mock findByIdWithRelations but Lead.create doesn't take property array
+
     lead.addProperty(property);
 
     jest.spyOn(lead, 'calculatePotential');

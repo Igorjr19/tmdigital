@@ -64,7 +64,7 @@ describe('CreateLeadUseCase', () => {
     expect(leadRepository.findByDocument).toHaveBeenCalledWith(
       createLeadDto.document,
     );
-    expect(leadRepository.save).toHaveBeenCalled(); // We can't strictly compare Lead instances here because create generates new ones
+    expect(leadRepository.save).toHaveBeenCalled();
     expect(result.name).toBe(createLeadDto.name);
     expect(result.document).toBe(createLeadDto.document);
   });

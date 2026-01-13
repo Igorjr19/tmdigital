@@ -70,6 +70,7 @@ describe('AddRuralPropertyUseCase', () => {
       productiveAreaHectares: 80,
       city: 'Test City',
       state: 'TS',
+      cropProductions: [],
       location: { type: 'Point', coordinates: [20, 10] },
     };
 
@@ -100,7 +101,7 @@ describe('AddRuralPropertyUseCase', () => {
     expect(leadRepository.findByIdWithRelations).toHaveBeenCalledWith(leadId);
     expect(mockLead.calculatePotential).toHaveBeenCalled();
     expect(leadRepository.save).toHaveBeenCalledWith(mockLead);
-    // expect(result).toEqual(mockSavedProperty); // Might fail due to object equality if not exact same instance
+    expect(result).toEqual(mockSavedProperty);
   });
 
   it('should throw ResourceNotFoundException if lead not found', async () => {
@@ -112,6 +113,7 @@ describe('AddRuralPropertyUseCase', () => {
       productiveAreaHectares: 80,
       city: 'Test City',
       state: 'TS',
+      cropProductions: [],
       location: { type: 'Point', coordinates: [20, 10] },
     };
 

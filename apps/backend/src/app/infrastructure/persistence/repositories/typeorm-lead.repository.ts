@@ -54,7 +54,7 @@ export class TypeOrmLeadRepository implements LeadRepository {
   async findNearby(
     lat: number,
     long: number,
-    rangeKm: number,
+    range: number,
     params?: PaginationDto,
   ): Promise<ItemCount<Lead>> {
     const skip = ((params?.page || 1) - 1) * (params?.limit || 10);
@@ -69,7 +69,7 @@ export class TypeOrmLeadRepository implements LeadRepository {
       .setParameters({
         lat,
         long,
-        range: rangeKm * 1000,
+        range: range,
       })
       .skip(skip)
       .take(take)
@@ -109,7 +109,17 @@ export class TypeOrmLeadRepository implements LeadRepository {
   }
 
   async update(lead: Lead): Promise<Lead> {
-    return this.save(lead);
+    const schema = LeadMapper.toPersistence(lead);
+    await this.typeOrmRepository.update(schema.id, {
+      name: schema.name,
+      document: schema.document,
+      currentSupplier: schema.currentSupplier,
+      status: schema.status,
+      estimatedPotential: schema.estimatedPotential,
+      notes: schema.notes,
+      updatedAt: schema.updatedAt,
+    });
+    return lead;
   }
 
   async delete(id: string): Promise<void> {

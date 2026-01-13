@@ -36,7 +36,7 @@ export class AddRuralPropertyUseCase implements UseCase<
 
     if (leadWithRelations) {
       leadWithRelations.calculatePotential();
-      await this.leadRepository.save(leadWithRelations);
+      await this.leadRepository.update(leadWithRelations);
     }
 
     return savedProperty;

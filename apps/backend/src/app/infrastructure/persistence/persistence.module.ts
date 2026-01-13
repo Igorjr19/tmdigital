@@ -16,10 +16,10 @@ import { RuralPropertySchema } from './schemas/rural-property.schema';
   imports: [
     TypeOrmModule.forRoot(dataSourceOptions),
     TypeOrmModule.forFeature([
+      CropProductionSchema,
       LeadSchema,
       RuralPropertySchema,
       CultureSchema,
-      CropProductionSchema,
     ]),
   ],
   providers: [

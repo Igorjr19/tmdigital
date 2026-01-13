@@ -15,7 +15,7 @@ export interface RuralPropertyProps {
   id?: string;
   createdAt?: Date;
   updatedAt?: Date;
-  cropProductions?: CropProductionInput[];
+  cropProductions?: CropProduction[] | CropProductionInput[];
 }
 
 export interface CropProductionInput {
@@ -43,8 +43,17 @@ export class RuralProperty extends BaseEntity {
     this._city = props.city;
     this._state = props.state;
 
-    // Initial crops logic can be added here if needed, keeping empty for now or mapping if provided
-    this._cropProductions = [];
+    this._state = props.state;
+
+    if (props.cropProductions && props.cropProductions.length > 0) {
+      if (props.cropProductions[0] instanceof CropProduction) {
+        this._cropProductions = props.cropProductions as CropProduction[];
+      } else {
+        this.setCropProductions(props.cropProductions as CropProductionInput[]);
+      }
+    } else {
+      this._cropProductions = [];
+    }
 
     this.validate();
   }
@@ -139,15 +148,9 @@ export class RuralProperty extends BaseEntity {
       );
     }
 
-    // Replace current list logic - in real clean arch we might want to reconcile,
-    // but for simplicity we replace as entities.
-    // NOTE: This requires the UseCase to construct the Entities or we construct them here.
-    // Constructing here is better for domain encapsulation, but we need Culture prices if we want to calculate revenue immediately.
-    // However, revenue is calculated on demand.
-
     this._cropProductions = inputs.map((input) =>
       CropProduction.create({
-        ruralPropertyId: this.id, // Using current ID
+        ruralPropertyId: this.id,
         cultureId: input.cultureId,
         plantedAreaHectares: input.plantedAreaHectares,
       }),

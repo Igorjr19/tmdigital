@@ -92,7 +92,7 @@ describe('UpdateRuralPropertyUseCase', () => {
     });
 
     mockRuralPropertyRepository.findById.mockResolvedValue(mockProperty);
-    mockRuralPropertyRepository.update.mockResolvedValue(mockProperty); // Updated in memory
+    mockRuralPropertyRepository.update.mockResolvedValue(mockProperty);
     mockLeadRepository.findByIdWithRelations.mockResolvedValue(mockLead);
     mockLeadRepository.save.mockResolvedValue(mockLead);
 
