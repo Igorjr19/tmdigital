@@ -37,9 +37,14 @@ export class LeadsFacadeService {
     limit: 10,
   };
 
+  searchQuery = computed(() => this.currentFilter.name || '');
+
   loadLeads(filter?: Partial<typeof this.currentFilter>) {
     this.loading.set(true);
     if (filter) {
+      if (filter.name !== undefined) {
+        this.currentFilter.name = filter.name;
+      }
       this.currentFilter = { ...this.currentFilter, ...filter };
     }
 

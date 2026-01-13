@@ -38,6 +38,7 @@
             type="text"
             (input)="onSearch($event)"
             [placeholder]="I18N.COMMON.SEARCH"
+            [value]="leadsFacade.searchQuery()"
             class="w-full"
           />
         </span>

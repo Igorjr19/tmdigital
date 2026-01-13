@@ -17,7 +17,6 @@ import {
   catchError,
   debounceTime,
   distinctUntilChanged,
-  filter,
   of,
   Subject,
   switchMap,
@@ -64,10 +63,14 @@ export class LeadListComponent {
   constructor() {
     this.searchSubject
       .pipe(
-        filter((text) => text.length > 2),
         debounceTime(300),
         distinctUntilChanged(),
-        switchMap((query) => this.leadsFacade.searchLeadsByName(query)),
+        switchMap((query) => {
+          if (query.length < 3 && query.length > 0) {
+            return of([]);
+          }
+          return this.leadsFacade.searchLeadsByName(query);
+        }),
         takeUntilDestroyed(),
         catchError((error) => {
           console.error(error);
@@ -84,6 +87,9 @@ export class LeadListComponent {
 
     this.leadsFacade.loadLeads({ page, limit });
   }
+
+  // searchSubject handles the input event
+  // Facade handles the state
 
   onSearch(event: Event) {
     const value = (event.target as HTMLInputElement).value;
