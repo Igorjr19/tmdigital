@@ -140,16 +140,12 @@ export class LeadsFacadeService {
   }
 
   searchLeads(query: string) {
-    // Regex matches common document formats (CPF/CNPJ) or just digits
-    // Removes dots, dashes, slashes to check if it's mostly numeric
     const cleanQuery = query.replace(/[.\-/]/g, '');
     const isDocument = /^\d+$/.test(cleanQuery) && cleanQuery.length >= 3;
 
     if (isDocument) {
-      // It's likely a document
       this.loadLeads({ document: cleanQuery, name: undefined, page: 1 });
     } else {
-      // It's a name
       this.loadLeads({ name: query, document: undefined, page: 1 });
     }
     return new Observable();

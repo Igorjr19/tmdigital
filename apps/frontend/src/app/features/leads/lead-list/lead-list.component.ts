@@ -111,9 +111,6 @@ export class LeadListComponent {
     this.leadsFacade.loadLeads({ sortBy, sortOrder });
   }
 
-  // searchSubject handles the input event
-  // Facade handles the state
-
   onSearch(event: Event) {
     const value = (event.target as HTMLInputElement).value;
     this.searchSubject.next(value);
