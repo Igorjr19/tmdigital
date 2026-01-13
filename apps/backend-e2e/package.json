@@ -1,0 +1,14 @@
+{
+  "name": "@tmdigital/backend-e2e",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test:e2e": "jest --config jest.config.ts --runInBand"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "jest": "^30.2.0",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.4.6"
+  }
+}
