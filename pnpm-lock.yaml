@@ -110,6 +110,12 @@ importers:
       '@types/node':
         specifier: 20.19.9
         version: 20.19.9
+      '@types/supertest':
+        specifier: ^6.0.3
+        version: 6.0.3
+      '@types/uuid':
+        specifier: ^11.0.0
+        version: 11.0.0
       '@typescript-eslint/utils':
         specifier: ^8.52.0
         version: 8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
@@ -152,6 +158,9 @@ importers:
       prettier:
         specifier: ^3.7.4
         version: 3.7.4
+      supertest:
+        specifier: ^7.2.2
+        version: 7.2.2
       ts-jest:
         specifier: ^29.4.6
         version: 29.4.6(@babel/core@7.28.5)(@jest/transform@30.2.0)(@jest/types@30.2.0)(babel-jest@30.2.0(@babel/core@7.28.5))(esbuild@0.27.2)(jest-util@30.2.0)(jest@30.2.0(@types/node@20.19.9)(ts-node@10.9.1(@swc/core@1.15.8(@swc/helpers@0.5.18))(@types/node@20.19.9)(typescript@5.9.3)))(typescript@5.9.3)
@@ -264,6 +273,21 @@ importers:
       typescript:
         specifier: ^5.9.2
         version: 5.9.3
+
+  apps/backend-e2e:
+    devDependencies:
+      '@types/jest':
+        specifier: ^30.0.0
+        version: 30.0.0
+      jest:
+        specifier: ^30.2.0
+        version: 30.2.0(@types/node@20.19.9)(ts-node@10.9.1(@swc/core@1.15.8(@swc/helpers@0.5.18))(@types/node@20.19.9)(typescript@5.9.3))
+      supertest:
+        specifier: ^7.0.0
+        version: 7.2.2
+      ts-jest:
+        specifier: ^29.4.6
+        version: 29.4.6(@babel/core@7.28.5)(@jest/transform@30.2.0)(@jest/types@30.2.0)(babel-jest@30.2.0(@babel/core@7.28.5))(esbuild@0.27.2)(jest-util@30.2.0)(jest@30.2.0(@types/node@20.19.9)(ts-node@10.9.1(@swc/core@1.15.8(@swc/helpers@0.5.18))(@types/node@20.19.9)(typescript@5.9.3)))(typescript@5.9.3)
 
   apps/frontend:
     dependencies:
@@ -4187,6 +4211,13 @@ packages:
       typescript: '>=5.9 <6.0'
       webpack: ^5.54.0
 
+  '@noble/hashes@1.8.0':
+    resolution:
+      {
+        integrity: sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A==,
+      }
+    engines: { node: ^14.21.3 || >=16 }
+
   '@nodelib/fs.scandir@2.1.5':
     resolution:
       {
@@ -4468,6 +4499,12 @@ packages:
       }
     cpu: [x64]
     os: [win32]
+
+  '@paralleldrive/cuid2@2.3.1':
+    resolution:
+      {
+        integrity: sha512-XO7cAxhnTZl0Yggq6jOgjiOHhbgcO4NqFqwSmQpjK3b6TEE6Uj/jfSk6wzYyemh3+I0sHirKSetjQwn5cZktFw==,
+      }
 
   '@parcel/watcher-android-arm64@2.5.1':
     resolution:
@@ -5507,6 +5544,12 @@ packages:
         integrity: sha512-BgT2szDXnVypgpNxOK8aL5SGjUdaQbC++WZNjF1Qge3Og2+zhHj+RWhmehLhYyvQwqAmvezruVfOf8+3m74W+g==,
       }
 
+  '@types/cookiejar@2.1.5':
+    resolution:
+      {
+        integrity: sha512-he+DHOWReW0nghN24E1WUqM0efK4kI9oTqDm6XmK8ZPe2djZ90BSNdGnIyCLzCPw7/pogPlGbzI2wHGGmi4O/Q==,
+      }
+
   '@types/eslint-scope@3.7.7':
     resolution:
       {
@@ -5633,6 +5676,12 @@ packages:
         integrity: sha512-TbAd9DaPGSnzp6QvtYngntMZgcRk+igFELwR2N99XZn7RXUdKgsXMR+28bUO0rPsWp8MIu/f47luLIQuSLYv/w==,
       }
 
+  '@types/methods@1.1.4':
+    resolution:
+      {
+        integrity: sha512-ymXWVrDiCxTBE3+RIrrP533E70eA+9qu7zdWoHuOmGujkYtzf4HQF96b8nwHLqhuf4ykX61IGRIB38CC6/sImQ==,
+      }
+
   '@types/mime@1.3.5':
     resolution:
       {
@@ -5729,11 +5778,30 @@ packages:
         integrity: sha512-9aEbYZ3TbYMznPdcdr3SmIrLXwC/AKZXQeCf9Pgao5CKb8CyHuEX5jzWPTkvregvhRJHcpRO6BFoGW9ycaOkYw==,
       }
 
+  '@types/superagent@8.1.9':
+    resolution:
+      {
+        integrity: sha512-pTVjI73witn+9ILmoJdajHGW2jkSaOzhiFYF1Rd3EQ94kymLqB9PjD9ISg7WaALC7+dCHT0FGe9T2LktLq/3GQ==,
+      }
+
+  '@types/supertest@6.0.3':
+    resolution:
+      {
+        integrity: sha512-8WzXq62EXFhJ7QsH3Ocb/iKQ/Ty9ZVWnVzoTKc9tyyFRRF3a74Tk2+TLFgaFFw364Ere+npzHKEJ6ga2LzIL7w==,
+      }
+
   '@types/tough-cookie@4.0.5':
     resolution:
       {
         integrity: sha512-/Ad8+nIOV7Rl++6f1BdKxFSMgmoqEoYbHRpPcx3JEfv8VRsQe9Z4mCXeJBzxs7mbHY/XOZZuXlRNfhpVPbs6ZA==,
       }
+
+  '@types/uuid@11.0.0':
+    resolution:
+      {
+        integrity: sha512-HVyk8nj2m+jcFRNazzqyVKiZezyhDKrGUA3jlEcg/nZ6Ms+qHwocba1Y/AaVaznJTAM9xpdFSh+ptbNrhOGvZA==,
+      }
+    deprecated: This is a stub types definition. uuid provides its own type definitions, so you do not need this installed.
 
   '@types/validator@13.15.10':
     resolution:
@@ -6471,6 +6539,12 @@ packages:
         integrity: sha512-SleRWjh9JUud2wH1hPs9rZBZ33H6T9HOiL0uwGnGx9FpE6wKGyfWugmbkEOIs6qWrZhg0LWeLziLrEwQJhs5mQ==,
       }
     engines: { node: '>=0.10.0' }
+
+  asap@2.0.6:
+    resolution:
+      {
+        integrity: sha512-BSHWgDSAiKs50o2Re8ppvp3seVHXSRM44cdSsT9FfNEUUZLOGWVCsiWaRPWM1Znn+mqZ1OfVZ3z3DWEzSp7hRA==,
+      }
 
   assign-symbols@1.0.0:
     resolution:
@@ -7393,6 +7467,12 @@ packages:
       }
     engines: { node: '>= 0.6' }
 
+  cookiejar@2.1.4:
+    resolution:
+      {
+        integrity: sha512-LDx6oHrK+PhzLKJU9j5S7/Y3jM/mUHvD/DeI1WQmJn652iPC5Y4TBzC9l+5OMOXlyTTA+SmVUPm0HQUwpD5Jqw==,
+      }
+
   copy-anything@2.0.6:
     resolution:
       {
@@ -7799,6 +7879,12 @@ packages:
     resolution:
       {
         integrity: sha512-T0NIuQpnTvFDATNuHN5roPwSBG83rFsuO+MXXH9/3N1eFbn4wcPjttvjMLEPWJ0RGUYgQE7cGgS3tNxbqCGM7g==,
+      }
+
+  dezalgo@1.0.4:
+    resolution:
+      {
+        integrity: sha512-rXSP0bf+5n0Qonsb+SVVfNfIsimO4HEtmnIpPHY8Q1UCzKlQrDMfdobr8nJOOsRgWCyMRqeSBQzmWUMq7zvVig==,
       }
 
   diff@4.0.2:
@@ -8697,6 +8783,13 @@ packages:
         integrity: sha512-8RipRLol37bNs2bhoV67fiTEvdTrbMUYcFTiy3+wuuOnUog2QBHCZWXDRijWQfAkhBj2Uf5UnVaiWwA5vdd82w==,
       }
     engines: { node: '>= 6' }
+
+  formidable@3.5.4:
+    resolution:
+      {
+        integrity: sha512-YikH+7CUTOtP44ZTnUhR7Ic2UASBPOqmaRkRKxRbywPTe5VxF7RRCck4af9wutiZ/QKM5nME9Bie2fFaPz5Gug==,
+      }
+    engines: { node: '>=14.0.0' }
 
   forwarded@0.2.0:
     resolution:
@@ -10728,6 +10821,14 @@ packages:
         integrity: sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg==,
       }
     engines: { node: '>=4' }
+    hasBin: true
+
+  mime@2.6.0:
+    resolution:
+      {
+        integrity: sha512-USPkMeET31rOMiarsBNIHZKLGgvKc/LrjofAnBlOttf5ajRvqiRA8QsenbcooctK6d6Ts6aqZXBA+XbkKthiQg==,
+      }
+    engines: { node: '>=4.0.0' }
     hasBin: true
 
   mimic-fn@2.1.0:
@@ -13229,6 +13330,20 @@ packages:
       }
     engines: { node: '>=16' }
 
+  superagent@10.3.0:
+    resolution:
+      {
+        integrity: sha512-B+4Ik7ROgVKrQsXTV0Jwp2u+PXYLSlqtDAhYnkkD+zn3yg8s/zjA2MeGayPoY/KICrbitwneDHrjSotxKL+0XQ==,
+      }
+    engines: { node: '>=14.18.0' }
+
+  supertest@7.2.2:
+    resolution:
+      {
+        integrity: sha512-oK8WG9diS3DlhdUkcFn4tkNIiIbBx9lI2ClF8K+b2/m8Eyv47LSawxUzZQSNKUrVb2KsqeTDCcjAAVPYaSLVTA==,
+      }
+    engines: { node: '>=14.18.0' }
+
   supports-color@7.2.0:
     resolution:
       {
@@ -14949,7 +15064,7 @@ snapshots:
       '@babel/helper-annotate-as-pure': 7.27.3
       '@babel/helper-split-export-declaration': 7.24.7
       '@inquirer/confirm': 5.1.19(@types/node@25.0.3)
-      '@vitejs/plugin-basic-ssl': 2.1.0(vite@7.2.2(@types/node@20.19.9)(jiti@2.6.1)(less@4.4.2)(sass@1.93.2)(terser@5.44.1)(yaml@2.8.2))
+      '@vitejs/plugin-basic-ssl': 2.1.0(vite@7.2.2(@types/node@25.0.3)(jiti@2.6.1)(less@4.4.2)(sass@1.93.2)(terser@5.44.1)(yaml@2.8.2))
       beasties: 0.3.5
       browserslist: 4.28.1
       esbuild: 0.26.0
@@ -15001,7 +15116,7 @@ snapshots:
       '@babel/helper-annotate-as-pure': 7.27.3
       '@babel/helper-split-export-declaration': 7.24.7
       '@inquirer/confirm': 5.1.19(@types/node@25.0.3)
-      '@vitejs/plugin-basic-ssl': 2.1.0(vite@7.2.2(@types/node@20.19.9)(jiti@2.6.1)(less@4.4.2)(sass@1.93.2)(terser@5.44.1)(yaml@2.8.2))
+      '@vitejs/plugin-basic-ssl': 2.1.0(vite@7.2.2(@types/node@25.0.3)(jiti@2.6.1)(less@4.4.2)(sass@1.93.2)(terser@5.44.1)(yaml@2.8.2))
       beasties: 0.3.5
       browserslist: 4.28.1
       esbuild: 0.26.0
@@ -15085,7 +15200,7 @@ snapshots:
       '@angular-devkit/core': 21.0.5(chokidar@4.0.3)
       '@angular-devkit/schematics': 21.0.5(chokidar@4.0.3)
       '@inquirer/prompts': 7.9.0(@types/node@25.0.3)
-      '@listr2/prompt-adapter-inquirer': 3.0.5(@inquirer/prompts@7.9.0(@types/node@20.19.9))(@types/node@25.0.3)(listr2@9.0.5)
+      '@listr2/prompt-adapter-inquirer': 3.0.5(@inquirer/prompts@7.9.0(@types/node@25.0.3))(@types/node@25.0.3)(listr2@9.0.5)
       '@modelcontextprotocol/sdk': 1.25.2(hono@4.11.3)(zod@4.1.13)
       '@schematics/angular': 21.0.5(chokidar@4.0.3)
       '@yarnpkg/lockfile': 1.1.0
@@ -16975,7 +17090,7 @@ snapshots:
   '@jest/console@30.2.0':
     dependencies:
       '@jest/types': 30.2.0
-      '@types/node': 20.19.9
+      '@types/node': 22.19.3
       chalk: 4.1.2
       jest-message-util: 30.2.0
       jest-util: 30.2.0
@@ -17110,7 +17225,7 @@ snapshots:
     dependencies:
       '@jest/fake-timers': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 25.0.3
+      '@types/node': 22.19.3
       jest-mock: 29.7.0
 
   '@jest/environment@30.2.0':
@@ -17135,7 +17250,7 @@ snapshots:
     dependencies:
       '@jest/types': 29.6.3
       '@sinonjs/fake-timers': 10.3.0
-      '@types/node': 25.0.3
+      '@types/node': 22.19.3
       jest-message-util: 29.7.0
       jest-mock: 29.7.0
       jest-util: 29.7.0
@@ -17162,7 +17277,7 @@ snapshots:
 
   '@jest/pattern@30.0.1':
     dependencies:
-      '@types/node': 20.19.9
+      '@types/node': 22.19.3
       jest-regex-util: 30.0.1
 
   '@jest/reporters@30.2.0':
@@ -17173,7 +17288,7 @@ snapshots:
       '@jest/transform': 30.2.0
       '@jest/types': 30.2.0
       '@jridgewell/trace-mapping': 0.3.31
-      '@types/node': 20.19.9
+      '@types/node': 22.19.3
       chalk: 4.1.2
       collect-v8-coverage: 1.0.3
       exit-x: 0.2.2
@@ -17272,7 +17387,7 @@ snapshots:
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
-      '@types/node': 25.0.3
+      '@types/node': 22.19.3
       '@types/yargs': 15.0.20
       chalk: 4.1.2
 
@@ -17281,7 +17396,7 @@ snapshots:
       '@jest/schemas': 29.6.3
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
-      '@types/node': 25.0.3
+      '@types/node': 22.19.3
       '@types/yargs': 17.0.35
       chalk: 4.1.2
 
@@ -17374,9 +17489,9 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
 
-  '@listr2/prompt-adapter-inquirer@3.0.5(@inquirer/prompts@7.9.0(@types/node@20.19.9))(@types/node@25.0.3)(listr2@9.0.5)':
+  '@listr2/prompt-adapter-inquirer@3.0.5(@inquirer/prompts@7.9.0(@types/node@25.0.3))(@types/node@25.0.3)(listr2@9.0.5)':
     dependencies:
-      '@inquirer/prompts': 7.9.0(@types/node@20.19.9)
+      '@inquirer/prompts': 7.9.0(@types/node@25.0.3)
       '@inquirer/type': 3.0.10(@types/node@25.0.3)
       listr2: 9.0.5
     transitivePeerDependencies:
@@ -17747,6 +17862,8 @@ snapshots:
       typescript: 5.9.3
       webpack: 5.104.0(@swc/core@1.15.8(@swc/helpers@0.5.18))(esbuild@0.26.0)
 
+  '@noble/hashes@1.8.0': {}
+
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
       '@nodelib/fs.stat': 2.0.5
@@ -17927,6 +18044,10 @@ snapshots:
 
   '@oxc-resolver/binding-win32-x64-msvc@11.16.2':
     optional: true
+
+  '@paralleldrive/cuid2@2.3.1':
+    dependencies:
+      '@noble/hashes': 1.8.0
 
   '@parcel/watcher-android-arm64@2.5.1':
     optional: true
@@ -18424,7 +18545,7 @@ snapshots:
 
   '@types/bonjour@3.5.13':
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 22.19.3
 
   '@types/cacheable-request@6.0.3':
     dependencies:
@@ -18436,7 +18557,7 @@ snapshots:
   '@types/connect-history-api-fallback@1.5.4':
     dependencies:
       '@types/express-serve-static-core': 5.1.0
-      '@types/node': 25.0.3
+      '@types/node': 22.19.3
 
   '@types/connect@3.4.38':
     dependencies:
@@ -18445,6 +18566,8 @@ snapshots:
   '@types/conventional-commits-parser@5.0.2':
     dependencies:
       '@types/node': 20.19.9
+
+  '@types/cookiejar@2.1.5': {}
 
   '@types/eslint-scope@3.7.7':
     dependencies:
@@ -18460,7 +18583,7 @@ snapshots:
 
   '@types/express-serve-static-core@4.19.7':
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 22.19.3
       '@types/qs': 6.14.0
       '@types/range-parser': 1.2.7
       '@types/send': 1.2.1
@@ -18489,7 +18612,7 @@ snapshots:
 
   '@types/graceful-fs@4.1.9':
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 22.19.3
 
   '@types/http-cache-semantics@4.0.4': {}
 
@@ -18497,7 +18620,7 @@ snapshots:
 
   '@types/http-proxy@1.17.17':
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 22.19.3
 
   '@types/istanbul-lib-coverage@2.0.6': {}
 
@@ -18516,7 +18639,7 @@ snapshots:
 
   '@types/jsdom@20.0.1':
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 22.19.3
       '@types/tough-cookie': 4.0.5
       parse5: 7.3.0
 
@@ -18536,11 +18659,13 @@ snapshots:
     dependencies:
       '@types/geojson': 7946.0.16
 
+  '@types/methods@1.1.4': {}
+
   '@types/mime@1.3.5': {}
 
   '@types/node-forge@1.3.14':
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 22.19.3
 
   '@types/node@20.19.9':
     dependencies:
@@ -18567,7 +18692,7 @@ snapshots:
   '@types/send@0.17.6':
     dependencies:
       '@types/mime': 1.3.5
-      '@types/node': 25.0.3
+      '@types/node': 22.19.3
 
   '@types/send@1.2.1':
     dependencies:
@@ -18580,7 +18705,7 @@ snapshots:
   '@types/serve-static@1.15.10':
     dependencies:
       '@types/http-errors': 2.0.5
-      '@types/node': 25.0.3
+      '@types/node': 22.19.3
       '@types/send': 0.17.6
 
   '@types/serve-static@2.2.0':
@@ -18590,17 +18715,33 @@ snapshots:
 
   '@types/sockjs@0.3.36':
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 22.19.3
 
   '@types/stack-utils@2.0.3': {}
 
+  '@types/superagent@8.1.9':
+    dependencies:
+      '@types/cookiejar': 2.1.5
+      '@types/methods': 1.1.4
+      '@types/node': 22.19.3
+      form-data: 4.0.5
+
+  '@types/supertest@6.0.3':
+    dependencies:
+      '@types/methods': 1.1.4
+      '@types/superagent': 8.1.9
+
   '@types/tough-cookie@4.0.5': {}
+
+  '@types/uuid@11.0.0':
+    dependencies:
+      uuid: 11.1.0
 
   '@types/validator@13.15.10': {}
 
   '@types/ws@8.18.1':
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 22.19.3
 
   '@types/yargs-parser@21.0.3': {}
 
@@ -18767,6 +18908,10 @@ snapshots:
   '@vitejs/plugin-basic-ssl@2.1.0(vite@7.2.2(@types/node@20.19.9)(jiti@2.6.1)(less@4.4.2)(sass@1.93.2)(terser@5.44.1)(yaml@2.8.2))':
     dependencies:
       vite: 7.2.2(@types/node@20.19.9)(jiti@2.6.1)(less@4.4.2)(sass@1.93.2)(terser@5.44.1)(yaml@2.8.2)
+
+  '@vitejs/plugin-basic-ssl@2.1.0(vite@7.2.2(@types/node@25.0.3)(jiti@2.6.1)(less@4.4.2)(sass@1.93.2)(terser@5.44.1)(yaml@2.8.2))':
+    dependencies:
+      vite: 7.2.2(@types/node@25.0.3)(jiti@2.6.1)(less@4.4.2)(sass@1.93.2)(terser@5.44.1)(yaml@2.8.2)
 
   '@webassemblyjs/ast@1.14.1':
     dependencies:
@@ -19058,6 +19203,8 @@ snapshots:
   array-timsort@1.0.3: {}
 
   array-unique@0.3.2: {}
+
+  asap@2.0.6: {}
 
   assign-symbols@1.0.0: {}
 
@@ -19699,6 +19846,8 @@ snapshots:
 
   cookie@0.7.2: {}
 
+  cookiejar@2.1.4: {}
+
   copy-anything@2.0.6:
     dependencies:
       is-what: 3.14.1
@@ -19912,6 +20061,11 @@ snapshots:
   detect-newline@3.1.0: {}
 
   detect-node@2.1.0: {}
+
+  dezalgo@1.0.4:
+    dependencies:
+      asap: 2.0.6
+      wrappy: 1.0.2
 
   diff@4.0.2: {}
 
@@ -20630,6 +20784,12 @@ snapshots:
       hasown: 2.0.2
       mime-types: 2.1.35
 
+  formidable@3.5.4:
+    dependencies:
+      '@paralleldrive/cuid2': 2.3.1
+      dezalgo: 1.0.4
+      once: 1.4.0
+
   forwarded@0.2.0: {}
 
   fraction.js@4.3.7: {}
@@ -21250,7 +21410,7 @@ snapshots:
       '@jest/expect': 30.2.0
       '@jest/test-result': 30.2.0
       '@jest/types': 30.2.0
-      '@types/node': 20.19.9
+      '@types/node': 22.19.3
       chalk: 4.1.2
       co: 4.6.0
       dedent: 1.7.1
@@ -21552,7 +21712,7 @@ snapshots:
     dependencies:
       '@jest/types': 26.6.2
       '@types/graceful-fs': 4.1.9
-      '@types/node': 25.0.3
+      '@types/node': 22.19.3
       anymatch: 3.1.3
       fb-watchman: 2.0.2
       graceful-fs: 4.2.11
@@ -21571,7 +21731,7 @@ snapshots:
   jest-haste-map@30.2.0:
     dependencies:
       '@jest/types': 30.2.0
-      '@types/node': 20.19.9
+      '@types/node': 22.19.3
       anymatch: 3.1.3
       fb-watchman: 2.0.2
       graceful-fs: 4.2.11
@@ -21622,7 +21782,7 @@ snapshots:
   jest-mock@29.7.0:
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 25.0.3
+      '@types/node': 22.19.3
       jest-util: 29.7.0
 
   jest-mock@30.2.0:
@@ -21713,7 +21873,7 @@ snapshots:
       '@jest/test-result': 30.2.0
       '@jest/transform': 30.2.0
       '@jest/types': 30.2.0
-      '@types/node': 20.19.9
+      '@types/node': 22.19.3
       chalk: 4.1.2
       emittery: 0.13.1
       exit-x: 0.2.2
@@ -21742,7 +21902,7 @@ snapshots:
       '@jest/test-result': 30.2.0
       '@jest/transform': 30.2.0
       '@jest/types': 30.2.0
-      '@types/node': 20.19.9
+      '@types/node': 22.19.3
       chalk: 4.1.2
       cjs-module-lexer: 2.2.0
       collect-v8-coverage: 1.0.3
@@ -21762,7 +21922,7 @@ snapshots:
 
   jest-serializer@26.6.2:
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 22.19.3
       graceful-fs: 4.2.11
 
   jest-snapshot@30.2.0:
@@ -21794,7 +21954,7 @@ snapshots:
   jest-util@26.6.2:
     dependencies:
       '@jest/types': 26.6.2
-      '@types/node': 25.0.3
+      '@types/node': 22.19.3
       chalk: 4.1.2
       graceful-fs: 4.2.11
       is-ci: 2.0.0
@@ -21831,7 +21991,7 @@ snapshots:
     dependencies:
       '@jest/test-result': 30.2.0
       '@jest/types': 30.2.0
-      '@types/node': 20.19.9
+      '@types/node': 22.19.3
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       emittery: 0.13.1
@@ -21840,7 +22000,7 @@ snapshots:
 
   jest-worker@26.6.2:
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 22.19.3
       merge-stream: 2.0.0
       supports-color: 7.2.0
 
@@ -21852,7 +22012,7 @@ snapshots:
 
   jest-worker@30.2.0:
     dependencies:
-      '@types/node': 20.19.9
+      '@types/node': 22.19.3
       '@ungap/structured-clone': 1.3.0
       jest-util: 30.2.0
       merge-stream: 2.0.0
@@ -22296,6 +22456,8 @@ snapshots:
       mime-db: 1.54.0
 
   mime@1.6.0: {}
+
+  mime@2.6.0: {}
 
   mimic-fn@2.1.0: {}
 
@@ -23863,6 +24025,28 @@ snapshots:
     dependencies:
       '@tokenizer/token': 0.3.0
       peek-readable: 5.4.2
+
+  superagent@10.3.0:
+    dependencies:
+      component-emitter: 1.3.1
+      cookiejar: 2.1.4
+      debug: 4.4.3
+      fast-safe-stringify: 2.1.1
+      form-data: 4.0.5
+      formidable: 3.5.4
+      methods: 1.1.2
+      mime: 2.6.0
+      qs: 6.14.1
+    transitivePeerDependencies:
+      - supports-color
+
+  supertest@7.2.2:
+    dependencies:
+      cookie-signature: 1.2.2
+      methods: 1.1.2
+      superagent: 10.3.0
+    transitivePeerDependencies:
+      - supports-color
 
   supports-color@7.2.0:
     dependencies:
