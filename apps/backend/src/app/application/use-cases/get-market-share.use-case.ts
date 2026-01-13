@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { LeadRepository } from '../../../domain/repositories/lead.repository';
-import { DashboardMarketShareDto } from '../../dtos/dashboard.dto';
-import { UseCase } from '../../interfaces/use-case.interface';
+import { LeadRepository } from '../../domain/repositories/lead.repository';
+import { DashboardMarketShareDto } from '../dtos/dashboard.dto';
+import { UseCase } from '../interfaces/use-case.interface';
 
 @Injectable()
 export class GetMarketShareUseCase implements UseCase<

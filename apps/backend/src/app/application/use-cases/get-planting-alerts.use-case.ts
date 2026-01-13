@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CultureRepository } from '../../../domain/repositories/culture.repository';
-import { DashboardPlantingAlertDto } from '../../dtos/dashboard.dto';
-import { UseCase } from '../../interfaces/use-case.interface';
+import { CultureRepository } from '../../domain/repositories/culture.repository';
+import { DashboardPlantingAlertDto } from '../dtos/dashboard.dto';
+import { UseCase } from '../interfaces/use-case.interface';
 
 @Injectable()
 export class GetPlantingAlertsUseCase implements UseCase<
