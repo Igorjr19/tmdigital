@@ -12,10 +12,19 @@ export class CreateLeadUseCase implements UseCase<CreateLeadDto, Lead> {
   constructor(private readonly leadRepository: LeadRepository) {}
 
   async execute(input: CreateLeadDto): Promise<Lead> {
-    const existingLead = await this.leadRepository.findByDocument(
-      input.document,
-    );
-    if (existingLead) {
+    const existingLeadIncludingDeleted =
+      await this.leadRepository.findIncludingDeletedByDocument(input.document);
+
+    if (existingLeadIncludingDeleted) {
+      if (existingLeadIncludingDeleted.deletedAt) {
+        existingLeadIncludingDeleted.restore();
+        existingLeadIncludingDeleted.updateInformation(input);
+        existingLeadIncludingDeleted.updateStatus(
+          input.status ?? LeadStatus.NEW,
+        );
+        return this.leadRepository.save(existingLeadIncludingDeleted);
+      }
+
       throw new ResourceAlreadyExistsException(
         `Lead with document ${input.document} already exists`,
         DomainErrorCodes.LEAD_ALREADY_EXISTS,

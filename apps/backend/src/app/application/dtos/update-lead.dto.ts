@@ -13,6 +13,14 @@ export class UpdateLeadDto {
   name?: string;
 
   @ApiPropertyOptional({
+    description: 'Documento do lead (CPF/CNPJ)',
+    example: '12345678901',
+  })
+  @IsString()
+  @IsOptional()
+  document?: string;
+
+  @ApiPropertyOptional({
     description: 'Fornecedor atual do lead',
     example: 'Terra Fértil Insumos',
   })

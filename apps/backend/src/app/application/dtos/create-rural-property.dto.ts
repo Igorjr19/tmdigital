@@ -9,7 +9,6 @@ import {
   IsString,
   IsUUID,
   Min,
-  MinLength,
   ValidateNested,
 } from 'class-validator';
 import { Point } from 'geojson';
@@ -87,6 +86,5 @@ export class CreateRuralPropertyDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CropProductionInputDto)
-  @MinLength(1)
   cropProductions: CropProductionInputDto[];
 }

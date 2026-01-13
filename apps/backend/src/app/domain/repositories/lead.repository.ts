@@ -7,6 +7,9 @@ export abstract class LeadRepository {
   abstract findById(id: string): Promise<Lead | null>;
   abstract findByIdWithRelations(id: string): Promise<Lead | null>;
   abstract findByDocument(document: string): Promise<Lead | null>;
+  abstract findIncludingDeletedByDocument(
+    document: string,
+  ): Promise<Lead | null>;
   abstract findNearby(
     lat: number,
     long: number,

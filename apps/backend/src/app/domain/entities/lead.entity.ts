@@ -14,6 +14,7 @@ export interface LeadProps {
   id?: string;
   createdAt?: Date;
   updatedAt?: Date;
+  deletedAt?: Date;
   properties?: RuralProperty[];
 }
 
@@ -27,7 +28,7 @@ export class Lead extends BaseEntity {
   private _properties: RuralProperty[];
 
   private constructor(props: LeadProps) {
-    super(props.id, props.createdAt, props.updatedAt);
+    super(props.id, props.createdAt, props.updatedAt, props.deletedAt);
     this._name = props.name;
     this._document = props.document;
     this._currentSupplier = props.currentSupplier;
@@ -133,5 +134,9 @@ export class Lead extends BaseEntity {
       0,
     );
     this.updateInformation({ estimatedPotential: totalPotential });
+  }
+
+  restore(): void {
+    this.deletedAt = undefined;
   }
 }

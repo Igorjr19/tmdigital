@@ -51,6 +51,15 @@ export class TypeOrmLeadRepository implements LeadRepository {
     return LeadMapper.toDomain(schema);
   }
 
+  async findIncludingDeletedByDocument(document: string): Promise<Lead | null> {
+    const schema = await this.typeOrmRepository.findOne({
+      where: { document },
+      withDeleted: true,
+    });
+    if (!schema) return null;
+    return LeadMapper.toDomain(schema);
+  }
+
   async findNearby(
     lat: number,
     long: number,
