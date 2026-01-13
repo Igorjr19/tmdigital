@@ -24,6 +24,7 @@ import { TableModule } from 'primeng/table';
 import {
   CreateRuralPropertyDto,
   RuralPropertyDto,
+  UpdateRuralPropertyDto,
 } from '../../../../api/model/models';
 import { LeadsFacadeService } from '../../services/leads.facade';
 
@@ -138,29 +139,43 @@ export class LeadPropertiesComponent {
     if (this.form.invalid) return;
 
     const formValue = this.form.value;
-    const dto: CreateRuralPropertyDto = {
-      leadId: this.leadId,
-      name: formValue.name,
-      city: formValue.city,
-      state: formValue.state,
-      totalAreaHectares: formValue.totalAreaHectares,
-      productiveAreaHectares: formValue.productiveAreaHectares,
-      location: {
-        type: 'Point',
-        coordinates: [formValue.longitude || 0, formValue.latitude || 0],
-      },
-      cropProductions: formValue.cropProductions,
+    const location = {
+      type: 'Point',
+      coordinates: [formValue.longitude || 0, formValue.latitude || 0],
     };
 
     this.loading.set(true);
 
-    const request$ = this.editingPropertyId
-      ? this.leadsFacade.updateProperty(
-          this.leadId,
-          this.editingPropertyId,
-          dto,
-        )
-      : this.leadsFacade.addProperty(this.leadId, dto);
+    let request$;
+
+    if (this.editingPropertyId) {
+      const dto: UpdateRuralPropertyDto = {
+        name: formValue.name,
+        city: formValue.city,
+        state: formValue.state,
+        totalAreaHectares: formValue.totalAreaHectares,
+        productiveAreaHectares: formValue.productiveAreaHectares,
+        location,
+        cropProductions: formValue.cropProductions,
+      };
+      request$ = this.leadsFacade.updateProperty(
+        this.leadId,
+        this.editingPropertyId,
+        dto,
+      );
+    } else {
+      const dto: CreateRuralPropertyDto = {
+        leadId: this.leadId,
+        name: formValue.name,
+        city: formValue.city,
+        state: formValue.state,
+        totalAreaHectares: formValue.totalAreaHectares,
+        productiveAreaHectares: formValue.productiveAreaHectares,
+        location,
+        cropProductions: formValue.cropProductions,
+      };
+      request$ = this.leadsFacade.addProperty(this.leadId, dto);
+    }
 
     request$.subscribe({
       next: () => {

@@ -11,6 +11,7 @@ import {
   GetLeadsResponseDto,
   LeadDto,
   UpdateLeadDto,
+  UpdateRuralPropertyDto,
 } from '../../../api/model/models';
 import { LeadWithProperties } from '../models/lead.extension';
 
@@ -58,6 +59,16 @@ export class LeadsFacadeService {
 
   loadAllLeadsForDashboard() {
     this.loadLeads({ page: 1, limit: 100 });
+  }
+
+  activeLead = signal<LeadDto | null>(null);
+
+  loadActiveLead(id: string) {
+    this.loading.set(true);
+    return this.leadsService.leadControllerFindOne({ id }).pipe(
+      tap((lead) => this.activeLead.set(lead)),
+      finalize(() => this.loading.set(false)),
+    );
   }
 
   getLeadById(id: string) {
@@ -178,6 +189,9 @@ export class LeadsFacadeService {
       .pipe(
         tap(() => {
           this.loadLeads();
+          if (this.activeLead()?.id === leadId) {
+            this.loadActiveLead(leadId).subscribe();
+          }
         }),
         finalize(() => this.loading.set(false)),
       );
@@ -186,7 +200,7 @@ export class LeadsFacadeService {
   updateProperty(
     leadId: string,
     propertyId: string,
-    dto: CreateRuralPropertyDto,
+    dto: UpdateRuralPropertyDto,
   ) {
     this.loading.set(true);
     return this.ruralPropertiesService
@@ -198,9 +212,19 @@ export class LeadsFacadeService {
       .pipe(
         tap(() => {
           this.loadLeads();
+          if (this.activeLead()?.id === leadId) {
+            this.loadActiveLead(leadId).subscribe();
+          }
         }),
         finalize(() => this.loading.set(false)),
       );
+  }
+
+  getRuralProperty(leadId: string, propertyId: string) {
+    this.loading.set(true);
+    return this.ruralPropertiesService
+      .ruralPropertyControllerFindOne({ leadId, id: propertyId })
+      .pipe(finalize(() => this.loading.set(false)));
   }
 
   deleteProperty(leadId: string, propertyId: string) {
@@ -210,6 +234,9 @@ export class LeadsFacadeService {
       .pipe(
         tap(() => {
           this.loadLeads();
+          if (this.activeLead()?.id === leadId) {
+            this.loadActiveLead(leadId).subscribe();
+          }
         }),
         finalize(() => this.loading.set(false)),
       );

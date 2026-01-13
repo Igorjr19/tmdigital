@@ -3,13 +3,12 @@ import {
   ChangeDetectionStrategy,
   Component,
   OnInit,
+  computed,
   inject,
   signal,
 } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { firstValueFrom } from 'rxjs';
-import { LeadDto } from '../../../../api/model/models';
 import { LeadFormComponent } from '../../lead-form/lead-form.component';
 import { LeadsFacadeService } from '../../services/leads.facade';
 import { LeadDetailComponent } from '../lead-detail/lead-detail.component';
@@ -66,7 +65,7 @@ export class LeadDialogComponent implements OnInit {
 
   mode = signal<DialogMode>('VIEW');
   loading = signal(false);
-  lead = signal<LeadDto | null>(null);
+  lead = computed(() => this.leadsFacade.activeLead());
 
   leadId: string = '';
 
@@ -81,15 +80,7 @@ export class LeadDialogComponent implements OnInit {
   }
 
   async loadLead() {
-    this.loading.set(true);
-    try {
-      const data = await firstValueFrom(
-        this.leadsFacade.getLeadById(this.leadId),
-      );
-      this.lead.set(data);
-    } finally {
-      this.loading.set(false);
-    }
+    this.leadsFacade.loadActiveLead(this.leadId).subscribe();
   }
 
   enableEdit() {
