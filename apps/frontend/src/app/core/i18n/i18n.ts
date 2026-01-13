@@ -2,8 +2,8 @@ import { LeadDto } from '../../api';
 
 export const I18N = {
   COMMON: {
-    APP_NAME: 'CRM Agro',
-    COPYRIGHT: 'CRM Agro © 2024',
+    APP_NAME: 'TMDigital',
+    COPYRIGHT: 'TMDigital © 2026',
     ACTIONS: 'Ações',
     YES: 'Sim',
     NO: 'Não',
