@@ -9,6 +9,7 @@ erDiagram
         uuid id PK
         varchar name
         varchar document UK
+        varchar phone
         varchar current_supplier
         enum status
         decimal estimated_potential
