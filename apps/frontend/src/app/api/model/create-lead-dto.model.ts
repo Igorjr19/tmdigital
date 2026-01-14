@@ -14,9 +14,13 @@ export interface CreateLeadDto {
    */
   name: string;
   /**
-   * CPF ou CNPJ do lead (apenas números ou formatado)
+   * CPF ou CNPJ do Lead
    */
   document: string;
+  /**
+   * Telefone de contato
+   */
+  phone: string;
   /**
    * Nome do fornecedor atual (se houver)
    */

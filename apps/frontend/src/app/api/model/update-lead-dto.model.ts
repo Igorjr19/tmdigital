@@ -14,9 +14,13 @@ export interface UpdateLeadDto {
    */
   name?: string;
   /**
-   * Documento do lead (CPF/CNPJ)
+   * CPF ou CNPJ do Lead
    */
   document?: string;
+  /**
+   * Telefone de contato
+   */
+  phone?: string;
   /**
    * Fornecedor atual do lead
    */
