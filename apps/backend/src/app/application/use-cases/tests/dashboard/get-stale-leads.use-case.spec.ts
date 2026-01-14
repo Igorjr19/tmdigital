@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Lead } from '../../../../domain/entities/lead.entity';
 import { LeadStatus } from '../../../../domain/enums/lead-status.enum';
 import { LeadRepository } from '../../../../domain/repositories/lead.repository';
-import { GetStaleLeadsUseCase } from '../../dashboard/get-stale-leads.use-case';
+import { GetStaleLeadsUseCase } from '../../get-stale-leads.use-case';
 
 describe('GetStaleLeadsUseCase', () => {
   let useCase: GetStaleLeadsUseCase;

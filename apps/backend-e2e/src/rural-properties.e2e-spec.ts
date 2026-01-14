@@ -1,5 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
+import { generateCPF } from '../../backend/src/app/utils/document.utils';
 import { closeApp, createApp, TestApp } from './utils/app-factory';
 
 describe('RuralPropertyController (e2e)', () => {
@@ -10,7 +11,7 @@ describe('RuralPropertyController (e2e)', () => {
 
   const leadData = {
     name: `Property Owner ${uniqueSuffix}`,
-    document: `${uniqueSuffix.toString().slice(-14)}`,
+    document: generateCPF(),
     status: 'QUALIFIED',
     estimatedPotential: 500000,
   };

@@ -4,6 +4,7 @@ import request from 'supertest';
 import { CreateLeadDto } from '../../backend/src/app/application/dtos/create-lead.dto';
 import { CreateRuralPropertyDto } from '../../backend/src/app/application/dtos/create-rural-property.dto';
 import { LeadStatus } from '../../backend/src/app/domain/enums/lead-status.enum';
+import { generateCPF } from '../../backend/src/app/utils/document.utils';
 import { closeApp, createApp, TestApp } from './utils/app-factory';
 
 describe('Rural Property CRUD (e2e)', () => {
@@ -21,7 +22,7 @@ describe('Rural Property CRUD (e2e)', () => {
   });
 
   it('Establishment: Create Lead', async () => {
-    const uniqueDoc = `CRUD${Date.now().toString().slice(-10)}`;
+    const uniqueDoc = generateCPF();
     const createLeadDto: CreateLeadDto = {
       name: 'Property CRUD Owner',
       document: uniqueDoc,

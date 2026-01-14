@@ -9,6 +9,7 @@ import {
   Min,
 } from 'class-validator';
 import { LeadStatus } from '../../domain/enums/lead-status.enum';
+import { IsCpfOrCnpj } from '../decorators/is-cpf-or-cnpj.decorator';
 
 export class CreateLeadDto {
   @ApiProperty({
@@ -21,12 +22,12 @@ export class CreateLeadDto {
   name: string;
 
   @ApiProperty({
-    description: 'CPF ou CNPJ do lead (apenas números ou formatado)',
-    example: '12345678901',
-    minLength: 11,
+    description: 'CPF ou CNPJ do Lead',
+    example: '123.456.789-00',
   })
   @IsString()
   @IsNotEmpty()
+  @IsCpfOrCnpj({ message: 'Documento inválido (CPF ou CNPJ)' })
   document: string;
 
   @ApiPropertyOptional({

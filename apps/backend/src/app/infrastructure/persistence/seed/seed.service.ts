@@ -1,4 +1,6 @@
-import { faker } from '@faker-js/faker';
+import { fakerPT_BR as faker } from '@faker-js/faker';
+import { cnpj, cpf } from 'cpf-cnpj-validator';
+
 import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
@@ -181,13 +183,11 @@ export class SeedService implements OnApplicationBootstrap {
 
       const isCompany = faker.datatype.boolean();
       const name = isCompany ? faker.company.name() : faker.person.fullName();
-      const document = isCompany
-        ? faker.helpers.replaceSymbols('##.###.###/####-##')
-        : faker.helpers.replaceSymbols('###.###.###-##');
+      const document = isCompany ? cnpj.generate() : cpf.generate();
 
       const lead = Lead.create({
         name,
-        document,
+        document: document,
         status: status,
         currentSupplier: currentSupplier,
         estimatedPotential: 0,
@@ -266,14 +266,11 @@ export class SeedService implements OnApplicationBootstrap {
 
       await this.leadRepository.save(lead);
 
-      // FORCE update date logic
       if (isStale) {
-        // Use raw query to bypass TypeORM's UpdateDateColumn behavior
         await this.dataSource.query(
           'UPDATE leads SET updated_at = $1 WHERE id = $2',
           [updatedAt, lead.id],
         );
-        this.logger.log(`Forced stale date for lead ${lead.id}: ${updatedAt}`);
       }
     }
   }

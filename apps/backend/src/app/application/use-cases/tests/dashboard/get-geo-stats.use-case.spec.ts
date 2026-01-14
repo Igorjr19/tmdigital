@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LeadRepository } from '../../../../domain/repositories/lead.repository';
-import { GetGeoStatsUseCase } from '../../dashboard/get-geo-stats.use-case';
+import { GetGeoStatsUseCase } from '../../get-geo-stats.use-case';
 
 describe('GetGeoStatsUseCase', () => {
   let useCase: GetGeoStatsUseCase;

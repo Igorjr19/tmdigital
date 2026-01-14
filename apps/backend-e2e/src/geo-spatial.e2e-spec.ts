@@ -1,5 +1,9 @@
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
+import {
+  generateCNPJ,
+  generateCPF,
+} from '../../backend/src/app/utils/document.utils';
 import { closeApp, createApp, TestApp } from './utils/app-factory';
 
 describe('GeoSpatial (e2e)', () => {
@@ -19,7 +23,7 @@ describe('GeoSpatial (e2e)', () => {
       .post('/api/leads')
       .send({
         name: `Geo Lead 1 ${uniqueSuffix}`,
-        document: `GEO1-${uniqueSuffix.toString().slice(-9)}`,
+        document: generateCPF(),
         status: 'NEW',
         estimatedPotential: 0,
       });
@@ -42,7 +46,7 @@ describe('GeoSpatial (e2e)', () => {
       .post('/api/leads')
       .send({
         name: `Geo Lead 2 ${uniqueSuffix}`,
-        document: `GEO2-${uniqueSuffix.toString().slice(-9)}`,
+        document: generateCNPJ(),
         status: 'NEW',
         estimatedPotential: 0,
       });

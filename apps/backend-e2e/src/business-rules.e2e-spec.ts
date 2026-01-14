@@ -2,6 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { CreateLeadDto } from '../../backend/src/app/application/dtos/create-lead.dto';
 import { LeadStatus } from '../../backend/src/app/domain/enums/lead-status.enum';
+import { generateCPF } from '../../backend/src/app/utils/document.utils';
 import { closeApp, createApp, TestApp } from './utils/app-factory';
 
 describe('Business Rules Adjustments (E2E)', () => {
@@ -18,7 +19,7 @@ describe('Business Rules Adjustments (E2E)', () => {
   });
 
   describe('Lead Reactivation', () => {
-    const uniqueDoc = `9${Date.now().toString().slice(-10)}`;
+    const uniqueDoc = generateCPF(); // Valid CPF
     const leadData: CreateLeadDto = {
       name: 'Reactivation Candidate',
       document: uniqueDoc,
@@ -59,8 +60,8 @@ describe('Business Rules Adjustments (E2E)', () => {
 
   describe('Lead Document Update', () => {
     it('should allow updating the lead document', async () => {
-      const uniqueDoc = `1${Date.now().toString().slice(-10)}`;
-      const newDoc = `2${Date.now().toString().slice(-10)}`;
+      const uniqueDoc = generateCPF();
+      const newDoc = generateCPF();
       const res = await request(app.getHttpServer())
         .post('/api/leads')
         .send({
@@ -68,7 +69,11 @@ describe('Business Rules Adjustments (E2E)', () => {
           document: uniqueDoc,
           estimatedPotential: 1000,
         })
-        .expect(201);
+        .expect(201)
+        .catch((err) => {
+          console.error('Create Lead Failed:', err.response.body);
+          throw err;
+        });
       const id = res.body.id;
 
       await request(app.getHttpServer())
@@ -79,13 +84,13 @@ describe('Business Rules Adjustments (E2E)', () => {
       const getRes = await request(app.getHttpServer())
         .get(`/api/leads/${id}`)
         .expect(200);
-      expect(getRes.body.document).toBe(newDoc);
+      expect(getRes.body.document).toBe(newDoc.replace(/\D/g, ''));
     });
   });
 
   describe('Optional Crop Productions', () => {
     it('should create property without crop productions', async () => {
-      const uniqueDoc = `3${Date.now().toString().slice(-10)}`;
+      const uniqueDoc = generateCPF();
       const leadRes = await request(app.getHttpServer())
         .post('/api/leads')
         .send({

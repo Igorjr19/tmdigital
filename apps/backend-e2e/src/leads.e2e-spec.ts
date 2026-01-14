@@ -1,12 +1,13 @@
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
+import { generateCPF } from '../../backend/src/app/utils/document.utils';
 import { closeApp, createApp, TestApp } from './utils/app-factory';
 
 describe('LeadController (e2e)', () => {
   let testApp: TestApp;
   let app: INestApplication;
 
-  const uniqueDoc = `${Date.now().toString().slice(-14)}`;
+  const uniqueDoc = generateCPF();
 
   const createLeadDto = {
     name: 'E2E Test Lead',
@@ -58,7 +59,9 @@ describe('LeadController (e2e)', () => {
         .expect(200);
 
       expect(response.body.id).toBe(createdLeadId);
-      expect(response.body.document).toBe(createLeadDto.document);
+      expect(response.body.document).toBe(
+        createLeadDto.document.replace(/\D/g, ''),
+      );
     });
 
     it('PATCH /:id should update the lead', async () => {

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LeadRepository } from '../../../../domain/repositories/lead.repository';
-import { GetMarketShareUseCase } from '../../dashboard/get-market-share.use-case';
+import { GetMarketShareUseCase } from '../../get-market-share.use-case';
 
 describe('GetMarketShareUseCase', () => {
   let useCase: GetMarketShareUseCase;

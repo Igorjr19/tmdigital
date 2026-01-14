@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LeadRepository } from '../../../../domain/repositories/lead.repository';
-import { GetForecastUseCase } from '../../dashboard/get-forecast.use-case';
+import { GetForecastUseCase } from '../../get-forecast.use-case';
 
 describe('GetForecastUseCase', () => {
   let useCase: GetForecastUseCase;
@@ -8,7 +8,7 @@ describe('GetForecastUseCase', () => {
 
   const mockForecast = {
     totalPotential: 100000,
-    weightedForecast: 50000,
+    countByStatus: { NEW: 1 },
   };
 
   beforeEach(async () => {
@@ -35,7 +35,7 @@ describe('GetForecastUseCase', () => {
   it('should return forecast dto', async () => {
     const result = await useCase.execute();
     expect(result.totalPotential).toBe(100000);
-    expect(result.weightedForecast).toBe(50000);
+    expect(result.countByStatus).toEqual({ NEW: 1 });
     expect(leadRepository.getForecast).toHaveBeenCalled();
   });
 });

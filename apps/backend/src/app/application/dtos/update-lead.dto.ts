@@ -2,6 +2,7 @@ import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsEnum, IsNumber, IsOptional, IsString, Min } from 'class-validator';
 import { LeadStatus } from '../../domain/enums/lead-status.enum';
+import { IsCpfOrCnpj } from '../decorators/is-cpf-or-cnpj.decorator';
 
 export class UpdateLeadDto {
   @ApiPropertyOptional({
@@ -13,11 +14,12 @@ export class UpdateLeadDto {
   name?: string;
 
   @ApiPropertyOptional({
-    description: 'Documento do lead (CPF/CNPJ)',
-    example: '12345678901',
+    description: 'CPF ou CNPJ do Lead',
+    example: '123.456.789-00',
   })
-  @IsString()
   @IsOptional()
+  @IsString()
+  @IsCpfOrCnpj({ message: 'Documento inválido (CPF ou CNPJ)' })
   document?: string;
 
   @ApiPropertyOptional({

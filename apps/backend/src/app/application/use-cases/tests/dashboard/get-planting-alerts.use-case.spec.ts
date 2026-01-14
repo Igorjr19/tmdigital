@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Culture } from '../../../../domain/entities/culture.entity';
 import { CultureRepository } from '../../../../domain/repositories/culture.repository';
-import { GetPlantingAlertsUseCase } from '../../dashboard/get-planting-alerts.use-case';
+import { GetPlantingAlertsUseCase } from '../../get-planting-alerts.use-case';
 
 describe('GetPlantingAlertsUseCase', () => {
   let useCase: GetPlantingAlertsUseCase;
