@@ -8,6 +8,7 @@ export class LeadMapper {
       id: schema.id,
       name: schema.name,
       document: schema.document,
+      phone: schema.phone,
       currentSupplier: schema.currentSupplier,
       status: schema.status,
       estimatedPotential: Number(schema.estimatedPotential),
@@ -26,6 +27,7 @@ export class LeadMapper {
     schema.id = domain.id;
     schema.name = domain.name;
     schema.document = domain.document;
+    schema.phone = domain.phone;
     schema.currentSupplier = domain.currentSupplier;
     schema.status = domain.status;
     schema.estimatedPotential = domain.estimatedPotential;

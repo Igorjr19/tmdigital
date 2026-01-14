@@ -19,6 +19,13 @@ export class LeadSchema extends BaseSchema {
   document: string;
 
   @Column({
+    type: 'varchar',
+    length: 20,
+    nullable: false,
+  })
+  phone: string;
+
+  @Column({
     name: 'current_supplier',
     type: 'varchar',
     length: 255,

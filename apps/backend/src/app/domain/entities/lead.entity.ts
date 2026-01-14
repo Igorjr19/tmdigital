@@ -7,6 +7,7 @@ import { RuralProperty } from './rural-property.entity';
 export interface LeadProps {
   name: string;
   document: string;
+  phone: string;
   currentSupplier?: string;
   status: LeadStatus;
   estimatedPotential: number;
@@ -21,6 +22,7 @@ export interface LeadProps {
 export class Lead extends BaseEntity {
   private _name: string;
   private _document: string;
+  private _phone: string;
   private _currentSupplier?: string;
   private _status: LeadStatus;
   private _estimatedPotential: number;
@@ -31,6 +33,7 @@ export class Lead extends BaseEntity {
     super(props.id, props.createdAt, props.updatedAt, props.deletedAt);
     this._name = props.name;
     this._document = this.sanitizeDocument(props.document);
+    this._phone = props.phone;
     this._currentSupplier = props.currentSupplier;
     this._status = props.status;
     this._estimatedPotential = props.estimatedPotential;
@@ -57,6 +60,12 @@ export class Lead extends BaseEntity {
         DomainErrorCodes.LEAD_DOCUMENT_REQUIRED,
       );
     }
+    if (!this._phone) {
+      throw new BusinessRuleException(
+        'Phone is required',
+        DomainErrorCodes.LEAD_PHONE_REQUIRED,
+      );
+    }
     if (this._estimatedPotential < 0) {
       throw new BusinessRuleException(
         'Estimated potential cannot be negative',
@@ -70,6 +79,9 @@ export class Lead extends BaseEntity {
   }
   get document(): string {
     return this._document;
+  }
+  get phone(): string {
+    return this._phone;
   }
   get currentSupplier(): string | undefined {
     return this._currentSupplier;
@@ -105,6 +117,10 @@ export class Lead extends BaseEntity {
 
     if (props.document) {
       this._document = this.sanitizeDocument(props.document);
+    }
+
+    if (props.phone) {
+      this._phone = props.phone;
     }
 
     if (props.currentSupplier !== undefined) {
