@@ -38,7 +38,17 @@ A aplicação estará disponível em:
 
 - **Frontend**: http://localhost:4200
 - **Backend**: http://localhost:3000/api
-- **Database**: localhost:5432
+- **Database**: http://localhost:5432
+
+### 3. Configurar Banco de Dados
+
+Após iniciar os containers, você precisa rodar as migrações para criar as tabelas:
+
+```bash
+make migration-run
+```
+
+O seed (dados iniciais) roda automaticamente ao reiniciar o backend se a variável `SEED_ENABLED=true` estiver definida (padrão no setup).
 
 ## 📦 Comandos Disponíveis
 
@@ -68,7 +78,11 @@ make shell-backend     # Acessa shell do container backend
 make shell-frontend    # Acessa shell do container frontend
 make shell-db          # Acessa shell do container postgres
 make psql              # Acessa PostgreSQL via psql
+make psql              # Acessa PostgreSQL via psql
 make db-reset          # Reseta o banco de dados (apaga todos os dados)
+make migration-run     # Executa migrações pendentes
+make migration-revert  # Reverte a última migração
+make seed              # Reinicia backend para rodar seed
 ```
 
 ### Desenvolvimento Local (sem Docker)
@@ -125,18 +139,66 @@ tmdigital/
 Copie `.env.example` para `.env` e ajuste as variáveis conforme necessário:
 
 ```env
-# PostgreSQL
+# GENERAL
+NODE_ENV=development
+
+# BACKEND
+POSTGRES_HOST=postgres
 POSTGRES_DB=tmdigital
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 POSTGRES_PORT=5432
+SEED_ENABLED=true
 
-# Backend
+# FRONTEND
+BACKEND_HOST=localhost
 BACKEND_PORT=3000
-
-# Frontend
 FRONTEND_PORT=4200
-API_URL=http://localhost:3000
+
+```
+
+## 🐢 Executando sem Make
+
+Caso você não tenha o `make` instalado ou prefira rodar os comandos manualmente, siga estes passos:
+
+### 1. Setup
+
+```bash
+# Copie o arquivo de variáveis de ambiente
+cp .env.example .env
+
+# Instale as dependências
+pnpm install
+```
+
+### 2. Rodar a Aplicação
+
+```bash
+# Inicie os containers em background
+docker compose up -d
+```
+
+### 3. Banco de Dados
+
+```bash
+# Rode as migrações (necessário na primeira execução)
+pnpm --filter @tmdigital/backend migration:run
+
+# Para reverter a última migração
+pnpm --filter @tmdigital/backend migration:revert
+
+# Opcional: Acessar o banco via psql
+docker compose exec postgres psql -U postgres -d tmdigital
+```
+
+### 4. Logs e Limpeza
+
+```bash
+# Logs
+docker compose logs -f
+
+# Parar tudo
+docker compose down
 ```
 
 ## 💡 Dicas
@@ -146,7 +208,7 @@ API_URL=http://localhost:3000
 - O banco de dados persiste entre reinicializações dos containers
 - Use `make logs` para debug em tempo real
 
-## 📚 Documentação
+## 📚 Documentações Externas
 
 - [NestJS](https://nestjs.com/)
 - [Angular](https://angular.dev/)
