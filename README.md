@@ -166,9 +166,6 @@ Caso você não tenha o `make` instalado ou prefira rodar os comandos manualment
 ```bash
 # Copie o arquivo de variáveis de ambiente
 cp .env.example .env
-
-# Instale as dependências
-pnpm install
 ```
 
 ### 2. Rodar a Aplicação
@@ -182,10 +179,10 @@ docker compose up -d
 
 ```bash
 # Rode as migrações (necessário na primeira execução)
-pnpm --filter @tmdigital/backend migration:run
+docker compose exec backend pnpm --filter @tmdigital/backend migration:run
 
 # Para reverter a última migração
-pnpm --filter @tmdigital/backend migration:revert
+docker compose exec backend pnpm --filter @tmdigital/backend migration:revert
 
 # Opcional: Acessar o banco via psql
 docker compose exec postgres psql -U postgres -d tmdigital

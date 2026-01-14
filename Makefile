@@ -16,7 +16,6 @@ help: ## Exibe esta mensagem de ajuda
 
 setup: ## Configuração inicial do projeto
 	@if [ ! -f .env ]; then cp .env.example .env; fi
-	@pnpm install
 
 install: ## Instala as dependências do projeto
 	@pnpm install
@@ -69,13 +68,10 @@ psql: ## Acessa PostgreSQL via psql
 
 
 migration-run: ## Executa migrações do banco de dados
-	@pnpm --filter @tmdigital/backend migration:run
+	@docker compose exec backend pnpm --filter @tmdigital/backend migration:run
 
 migration-revert: ## Reverte a última migração
-	@pnpm --filter @tmdigital/backend migration:revert
-
-seed: ## Popula o banco de dados com dados iniciais
-	@docker compose restart backend
+	@docker compose exec backend pnpm --filter @tmdigital/backend migration:revert
 
 ##@ Desenvolvimento Local
 
