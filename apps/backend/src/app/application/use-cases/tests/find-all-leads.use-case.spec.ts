@@ -41,12 +41,14 @@ describe('FindAllLeadsUseCase', () => {
       Lead.create({
         name: 'Lead 1',
         document: '111',
+        phone: '11999999999',
         status: LeadStatus.NEW,
         estimatedPotential: 1000,
       }),
       Lead.create({
         name: 'Lead 2',
         document: '222',
+        phone: '11888888888',
         status: LeadStatus.NEW,
         estimatedPotential: 2000,
       }),

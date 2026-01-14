@@ -188,6 +188,7 @@ export class SeedService implements OnApplicationBootstrap {
       const lead = Lead.create({
         name,
         document: document,
+        phone: faker.phone.number({ style: 'national' }),
         status: status,
         currentSupplier: currentSupplier,
         estimatedPotential: 0,

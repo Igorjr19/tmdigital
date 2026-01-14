@@ -23,6 +23,14 @@ export class UpdateLeadDto {
   document?: string;
 
   @ApiPropertyOptional({
+    description: 'Telefone de contato',
+    example: '(11) 99999-9999',
+  })
+  @IsString()
+  @IsOptional()
+  phone?: string;
+
+  @ApiPropertyOptional({
     description: 'Fornecedor atual do lead',
     example: 'Terra Fértil Insumos',
   })

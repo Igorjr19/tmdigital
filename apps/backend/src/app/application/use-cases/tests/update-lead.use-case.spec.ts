@@ -48,6 +48,7 @@ describe('UpdateLeadUseCase', () => {
       id: leadId,
       name: 'Old Name',
       document: '12345678901',
+      phone: '11999999999',
       status: LeadStatus.NEW,
       estimatedPotential: 1000,
     });

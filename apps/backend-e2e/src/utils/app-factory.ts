@@ -11,6 +11,7 @@ export interface TestApp {
 }
 
 export async function createApp(): Promise<TestApp> {
+  process.env.SEED_ENABLED = 'false';
   const moduleFixture: TestingModule = await Test.createTestingModule({
     imports: [AppModule],
   }).compile();
@@ -30,6 +31,9 @@ export async function createApp(): Promise<TestApp> {
   app.useGlobalFilters(new DomainExceptionFilter());
 
   await app.init();
+
+  const dataSource = app.get(DataSource);
+  await dataSource.synchronize(true);
 
   try {
     const seedService = app.get(SeedService);

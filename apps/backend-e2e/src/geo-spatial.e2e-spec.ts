@@ -1,9 +1,6 @@
 import { INestApplication } from '@nestjs/common';
+import { cnpj, cpf } from 'cpf-cnpj-validator';
 import request from 'supertest';
-import {
-  generateCNPJ,
-  generateCPF,
-} from '../../backend/src/app/utils/document.utils';
 import { closeApp, createApp, TestApp } from './utils/app-factory';
 
 describe('GeoSpatial (e2e)', () => {
@@ -23,7 +20,8 @@ describe('GeoSpatial (e2e)', () => {
       .post('/api/leads')
       .send({
         name: `Geo Lead 1 ${uniqueSuffix}`,
-        document: generateCPF(),
+        document: cpf.generate(),
+        phone: '11999999999',
         status: 'NEW',
         estimatedPotential: 0,
       });
@@ -46,7 +44,8 @@ describe('GeoSpatial (e2e)', () => {
       .post('/api/leads')
       .send({
         name: `Geo Lead 2 ${uniqueSuffix}`,
-        document: generateCNPJ(),
+        document: cnpj.generate(),
+        phone: '11999999999',
         status: 'NEW',
         estimatedPotential: 0,
       });

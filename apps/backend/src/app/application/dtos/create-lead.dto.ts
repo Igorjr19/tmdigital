@@ -30,6 +30,14 @@ export class CreateLeadDto {
   @IsCpfOrCnpj({ message: 'Documento inválido (CPF ou CNPJ)' })
   document: string;
 
+  @ApiProperty({
+    description: 'Telefone de contato',
+    example: '(11) 99999-9999',
+  })
+  @IsString()
+  @IsNotEmpty()
+  phone: string;
+
   @ApiPropertyOptional({
     description: 'Nome do fornecedor atual (se houver)',
     example: 'AgroSul Fornecedora',

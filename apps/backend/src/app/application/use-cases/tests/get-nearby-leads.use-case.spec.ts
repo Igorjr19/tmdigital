@@ -45,6 +45,7 @@ describe('GetNearbyLeadsUseCase', () => {
       Lead.create({
         name: 'Lead 1',
         document: '111',
+        phone: '11999999999',
         status: LeadStatus.NEW,
         estimatedPotential: 1000,
       }),

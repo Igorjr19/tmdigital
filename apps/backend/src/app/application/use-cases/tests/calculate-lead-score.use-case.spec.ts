@@ -63,6 +63,7 @@ describe('CalculateLeadScoreUseCase', () => {
       id: leadId,
       name: 'Test Lead',
       document: '12345678901',
+      phone: '11999999999',
       status: LeadStatus.NEW,
       estimatedPotential: initialPotential,
     });

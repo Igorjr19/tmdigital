@@ -48,6 +48,7 @@ describe('CreateLeadUseCase', () => {
     const createLeadDto: CreateLeadDto = {
       name: 'John Doe',
       document: '12345678901',
+      phone: '11999999999',
       estimatedPotential: 10000,
       status: LeadStatus.NEW,
     };
@@ -74,6 +75,7 @@ describe('CreateLeadUseCase', () => {
     const createLeadDto: CreateLeadDto = {
       name: 'John Doe',
       document: '12345678901',
+      phone: '11999999999',
       estimatedPotential: 10000,
     };
 

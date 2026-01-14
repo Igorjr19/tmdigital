@@ -1,17 +1,18 @@
 import { INestApplication } from '@nestjs/common';
+import { cpf } from 'cpf-cnpj-validator';
 import request from 'supertest';
-import { generateCPF } from '../../backend/src/app/utils/document.utils';
 import { closeApp, createApp, TestApp } from './utils/app-factory';
 
 describe('LeadController (e2e)', () => {
   let testApp: TestApp;
   let app: INestApplication;
 
-  const uniqueDoc = generateCPF();
+  const uniqueDoc = cpf.generate();
 
   const createLeadDto = {
     name: 'E2E Test Lead',
     document: uniqueDoc,
+    phone: '11999999999',
     status: 'NEW',
     estimatedPotential: 100000,
   };

@@ -13,6 +13,7 @@ describe('GetStaleLeadsUseCase', () => {
       id: '1',
       name: 'Stale Lead 1',
       document: '123',
+      phone: '11999999999',
       status: LeadStatus.QUALIFIED,
       createdAt: new Date(),
       updatedAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000),

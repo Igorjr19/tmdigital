@@ -1,10 +1,10 @@
 import { INestApplication } from '@nestjs/common';
 import { RuralProperty } from 'apps/backend/src/app/domain/entities/rural-property.entity';
+import { cpf } from 'cpf-cnpj-validator';
 import request from 'supertest';
 import { CreateLeadDto } from '../../backend/src/app/application/dtos/create-lead.dto';
 import { CreateRuralPropertyDto } from '../../backend/src/app/application/dtos/create-rural-property.dto';
 import { LeadStatus } from '../../backend/src/app/domain/enums/lead-status.enum';
-import { generateCPF } from '../../backend/src/app/utils/document.utils';
 import { closeApp, createApp, TestApp } from './utils/app-factory';
 
 describe('Rural Property CRUD (e2e)', () => {
@@ -22,10 +22,11 @@ describe('Rural Property CRUD (e2e)', () => {
   });
 
   it('Establishment: Create Lead', async () => {
-    const uniqueDoc = generateCPF();
+    const uniqueDoc = cpf.generate();
     const createLeadDto: CreateLeadDto = {
       name: 'Property CRUD Owner',
       document: uniqueDoc,
+      phone: '11999999999',
       status: LeadStatus.NEW,
       estimatedPotential: 1000,
     };

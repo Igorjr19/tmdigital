@@ -90,6 +90,7 @@ describe('UpdateRuralPropertyUseCase', () => {
       id: leadId,
       name: 'Test Lead',
       document: '123',
+      phone: '11999999999',
       status: LeadStatus.NEW,
       estimatedPotential: 100,
     });

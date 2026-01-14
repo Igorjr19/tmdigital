@@ -92,6 +92,7 @@ describe('LeadController', () => {
       const dto = {
         name: 'Test',
         document: '12345678901',
+        phone: '11999999999',
         estimatedPotential: 100,
         status: LeadStatus.NEW,
       } satisfies CreateLeadDto;
@@ -112,6 +113,7 @@ describe('LeadController', () => {
         Lead.create({
           name: 'Test',
           document: '123',
+          phone: '11999999999',
           estimatedPotential: 100,
           status: LeadStatus.NEW,
         }),
@@ -140,6 +142,7 @@ describe('LeadController', () => {
         Lead.create({
           name: 'Nearby Lead',
           document: '999',
+          phone: '11999999999',
           estimatedPotential: 500,
           status: LeadStatus.NEW,
         }),
@@ -180,6 +183,7 @@ describe('LeadController', () => {
       const mockLead = Lead.create({
         name: 'Test',
         document: '123',
+        phone: '11999999999',
         estimatedPotential: 100,
         status: LeadStatus.NEW,
       });
@@ -200,6 +204,7 @@ describe('LeadController', () => {
       const mockLead = Lead.create({
         name: 'Updated Name',
         document: '123',
+        phone: '11999999999',
         estimatedPotential: 100,
         status: LeadStatus.NEW,
       });
@@ -234,6 +239,7 @@ describe('LeadController', () => {
         productiveAreaHectares: 80,
         city: 'City',
         state: 'ST',
+        cropProductions: [],
         location: { type: 'Point', coordinates: [10, 20] },
       } satisfies CreateRuralPropertyDto;
 
@@ -245,6 +251,7 @@ describe('LeadController', () => {
         location: dto.location,
         city: dto.city,
         state: dto.state,
+        cropProductions: [],
         leadId: mockLeadId,
       });
 

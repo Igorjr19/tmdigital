@@ -1,8 +1,8 @@
 import { INestApplication } from '@nestjs/common';
+import { cpf } from 'cpf-cnpj-validator';
 import request from 'supertest';
 import { CreateLeadDto } from '../../backend/src/app/application/dtos/create-lead.dto';
 import { LeadStatus } from '../../backend/src/app/domain/enums/lead-status.enum';
-import { generateCPF } from '../../backend/src/app/utils/document.utils';
 import { closeApp, createApp, TestApp } from './utils/app-factory';
 
 describe('Business Rules Adjustments (E2E)', () => {
@@ -19,10 +19,11 @@ describe('Business Rules Adjustments (E2E)', () => {
   });
 
   describe('Lead Reactivation', () => {
-    const uniqueDoc = generateCPF(); // Valid CPF
+    const uniqueDoc = cpf.generate(); // Valid CPF
     const leadData: CreateLeadDto = {
       name: 'Reactivation Candidate',
       document: uniqueDoc,
+      phone: '11999999999',
       estimatedPotential: 50000,
       status: LeadStatus.NEW,
     };
@@ -60,13 +61,14 @@ describe('Business Rules Adjustments (E2E)', () => {
 
   describe('Lead Document Update', () => {
     it('should allow updating the lead document', async () => {
-      const uniqueDoc = generateCPF();
-      const newDoc = generateCPF();
+      const uniqueDoc = cpf.generate();
+      const newDoc = cpf.generate();
       const res = await request(app.getHttpServer())
         .post('/api/leads')
         .send({
           name: 'Doc Update Test',
           document: uniqueDoc,
+          phone: '11999999999',
           estimatedPotential: 1000,
         })
         .expect(201)
@@ -90,12 +92,13 @@ describe('Business Rules Adjustments (E2E)', () => {
 
   describe('Optional Crop Productions', () => {
     it('should create property without crop productions', async () => {
-      const uniqueDoc = generateCPF();
+      const uniqueDoc = cpf.generate();
       const leadRes = await request(app.getHttpServer())
         .post('/api/leads')
         .send({
           name: 'Crop Test Lead',
           document: uniqueDoc,
+          phone: '11999999999',
           estimatedPotential: 0,
         })
         .expect(201);
