@@ -2,7 +2,12 @@ import { join } from 'path';
 import { loadEnvFile } from 'process';
 import { DataSource, DataSourceOptions } from 'typeorm';
 
-loadEnvFile(join(__dirname, '..', '..', '..', '..', '..', '..', '.env'));
+import { existsSync } from 'fs';
+
+const envPath = join(__dirname, '..', '..', '..', '..', '..', '..', '.env');
+if (existsSync(envPath)) {
+  loadEnvFile(envPath);
+}
 
 export const dataSourceOptions: DataSourceOptions = {
   type: 'postgres',
