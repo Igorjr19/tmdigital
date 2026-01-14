@@ -89,6 +89,7 @@ export const I18N = {
     MAP: {
       POPUP: {
         NAME: 'Nome da Propriedade',
+        OWNER: 'Proprietário',
         CULTURE: 'Cultura',
         STATUS: 'Status',
         DETAILS: 'Ver Detalhes',

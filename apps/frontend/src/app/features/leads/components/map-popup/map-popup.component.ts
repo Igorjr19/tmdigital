@@ -21,6 +21,7 @@ import { I18N } from '../../../../core/i18n/i18n';
 export class MapPopupComponent {
   protected readonly I18N = I18N;
   @Input() propertyName: string = '';
+  @Input() leadName: string = '';
   @Input() culture: string = '';
   @Input() leadStatus: unknown = '';
   @Input() leadId: string = '';

@@ -113,6 +113,7 @@ export class MapViewComponent implements OnInit, AfterViewInit {
         });
 
         componentRef.instance.propertyName = prop.name;
+        componentRef.instance.leadName = prop.leadName ?? '';
         componentRef.instance.culture = prop.productiveAreaHectares
           ? I18N.LEAD.MAP.POPUP.ESTIMATED
           : I18N.LEAD.MAP.POPUP.NA;
