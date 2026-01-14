@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -25,6 +25,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { firstValueFrom } from 'rxjs';
 import { LeadDto } from '../../../api/model/models';
+import { CpfCnpjMaskDirective } from '../../../core/directives/cpf-cnpj-mask.directive';
 import { I18N } from '../../../core/i18n/i18n';
 import { LeadPropertiesComponent } from '../components/lead-properties/lead-properties.component';
 import { LeadWithProperties } from '../models/lead.extension';
@@ -42,7 +43,10 @@ import { LeadsFacadeService } from '../services/leads.facade';
     TextareaModule,
     ButtonModule,
     ToastModule,
+    ToastModule,
     LeadPropertiesComponent,
+    CpfCnpjMaskDirective,
+    CurrencyPipe,
   ],
   providers: [MessageService],
   templateUrl: './lead-form.component.html',
@@ -145,6 +149,36 @@ export class LeadFormComponent implements OnInit {
       currentSupplier: lead.currentSupplier,
       notes: lead.notes,
     });
+    this.formatPotential({
+      target: { value: (lead.estimatedPotential || 0).toFixed(2) },
+    } as unknown as Event);
+  }
+
+  onPotentialInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const value = input.value.replace(/\D/g, '');
+    const numberValue = Number(value) / 100;
+
+    const formatted = numberValue.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    });
+
+    input.value = formatted;
+    this.form.get('estimatedPotential')?.setValue(numberValue);
+  }
+
+  formatPotential(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const value = input.value.replace(/\D/g, '');
+    const numberValue = Number(value) / 100;
+
+    const formatted = numberValue.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    });
+
+    input.value = formatted;
   }
 
   get leadProperties() {

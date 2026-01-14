@@ -62,6 +62,7 @@
         type="text"
         pInputText
         formControlName="document"
+        appCpfCnpjMask
         [placeholder]="I18N.LEAD.FORM.PLACEHOLDERS.DOCUMENT"
         class="w-full"
         [ngClass]="{
@@ -98,16 +99,14 @@
       <label for="estimatedPotential" class="font-medium text-900">{{
         I18N.LEAD.FORM.LABELS.POTENTIAL
       }}</label>
-      <p-inputNumber
+      <input
+        pInputText
         id="estimatedPotential"
-        formControlName="estimatedPotential"
-        mode="currency"
-        currency="BRL"
-        locale="pt-BR"
-        [placeholder]="I18N.LEAD.FORM.PLACEHOLDERS.POTENTIAL"
-        styleClass="w-full"
-        class="w-full"
-      ></p-inputNumber>
+        [value]="form.get('estimatedPotential')?.value | currency: 'BRL'"
+        (input)="onPotentialInput($event)"
+        [placeholder]="'R$ 0,00'"
+        class="w-full text-left"
+      />
     </div>
 
     <div class="field col-12">

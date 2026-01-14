@@ -96,14 +96,16 @@
         </div>
         <div class="field col">
           <label for="state">Estado (UF)</label>
-          <input
-            pInputText
+          <p-select
             id="state"
-            type="text"
-            formControlName="state"
             class="w-full"
-            maxlength="2"
-          />
+            [options]="states"
+            formControlName="state"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Selecione..."
+            appendTo="body"
+          ></p-select>
           @if (form.get('state')?.invalid && form.get('state')?.touched) {
             <small class="p-error"> UF obrigatório. </small>
           }
