@@ -17,6 +17,7 @@ export const I18N = {
     LOADING: 'Carregando...',
     SUCCESS: 'Sucesso',
     ERROR: 'Erro',
+    NO_DATA: 'Sem dados disponíveis',
     CONFIRM_DELETE_TITLE: 'Confirmar Exclusão',
     CONFIRM_DELETE_MSG: (name: string) =>
       `Tem certeza que deseja excluir o lead ${name}?`,
@@ -115,10 +116,19 @@ export const I18N = {
       ACTIVE_LEADS: 'Leads Ativos',
       CONVERTED_LEADS: 'Leads Convertidos',
       ESTIMATED_POTENTIAL: 'Potencial Estimado',
-      STALE_LEADS: 'Leads Estagnados (> 15 dias)',
+      STALE_LEADS: {
+        TITLE: 'Leads Estagnados',
+        COUNT: 'Leads Estagnados (> 15 dias)',
+        FOUND: 'Leads encontrados',
+        INACTIVE_DAYS: 'dias inativos',
+      },
       PLANTING_ALERTS: 'Culturas em Época de Plantio',
+      PLANTING_ALERTS_EMPTY: 'Nenhum alerta de plantio para este mês.',
       MARKET_SHARE: 'Market Share (Fornecedores)',
       FORECAST: 'Previsão de Vendas (Ponderado)',
+    },
+    SECTIONS: {
+      MAP_HEATMAP: 'Mapa & Heatmap',
     },
     CHARTS: {
       LEADS_BY_STATUS: 'Leads por Status',

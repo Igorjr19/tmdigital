@@ -73,7 +73,7 @@
         ></p-chart>
       } @else {
         <div class="flex align-items-center justify-content-center h-15rem">
-          <span class="text-500">No data available</span>
+          <span class="text-500">{{ I18N.COMMON.NO_DATA }}</span>
         </div>
       }
     </div>
@@ -90,7 +90,7 @@
         ></p-chart>
       } @else {
         <div class="flex align-items-center justify-content-center h-15rem">
-          <span class="text-500">No data available</span>
+          <span class="text-500">{{ I18N.COMMON.NO_DATA }}</span>
         </div>
       }
     </div>
@@ -99,8 +99,11 @@
   <div class="col-12 md:col-6">
     <div class="surface-card shadow-2 border-round p-4 h-full">
       <div class="flex align-items-center justify-content-between mb-3">
-        <h5>{{ I18N.DASHBOARD.KPI.STALE_LEADS }}</h5>
-        <span class="text-500 text-sm">{{ staleLeads().length }} found</span>
+        <h5>{{ I18N.DASHBOARD.KPI.STALE_LEADS.TITLE }}</h5>
+        <span class="text-500 text-sm"
+          >{{ staleLeads().length }}
+          {{ I18N.DASHBOARD.KPI.STALE_LEADS.FOUND }}</span
+        >
       </div>
       <ul
         class="list-none p-0 m-0 overflow-y-auto"
@@ -112,12 +115,15 @@
           >
             <span class="text-900">{{ lead.name }}</span>
             <span class="text-600 text-sm"
-              >{{ getDaysInactive(lead.updatedAt) }} days inactive</span
+              >{{ getDaysInactive(lead.updatedAt) }}
+              {{ I18N.DASHBOARD.KPI.STALE_LEADS.INACTIVE_DAYS }}</span
             >
           </li>
         }
         @if (staleLeads().length === 0) {
-          <li class="text-500 text-center py-2">No stale leads.</li>
+          <li class="text-500 text-center py-2">
+            {{ I18N.DASHBOARD.KPI.STALE_LEADS.FOUND }}
+          </li>
         }
       </ul>
     </div>
@@ -135,7 +141,9 @@
           ></p-tag>
         }
         @if (plantingAlerts().length === 0) {
-          <span class="text-500">No planting alerts for this month.</span>
+          <span class="text-500">{{
+            I18N.DASHBOARD.KPI.PLANTING_ALERTS_EMPTY
+          }}</span>
         }
       </div>
     </div>
@@ -143,7 +151,7 @@
 
   <div class="col-12">
     <div class="surface-card shadow-2 border-round p-4">
-      <h5>Map & Heatmap</h5>
+      <h5>{{ I18N.DASHBOARD.SECTIONS.MAP_HEATMAP }}</h5>
       <app-heatmap-view [heatmapData]="heatmapData()"></app-heatmap-view>
     </div>
   </div>
