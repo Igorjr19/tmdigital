@@ -102,6 +102,7 @@ export class LeadFormComponent implements OnInit {
     this.form = this.formBuilder.group({
       name: ['', Validators.required],
       document: ['', Validators.required],
+      phone: ['', Validators.required],
       status: [LeadDto.StatusEnum.New, Validators.required],
       estimatedPotential: [0],
       currentSupplier: [''],
@@ -144,6 +145,7 @@ export class LeadFormComponent implements OnInit {
     this.form.patchValue({
       name: lead.name,
       document: lead.document,
+      phone: lead.phone,
       status: lead.status,
       estimatedPotential: lead.estimatedPotential,
       currentSupplier: lead.currentSupplier,
@@ -192,6 +194,7 @@ export class LeadFormComponent implements OnInit {
     const dto = {
       name: formValue.name,
       document: formValue.document,
+      phone: formValue.phone,
       status: formValue.status,
       estimatedPotential: formValue.estimatedPotential,
       currentSupplier: formValue.currentSupplier,

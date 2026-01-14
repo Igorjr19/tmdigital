@@ -23,6 +23,12 @@ export class LeadDto {
   })
   document: string;
 
+  @ApiProperty({
+    description: 'Telefone de contato',
+    example: '(11) 99999-9999',
+  })
+  phone: string;
+
   @ApiPropertyOptional({
     description: 'Fornecedor atual (opcional)',
     example: 'Cooperativa Regional',
@@ -76,6 +82,7 @@ export class LeadDto {
     dto.id = lead.id;
     dto.name = lead.name;
     dto.document = lead.document;
+    dto.phone = lead.phone;
     dto.currentSupplier = lead.currentSupplier;
     dto.status = lead.status;
     dto.estimatedPotential = lead.estimatedPotential;

@@ -46,6 +46,14 @@ import { I18N } from '../../../../core/i18n/i18n';
         </div>
         <div class="col-12 md:col-6">
           <span class="text-500 block mb-1">{{
+            I18N.LEAD.FORM.LABELS.PHONE
+          }}</span>
+          <span class="text-900 font-medium text-xl">{{
+            lead()?.phone || '-'
+          }}</span>
+        </div>
+        <div class="col-12 md:col-6">
+          <span class="text-500 block mb-1">{{
             I18N.LEAD.FORM.LABELS.STATUS
           }}</span>
           <div class="text-xl">

@@ -79,6 +79,31 @@
     </div>
 
     <div class="field col-12 md:col-6">
+      <label for="phone" class="font-medium text-900"
+        >{{ I18N.LEAD.FORM.LABELS.PHONE }}
+        <span class="text-red-500">*</span></label
+      >
+      <input
+        id="phone"
+        type="text"
+        pInputText
+        formControlName="phone"
+        [placeholder]="I18N.LEAD.FORM.PLACEHOLDERS.PHONE"
+        class="w-full"
+        [ngClass]="{
+          'ng-invalid ng-dirty':
+            form.get('phone')?.invalid && form.get('phone')?.dirty,
+        }"
+      />
+      @if (form.get('phone')?.invalid && form.get('phone')?.dirty) {
+        <small class="p-error block">
+          {{ I18N.LEAD.FORM.LABELS.PHONE }}
+          {{ I18N.LEAD.FORM.VALIDATION.REQUIRED }}
+        </small>
+      }
+    </div>
+
+    <div class="field col-12 md:col-6">
       <label for="status" class="font-medium text-900"
         >{{ I18N.LEAD.FORM.LABELS.STATUS }}
         <span class="text-red-500">*</span></label

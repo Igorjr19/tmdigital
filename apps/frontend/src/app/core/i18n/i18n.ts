@@ -55,6 +55,7 @@ export const I18N = {
       LABELS: {
         NAME: 'Nome',
         DOCUMENT: 'CPF/CNPJ',
+        PHONE: 'Telefone',
         STATUS: 'Status',
         POTENTIAL: 'Potencial (R$)',
         CURRENT_SUPPLIER: 'Fornecedor Atual',
@@ -63,6 +64,7 @@ export const I18N = {
       PLACEHOLDERS: {
         NAME: 'Nome do Lead',
         DOCUMENT: 'CPF/CNPJ',
+        PHONE: '(00) 00000-0000',
         SELECT: 'Selecione...',
         POTENTIAL: 'R$ 0,00',
         CURRENT_SUPPLIER: 'Ex: Concorrente X',

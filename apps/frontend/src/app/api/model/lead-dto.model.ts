@@ -23,6 +23,10 @@ export interface LeadDto {
    */
   document: string;
   /**
+   * Telefone de contato
+   */
+  phone: string;
+  /**
    * Fornecedor atual (opcional)
    */
   currentSupplier?: string | null;
