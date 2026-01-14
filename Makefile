@@ -68,6 +68,15 @@ psql: ## Acessa PostgreSQL via psql
 	@docker compose exec postgres psql -U postgres -d tmdigital
 
 
+migration-run: ## Executa migrações do banco de dados
+	@pnpm --filter @tmdigital/backend migration:run
+
+migration-revert: ## Reverte a última migração
+	@pnpm --filter @tmdigital/backend migration:revert
+
+seed: ## Popula o banco de dados com dados iniciais
+	@docker compose restart backend
+
 ##@ Desenvolvimento Local
 
 dev-backend: ## Executa backend localmente (sem Docker)
