@@ -26,7 +26,9 @@ import { ToastModule } from 'primeng/toast';
 import { firstValueFrom } from 'rxjs';
 import { LeadDto } from '../../../api/model/models';
 import { CpfCnpjMaskDirective } from '../../../core/directives/cpf-cnpj-mask.directive';
+import { PhoneMaskDirective } from '../../../core/directives/phone-mask.directive';
 import { I18N } from '../../../core/i18n/i18n';
+import { formatPhone } from '../../../core/utils/phone.utils';
 import { LeadPropertiesComponent } from '../components/lead-properties/lead-properties.component';
 import { LeadWithProperties } from '../models/lead.extension';
 import { LeadsFacadeService } from '../services/leads.facade';
@@ -46,6 +48,7 @@ import { LeadsFacadeService } from '../services/leads.facade';
     ToastModule,
     LeadPropertiesComponent,
     CpfCnpjMaskDirective,
+    PhoneMaskDirective,
     CurrencyPipe,
   ],
   providers: [MessageService],
@@ -145,7 +148,7 @@ export class LeadFormComponent implements OnInit {
     this.form.patchValue({
       name: lead.name,
       document: lead.document,
-      phone: lead.phone,
+      phone: formatPhone(lead.phone),
       status: lead.status,
       estimatedPotential: lead.estimatedPotential,
       currentSupplier: lead.currentSupplier,

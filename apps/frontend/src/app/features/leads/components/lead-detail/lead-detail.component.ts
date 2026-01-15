@@ -15,6 +15,7 @@ import { CurrencyPipe } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { TagModule } from 'primeng/tag';
 import { I18N } from '../../../../core/i18n/i18n';
+import { PhonePipe } from '../../../../core/pipes/phone.pipe';
 
 @Component({
   selector: 'app-lead-detail',
@@ -26,6 +27,7 @@ import { I18N } from '../../../../core/i18n/i18n';
     LeadPropertiesComponent,
     CurrencyPipe,
     DocumentPipe,
+    PhonePipe,
   ],
   template: `
     <div class="flex flex-column gap-3 p-3">
@@ -49,7 +51,7 @@ import { I18N } from '../../../../core/i18n/i18n';
             I18N.LEAD.FORM.LABELS.PHONE
           }}</span>
           <span class="text-900 font-medium text-xl">{{
-            lead()?.phone || '-'
+            lead()?.phone || '-' | phone
           }}</span>
         </div>
         <div class="col-12 md:col-6">
