@@ -63,7 +63,10 @@ export class DashboardComponent implements OnInit {
     const counts = Object.values(forecast.countByStatus);
 
     return {
-      labels: statuses,
+      labels: statuses.map(
+        (s) =>
+          this.I18N.LEAD.STATUS[s as keyof typeof this.I18N.LEAD.STATUS] || s,
+      ),
       datasets: [
         {
           label: I18N.DASHBOARD.KPI.TOTAL_LEADS,
