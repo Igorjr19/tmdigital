@@ -239,6 +239,7 @@ export class TypeOrmLeadRepository implements LeadRepository {
       status: schema.status,
       estimatedPotential: schema.estimatedPotential,
       notes: schema.notes,
+      phone: schema.phone,
       updatedAt: schema.updatedAt,
     });
     return lead;
