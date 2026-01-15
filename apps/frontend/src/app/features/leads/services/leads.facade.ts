@@ -134,8 +134,8 @@ export class LeadsFacadeService {
       tap(() => {
         this.leads.update((leads) => leads.filter((l) => l.id !== id));
         this.totalRecords.update((count) => count - 1);
+        this.loadLeads();
       }),
-      finalize(() => this.loading.set(false)),
     );
   }
 
